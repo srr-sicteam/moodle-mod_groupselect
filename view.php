@@ -47,7 +47,11 @@ $course = $DB->get_record('course', array('id'=>$cm->course), '*', MUST_EXIST);
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 
-add_to_log($course->id, 'groupselect', 'view', 'view.php?id='.$cm->id, $groupselect->id, $cm->id);
+$event = \mod_groupselect\event\course_module_viewed::create(array(
+    'objectid' => $course->id,
+    'context' => $context
+));
+$event->trigger();
 
 $PAGE->set_url('/mod/groupselect/view.php', array('id' => $cm->id));
 $PAGE->add_body_class('mod_groupselect');
@@ -124,7 +128,6 @@ if ($select and $canselect and isset($groups[$select]) and $isopen) {
 
     } else if ($mform->get_data()) {
         groups_add_member($select, $USER->id);
-        add_to_log($course->id, 'groupselect', 'select', 'view.php?id='.$cm->id, $groupselect->id, $cm->id);
         redirect($PAGE->url);
 
     } else {
@@ -146,7 +149,6 @@ if ($select and $canselect and isset($groups[$select]) and $isopen) {
 
     } else if ($confirm and data_submitted() and confirm_sesskey()) {
         groups_remove_member($unselect, $USER->id);
-        add_to_log($course->id, 'groupselect', 'unselect', 'view.php?id='.$cm->id, $groupselect->id, $cm->id);
         redirect($PAGE->url);
 
     } else {
