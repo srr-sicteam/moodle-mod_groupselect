@@ -20,6 +20,7 @@
  * @package    mod
  * @subpackage groupselect
  * @copyright  2008-2011 Petr Skoda (http://skodak.org)
+ * @copyright  2014 Tampere University of Technology, P. Pyykkönen (pirkka.pyykkonen ÄT tut.fi)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -105,7 +106,19 @@ function xmldb_groupselect_upgrade($oldversion) {
         // savepoint reached
         upgrade_mod_savepoint(true, 2011101800, 'groupselect');
     }
-
+    
+    if ($oldversion < 2014090201) {
+        $table = new xmldb_table('groupselect');
+        $field = new xmldb_field('hidefullgroups', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'timemodified');
+        
+        if (!$dbman->field_exists($table, $field)) {
+        	$dbman->add_field($table, $field);
+        }
+        $table = new xmldb_table('groupselect_passwords');
+       
+    	// search savepoint reached
+    	upgrade_mod_savepoint(true, 2014090201, 'groupselect');
+    }
 
     return true;
 }

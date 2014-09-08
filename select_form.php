@@ -20,6 +20,7 @@
  * @package    mod
  * @subpackage groupselect
  * @copyright  2008-2011 Petr Skoda (http://skodak.org)
+ * @copyright  2014 Tampere University of Technology, P. Pyykkönen (pirkka.pyykkonen ÄT tut.fi)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -29,13 +30,19 @@ require_once($CFG->dirroot.'/lib/formslib.php');
 
 class select_form extends moodleform {
     private $groupselect;
-
+   
     // Define the form
     function definition () {
+        global $OUTPUT;
         $mform = $this->_form;
+  
         list($data, $this->groupselect, $grpname) = $this->_customdata;
-
+        
         if ($this->groupselect->password !== '') {
+            $mform->addElement('passwordunmask', 'password', get_string('password', 'mod_groupselect'), 'maxlength="254" size="24"');
+            $mform->setType('password', PARAM_RAW);
+        }
+        else if ($data['group_password']) {
             $mform->addElement('passwordunmask', 'password', get_string('password', 'mod_groupselect'), 'maxlength="254" size="24"');
             $mform->setType('password', PARAM_RAW);
         }
@@ -45,16 +52,38 @@ class select_form extends moodleform {
 
         $mform->addElement('hidden','select');
         $mform->setType('select', PARAM_INT);
+        
+        $mform->addElement('hidden','group_password');
+        $mform->setType('group_password', PARAM_BOOL);
 
         $this->add_action_buttons(true, get_string('select', 'mod_groupselect', $grpname));
+
         $this->set_data($data);
+     
+ 
     }
 
     function validation($data, $files) {
+        global $OUTPUT;
+   
         $errors = parent::validation($data, $files);
 
         if ($this->groupselect->password !== '') {
             if ($this->groupselect->password !== $data['password']) {
+                $errors['password'] = get_string('incorrectpassword', 'mod_groupselect');
+            }
+        }
+        else if ($data['group_password']){
+            global $DB;
+            $sql = "SELECT  g.password
+                    FROM    {groupselect_passwords} g
+                    WHERE   g.groupid = ?";
+            $params = array('id'=>$data['select']);
+            $password = $DB->get_record_sql($sql, $params)->password;
+            
+            // FOR PHP >= 5.5
+            // if(!password_verify($data['password'], $password) {
+            if ($password !== $data['password']) {
                 $errors['password'] = get_string('incorrectpassword', 'mod_groupselect');
             }
         }

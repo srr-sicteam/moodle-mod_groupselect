@@ -1,5 +1,12 @@
-Group self-selection module for Moodle (http://moodle.org/) - Copyright (C) 2008-2011  Petr Skoda (http://skodak.org/)
+Group self-formation module, based on Group self-selection module
 
+Copyright 2014 Tampere University of Technology, P. Pyykkönen (pirkka.pyykkonen ÄT tut.fi)
+
+Activity module, lets students create, select and join groups. 
+
+==================================
+
+Group self-selection module for Moodle (http://moodle.org/) - Copyright (C) 2008-2011  Petr Skoda (http://skodak.org/)
 Group self-selection module is a simple activity which allows students to select a group.
 
 This program is free software; you can redistribute it and/or modify

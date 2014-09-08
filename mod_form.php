@@ -20,6 +20,7 @@
  * @package    mod
  * @subpackage groupselect
  * @copyright  2008-2011 Petr Skoda (http://skodak.org)
+ * @copyright  2014 Tampere University of Technology, P. Pyykkönen (pirkka.pyykkonen ÄT tut.fi)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -61,16 +62,22 @@ class mod_groupselect_mod_form extends moodleform_mod {
 
         $mform->addElement('passwordunmask', 'password', get_string('password', 'mod_groupselect'), 'maxlength="254" size="24"');
         $mform->setType('password', PARAM_RAW);
+        $mform->addHelpButton('password', 'globalpassword', 'mod_groupselect');
 
         $mform->addElement('text', 'maxmembers', get_string('maxmembers', 'mod_groupselect'), array('size'=>'4'));
         $mform->setType('maxmembers', PARAM_INT);
         $mform->setDefault('maxmembers', $config->maxmembers);
         $mform->setAdvanced('maxmembers', $config->maxmembers_adv);
+        $mform->addHelpButton('maxmembers', 'maxmembers', 'mod_groupselect');
 
         $mform->addElement('date_time_selector', 'timeavailable', get_string('timeavailable', 'mod_groupselect'), array('optional'=>true));
         $mform->setDefault('timeavailable', 0);
         $mform->addElement('date_time_selector', 'timedue', get_string('timedue', 'mod_groupselect'), array('optional'=>true));
         $mform->setDefault('timedue', 0);
+
+        $mform->addElement('advcheckbox', 'hidefullgroups', get_string('hidefullgroups', 'mod_groupselect'), '', 
+                array('optional'=>true, 'group'=>null), array(0,1));
+        $mform->addHelpButton('hidefullgroups', 'hidefullgroups', 'mod_groupselect');
 
         //-------------------------------------------------------------------------------
         // buttons

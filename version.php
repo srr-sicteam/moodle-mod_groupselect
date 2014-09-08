@@ -20,15 +20,16 @@
  * @package    mod
  * @subpackage groupselect
  * @copyright  2008-2012 Petr Skoda (http://skodak.org)
+ * @copyright  2014 Tampere University of Technology, P. Pyykkönen (pirkka.pyykkonen ÄT tut.fi)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
 
-$module->version   = 2012042100; // The current module version (Date: YYYYMMDDXX)
+$module->version   = 2014090400; // The current module version (Date: YYYYMMDDXX)
 $module->requires  = 2011070101; // Requires this Moodle version
 $module->cron      = 0;          // Period for cron to check this module (secs)
 $module->component = 'mod_groupselect'; // Full name of the plugin (used for diagnostics)
 
-$module->maturity  = MATURITY_BETA;
-$module->release   = "2.1beta1 (20111018)"; // User-friendly version number
+$module->maturity  = MATURITY_ALPHA;
+$module->release   = "0.2 alpha (20140904)"; // User-friendly version number

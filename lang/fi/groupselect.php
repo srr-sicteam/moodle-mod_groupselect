@@ -1,0 +1,46 @@
+<?php
+
+$string['action'] = 'Toiminto';
+$string['cannotselectclosed'] = 'Et voi enää liittyä ryhmään.';
+$string['cannotselectmaxed'] = 'Et voi liittyä ryhmään {$a} - ryhmä on täynnä.';
+$string['cannotselectnocap'] = 'Sinulla ei ole oikeutta valita ryhmää.';
+$string['cannotselectnoenrol'] = 'Sinun täytyy olla kirjautuneena kurssille voidaksesi liittyä ryhmään.';
+$string['creategroup'] = 'Luo uusi ryhmä';
+$string['cannotunselectclosed'] = 'Et voi enää lähteä ryhmästä';
+$string['description'] = 'Ryhmän kuvaus';
+$string['export'] = 'Vie ryhmien tiedot CSV-tiedostona';
+$string['export_download'] = 'Lataa CSV-tiedosto';
+$string['fromallgroups'] = 'Kaikki ryhmät';
+$string['globalpassword_help'] = 'Aseta yleinen salasana ryhmään liittymiselle. Korvaa mahdollisen ryhmäkohtaisen salasanan.';
+$string['groupid'] = 'Ryhmätunniste';
+$string['groupselect:addinstance'] = 'Luo uusi ryhmävalinta';
+$string['groupselect:create'] = 'Salli ryhmän luonti';
+$string['groupselect:select'] = 'Salli ryhmään liittyminen';
+$string['groupselect:unselect'] = 'Salli ryhmästä lähteminen';
+$string['hidefullgroups'] = 'Piilota täynnä olevat ryhmät';
+$string['hidefullgroups_help'] = 'Piilottaa täynnä olevat ryhmät listanäkymästä (poislukien käyttäjän mahdollisen
+        oman ryhmän). Voi olla hyödyllinen, jos ryhmiä on paljon.';
+$string['incorrectpassword'] = 'Virheellinen salasana';
+$string['managegroups'] = 'Hallinnoi ryhmiä';
+$string['maxcharlenreached'] = 'Merkkien enimmäismäärä saavutettu';
+$string['maxlimitreached'] = 'Suurin sallittu määrä saavutettu';
+$string['maxmembers'] = 'Ryhmän jäsenten enimmäismäärä';
+$string['maxmembers_help'] = 'Ryhmän jäsenten enimmäismäärä, 0 jos rajoittamaton.';
+$string['membercount'] = 'Lukumäärä';
+$string['membershidden'] = 'Jäsenlista ei nähtävissä';
+$string['memberslist'] = 'Jäsenet';
+$string['modulename'] = 'Ryhmänmuodostus';
+$string['modulenameplural'] = 'Ryhmänmuodostukset';
+$string['nogroups'] = 'Ei luotuja ryhmiä.';
+$string['notavailableanymore'] = 'Ryhmävalinta sulkeutunut {$a}.';
+$string['notavailableyet'] = 'Ryhmävalinta aukeaa {$a}.';
+$string['password'] = 'Vaatii salasanan';
+$string['pluginadministration'] = 'Moduulinhallinta';
+$string['pluginname'] = 'Ryhmänmuodostus';
+$string['selectconfirm'] = 'Haluatko todella liittyä ryhmään <em>{$a}</em>?';
+$string['unselectconfirm'] = 'Haluatko todella lähteä ryhmästä <em>{$a}</em>?';
+$string['unselect'] = 'Lähde ryhmästä {$a}';
+$string['select'] = 'Liity ryhmään {$a}';
+$string['targetgrouping'] = 'Valitse ryhmä groupingista';
+$string['timeavailable'] = 'Avautuu';
+$string['timedue'] = 'Sulkeutuu';

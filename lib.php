@@ -20,6 +20,7 @@
  * @package    mod
  * @subpackage groupselect
  * @copyright  2008-2011 Petr Skoda (http://skodak.org)
+ * @copyright  2014 Tampere University of Technology, P. Pyykkönen (pirkka.pyykkonen ÄT tut.fi)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -40,7 +41,7 @@ function groupselect_supports($feature) {
         case FEATURE_COMPLETION_TRACKS_VIEWS: return false;
         case FEATURE_GRADE_HAS_GRADE:         return false;
         case FEATURE_GRADE_OUTCOMES:          return false;
-        case FEATURE_BACKUP_MOODLE2:          return true;
+        case FEATURE_BACKUP_MOODLE2:          return false; //TODO
 
         default: return null;
     }
@@ -148,7 +149,9 @@ function groupselect_update_instance($groupselect) {
  */
 function groupselect_delete_instance($id) {
     global $DB;
-
+    // delete group password rows related to this instance (but not the groups)
+    $DB->delete_records('groupselect_passwords', array('instance_id'=>$id));    
+    
     $DB->delete_records('groupselect', array('id'=>$id));
 
     return true;
@@ -175,7 +178,7 @@ function groupselect_get_participants($groupselectid) {
  * @return array
  */
 function groupselect_get_view_actions() {
-    return array('view');
+    return array('view', 'export');
 }
 
 
@@ -185,7 +188,7 @@ function groupselect_get_view_actions() {
  * @return array
  */
 function groupselect_get_post_actions() {
-    return array('select', 'unselect');
+    return array('select', 'unselect', 'create');
 }
 
 
@@ -198,4 +201,49 @@ function groupselect_get_post_actions() {
 function groupselect_reset_userdata($data) {
     // no resetting here - all data is stored in the group tables
     return array();
+}
+
+function groupselect_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
+    // Check the contextlevel is as expected - if your plugin is a block, this becomes CONTEXT_BLOCK, etc.
+    if ($context->contextlevel != CONTEXT_MODULE) {
+        return false; 
+    }
+ 
+    // Make sure the filearea is one of those used by the plugin.
+    if ($filearea !== 'export') { //&& $filearea !== 'anotherexpectedfilearea') {
+        return false;
+    }
+ 
+    // Make sure the user is logged in and has access to the module (plugins that are not course modules should leave out the 'cm' part).
+    require_login($course, true, $cm);
+ 
+    // Check the relevant capabilities - these may vary depending on the filearea being accessed.
+    if (!has_capability('mod/groupselect:export', $context)) {
+        return false;
+    }
+ 
+    // Leave this line out if you set the itemid to null in make_pluginfile_url (set $itemid to 0 instead).
+    $itemid = array_shift($args); // The first item in the $args array.
+ 
+    // Use the itemid to retrieve any relevant data records and perform any security checks to see if the
+    // user really does have access to the file in question.
+ 
+    // Extract the filename / filepath from the $args array.
+    $filename = array_pop($args); // The last item in the $args array.
+    if (!$args) {
+        $filepath = '/'; // $args is empty => the path is '/'
+    } else {
+        $filepath = '/'.implode('/', $args).'/'; // $args contains elements of the filepath
+    }
+ 
+    // Retrieve the file from the Files API.
+    $fs = get_file_storage();
+    $file = $fs->get_file($context->id, 'mod_groupselect', $filearea, $itemid, $filepath, $filename);
+    if (!$file) {
+        return false; // The file does not exist.
+    }
+ 
+    // We can now send the file back to the browser - in this case with a cache lifetime of 1 day and no filtering. 
+    // From Moodle 2.3, use send_stored_file instead.
+    send_stored_file($file, 86400, 0, 'true', $options);
 }

@@ -20,6 +20,7 @@
  * @package    mod
  * @subpackage groupselect
  * @copyright  2008-2011 Petr Skoda (http://skodak.org)
+ * @copyright  2014 Tampere University of Technology, P. Pyykkönen (pirkka.pyykkonen ÄT tut.fi)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -31,7 +32,7 @@ require_once("$CFG->dirroot/mod/groupselect/lib.php");
 
 function groupselect_get_group_info($group) {
     $group = clone($group);
-    $context = get_context_instance(CONTEXT_COURSE, $group->courseid);
+    $context = context_course::instance($group->courseid);
 
     $group->description = file_rewrite_pluginfile_urls($group->description, 'pluginfile.php', $context->id, 'group', 'description', $group->id);
     if (!isset($group->descriptionformat)) {
@@ -87,4 +88,23 @@ function groupselect_group_member_counts($cm, $targetgrouping=0) {
     }
 
     return $DB->get_records_sql($sql, $params);
+}
+
+/**
+ * Get password protected groups
+ *
+ * @return array of ids TODO: select only groups from current groupselect instance
+ */
+function groupselect_get_password_protected_groups() {
+    global $DB;
+    $sql = "SELECT  *
+            FROM    {groupselect_passwords} gp
+            WHERE   gp.password <> ''";
+    
+    $result = $DB->get_records_sql($sql);
+    $ids = array();
+    foreach ($result as $r) {
+        array_push($ids, $r->groupid);
+    }
+    return $ids;
 }
