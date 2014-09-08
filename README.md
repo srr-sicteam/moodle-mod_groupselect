@@ -2,7 +2,9 @@ Group self-formation module, based on Group self-selection module
 
 Copyright 2014 Tampere University of Technology, P. Pyykkönen (pirkka.pyykkonen ÄT tut.fi)
 
-Activity module, lets students create, select and join groups. 
+Activity module, lets students create, select and join groups.
+
+Currently in alpha stage, any feedback would be appreciated!
 
 ==================================
 
