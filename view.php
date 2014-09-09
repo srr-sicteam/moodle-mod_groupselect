@@ -25,6 +25,7 @@
  */
 
 require('../../config.php');
+require_once($CFG->dirroot.'/lib/password_compat/lib/password.php');
 require_once('locallib.php');
 require_once('select_form.php');
 require_once('create_form.php');
@@ -151,7 +152,7 @@ if ($cancreate and $isopen) {
         
         $passworddata = (object) array(
                 'groupid' => $id,
-                'password' => $formdata->password,
+                'password' => password_hash($formdata->password, PASSWORD_DEFAULT),
                 'instance_id' => $groupselect->id,
         );
         $DB->insert_record('groupselect_passwords', $passworddata, false);

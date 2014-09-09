@@ -56,13 +56,10 @@ class create_form extends moodleform {
   		if(strlen($description) > self::DESCRIPTION_MAXLEN) {
  		    $errors['description'] = get_string('maxcharlenreached', 'mod_groupselect');
  		}
-        $password = $data['description'];
+        $password = $data['password'];
         if(strlen($password) > self::PASSWORD_MAXLEN) {
             $errors['password'] = get_string('maxcharlenreached', 'mod_groupselect');
         }
-        
-        // FOR PHP >= 5.5
-        // $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 
 		return $errors;
 	}
