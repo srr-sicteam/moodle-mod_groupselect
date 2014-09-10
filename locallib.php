@@ -93,15 +93,15 @@ function groupselect_group_member_counts($cm, $targetgrouping=0) {
 /**
  * Get password protected groups
  *
- * @return array of ids TODO: select only groups from current groupselect instance
+ * @return array of ids
  */
-function groupselect_get_password_protected_groups() {
+function groupselect_get_password_protected_groups($groupselect) {
     global $DB;
-    $sql = "SELECT  *
+    $sql = "SELECT  groupid
             FROM    {groupselect_passwords} gp
-            WHERE   gp.password <> ''";
+            WHERE   gp.instance_id = ?";
     
-    $result = $DB->get_records_sql($sql);
+    $result = $DB->get_records_sql($sql, array($groupselect->id));
     $ids = array();
     foreach ($result as $r) {
         array_push($ids, $r->groupid);

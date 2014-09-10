@@ -114,7 +114,7 @@ function xmldb_groupselect_upgrade($oldversion) {
         if (!$dbman->field_exists($table, $field)) {
         	$dbman->add_field($table, $field);
         }
-        $table = new xmldb_table('groupselect_passwords');
+        //$table = new xmldb_table('groupselect_passwords');
        
     	// search savepoint reached
     	upgrade_mod_savepoint(true, 2014090201, 'groupselect');

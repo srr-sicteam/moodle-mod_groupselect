@@ -37,7 +37,7 @@
     			UNSIGNED="true" NEXT="password" LENGTH="10">
 </FIELD>
     		<FIELD SEQUENCE="false" TYPE="char" NOTNULL="true"
-    			NAME="password" LENGTH="255" PREVIOUS="groupid" NEXT="instance_id" />
+    			NAME="password" LENGTH="254" PREVIOUS="groupid" NEXT="instance_id" />
     		<FIELD SEQUENCE="false" TYPE="int" NOTNULL="true"
     			NAME="instance_id" PREVIOUS="password"
     			COMMENT="groupselect instance id" LENGTH="10" UNSIGNED="true" />

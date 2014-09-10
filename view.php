@@ -66,7 +66,7 @@ $isopen         = groupselect_is_open($groupselect);
 $groupmode      = groups_get_activity_groupmode($cm, $course);
 $counts         = groupselect_group_member_counts($cm, $groupselect->targetgrouping);
 $groups         = groups_get_all_groups($course->id, 0, $groupselect->targetgrouping);
-$passwordgroups = groupselect_get_password_protected_groups();
+$passwordgroups = groupselect_get_password_protected_groups($groupselect);
 $hidefullgroups = $groupselect->hidefullgroups;
 $exporturl      = '';
 
@@ -149,14 +149,15 @@ if ($cancreate and $isopen) {
         groups_add_member($id, $USER->id);
         add_to_log($course->id, 'groupselect', 'select', 
                 'view.php?id=' . $cm->id, $groupselect->id, $cm->id);
-        
-        $passworddata = (object) array(
-                'groupid' => $id,
-                'password' => password_hash($formdata->password, PASSWORD_DEFAULT),
-                'instance_id' => $groupselect->id,
-        );
-        $DB->insert_record('groupselect_passwords', $passworddata, false);
-        
+		
+		if ($formdata->password !== '') {
+			$passworddata = ( object ) array (
+					'groupid' => $id,
+					'password' => password_hash ( $formdata->password, PASSWORD_DEFAULT ),
+					'instance_id' => $groupselect->id 
+			);
+			$DB->insert_record ( 'groupselect_passwords', $passworddata, false );
+		}
         redirect($PAGE->url);
     } else 
         if ($create) {
@@ -419,19 +420,21 @@ if (empty($groups)) {
             } else if (!$ismember and $canselect) {
                 $line[5] = $OUTPUT->single_button(new moodle_url('/mod/groupselect/view.php', array('id'=>$cm->id, 'select'=>$group->id, 'group_password'=>$group->password)), get_string('select', 'mod_groupselect', $grpname));
                 $actionpresent = true;
+            } else {
+            	$line[5] = '';
             }
+            
         }
         $data[] = $line;
     }
 
     $table = new html_table();
     $table->head  = array($strgroup, $strgroupdesc, $strcount, $strmembers, '');
-    $table->size  = array('5%', '30%', '5%', '55%', '5%');
-    $table->align = array('left', 'center', 'left', 'left', 'left');
+    $table->size  = array('5%', '30%', '5%', '55%', '5%', '0%');
+    $table->align = array('left', 'center', 'left', 'left', 'left', 'center');
     if ($actionpresent) {
-        $table->head[]  = $straction;
-        $table->size    = array('5%', '30%', '5%', '45%', '5%', '10%');
-        $table->align[] = 'center';
+		$table->head[] = $straction;
+    	$table->size    = array('5%', '30%', '5%', '45%', '5%', '10%');
     }
     $table->data  = $data;
     echo html_writer::table($table);
