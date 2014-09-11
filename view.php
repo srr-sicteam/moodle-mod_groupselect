@@ -99,13 +99,8 @@ if (!is_enrolled($context)) {
     if (!has_capability('mod/groupselect:select', $context)) {
         $problems[] = get_string('cannotselectnocap', 'mod_groupselect');
 
-    } else if ($canselect) {
-        if ($groupselect->timeavailable > time()) {
-            $problems[] = get_string('notavailableyet', 'mod_groupselect', userdate($groupselect->timeavailable));
-
-        } else if ($groupselect->timedue != 0 and  $groupselect->timedue < time() and empty($mygroups)) {
-            $problems[] = get_string('notavailableanymore', 'mod_groupselect', userdate($groupselect->timedue));
-        }
+    } else if ($groupselect->timedue !== 0 and $groupselect->timedue < time()) {
+    	$problems[] = get_string('notavailableanymore', 'mod_groupselect', userdate($groupselect->timedue));
     }
 }
 
@@ -309,6 +304,14 @@ if (trim(strip_tags($groupselect->intro))) {
     echo $OUTPUT->box_start('mod_introbox', 'groupselectintro');
     echo format_module_intro('page', $groupselect, $cm->id);
     echo $OUTPUT->box_end();
+}
+if($groupselect->timeavailable !== 0 and $groupselect->timeavailable > time()) {
+	echo $OUTPUT->notification(get_string('timeavailable', 'mod_groupselect') .
+			' ' . strval(userdate($groupselect->timeavailable)));
+}
+if($groupselect->timedue !== 0 and $groupselect->timedue > time()) {
+    echo $OUTPUT->notification(get_string('timedue', 'mod_groupselect') .  
+            ' ' . strval(userdate($groupselect->timedue)));
 }
 
 if ($cancreate and $isopen and !$create) {

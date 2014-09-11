@@ -6,6 +6,13 @@ Activity module, lets students create, select and join groups.
 
 Currently in alpha stage, any feedback would be appreciated!
 
+UPDATES:
+11.09.2014: Fixed mysql insertion related bug, added some notifications and small fixes
+
+
+
+
+
 ==================================
 
 Group self-selection module for Moodle (http://moodle.org/) - Copyright (C) 2008-2011  Petr Skoda (http://skodak.org/)
