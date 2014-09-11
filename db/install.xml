@@ -32,18 +32,22 @@
       </INDEXES>
     </TABLE>
     <TABLE NAME="groupselect_passwords" COMMENT="Stores password hashes of groups">
-    	<FIELDS><FIELD
-    			SEQUENCE="false" TYPE="int" NOTNULL="true" NAME="groupid"
-    			UNSIGNED="true" NEXT="password" LENGTH="10">
-</FIELD>
+    	<FIELDS>
+    		<FIELD LENGTH="10" NAME="id" NOTNULL="true" SEQUENCE="true" TYPE="int"
+    			UNSIGNED="true" NEXT="groupid">
+    		</FIELD>
+    		<FIELD SEQUENCE="false" TYPE="int" NOTNULL="true"
+    			NAME="groupid" UNSIGNED="true" NEXT="password" LENGTH="10"
+    			PREVIOUS="id">
+    		</FIELD>
     		<FIELD SEQUENCE="false" TYPE="char" NOTNULL="true"
-    			NAME="password" LENGTH="254" PREVIOUS="groupid" NEXT="instance_id" />
+    			NAME="password" LENGTH="60" PREVIOUS="groupid" NEXT="instance_id" />
     		<FIELD SEQUENCE="false" TYPE="int" NOTNULL="true"
     			NAME="instance_id" PREVIOUS="password"
     			COMMENT="groupselect instance id" LENGTH="10" UNSIGNED="true" />
     	</FIELDS>
     	<KEYS>
-    		<KEY NAME="primary" FIELDS="groupid" TYPE="primary" />
+    		<KEY NAME="primary" FIELDS="id" TYPE="primary" />
     	</KEYS>
     </TABLE>
   </TABLES>
