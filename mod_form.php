@@ -60,9 +60,10 @@ class mod_groupselect_mod_form extends moodleform_mod {
         }
         $mform->addElement('select', 'targetgrouping', get_string('targetgrouping', 'mod_groupselect'), $options);
 
-        $mform->addElement('passwordunmask', 'password', get_string('password', 'mod_groupselect'), 'maxlength="254" size="24"');
-        $mform->setType('password', PARAM_RAW);
-        $mform->addHelpButton('password', 'globalpassword', 'mod_groupselect');
+       // Legacy master-password functionality. 
+       // $mform->addElement('passwordunmask', 'password', get_string('password', 'mod_groupselect'), 'maxlength="254" size="24"');
+       // $mform->setType('password', PARAM_RAW);
+       // $mform->addHelpButton('password', 'globalpassword', 'mod_groupselect');
 
         $mform->addElement('text', 'maxmembers', get_string('maxmembers', 'mod_groupselect'), array('size'=>'4'));
         $mform->setType('maxmembers', PARAM_INT);
@@ -78,6 +79,14 @@ class mod_groupselect_mod_form extends moodleform_mod {
         $mform->addElement('advcheckbox', 'hidefullgroups', get_string('hidefullgroups', 'mod_groupselect'), '', 
                 array('optional'=>true, 'group'=>null), array(0,1));
         $mform->addHelpButton('hidefullgroups', 'hidefullgroups', 'mod_groupselect');
+        $mform->addElement('advcheckbox', 'deleteemptygroups', get_string('deleteemptygroups', 'mod_groupselect'), '',
+        		array('optional'=>true, 'group'=>null), array(0,1));
+        $mform->addHelpButton('deleteemptygroups', 'deleteemptygroups', 'mod_groupselect');
+    //    $mform->setDefault('deleteemptygroups', true);
+        $mform->addElement('advcheckbox', 'studentcancreate', get_string('studentcancreate', 'mod_groupselect'), '',
+        		array('optional'=>true, 'group'=>null), array(0,1));
+        $mform->addHelpButton('studentcancreate', 'studentcancreate', 'mod_groupselect');
+     //   $mform->setDefault('studentcancreate', true);
 
         //-------------------------------------------------------------------------------
         // buttons

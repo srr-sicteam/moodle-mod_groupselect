@@ -74,7 +74,7 @@ $accessall      = has_capability('moodle/site:accessallgroups', $context);
 $viewfullnames  = has_capability('moodle/site:viewfullnames', $context);
 $canselect      = (has_capability('mod/groupselect:select', $context) and is_enrolled($context) and empty($mygroups));
 $canunselect    = (has_capability('mod/groupselect:unselect', $context) and is_enrolled($context) and !empty($mygroups));
-$cancreate      = (has_capability('mod/groupselect:create', $context) and is_enrolled($context) and empty($mygroups));
+$cancreate      = ($groupselect->studentcancreate and has_capability('mod/groupselect:create', $context) and is_enrolled($context) and empty($mygroups));
 $canexport      = (has_capability('mod/groupselect:export', $context) and count($groups) > 0);
 
 if ($course->id == SITEID) {
@@ -99,7 +99,7 @@ if (!is_enrolled($context)) {
     if (!has_capability('mod/groupselect:select', $context)) {
         $problems[] = get_string('cannotselectnocap', 'mod_groupselect');
 
-    } else if ($groupselect->timedue !== 0 and $groupselect->timedue < time()) {
+    } else if ($groupselect->timedue != 0 and $groupselect->timedue < time()) {
     	$problems[] = get_string('notavailableanymore', 'mod_groupselect', userdate($groupselect->timedue));
     }
 }
@@ -208,7 +208,7 @@ if ($select and $canselect and isset($groups[$select]) and $isopen) {
 
     } else if ($confirm and data_submitted() and confirm_sesskey()) {
         groups_remove_member($unselect, $USER->id);
-        if(!groups_get_members($unselect, $USER->id)) {
+        if($groupselect->deleteemptygroups and !groups_get_members($unselect, $USER->id)) {
             groups_delete_group($unselect);
         	$DB->delete_records('groupselect_passwords', array('groupid'=>$unselect));
         }
