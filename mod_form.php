@@ -70,6 +70,12 @@ class mod_groupselect_mod_form extends moodleform_mod {
         $mform->setDefault('maxmembers', $config->maxmembers);
         $mform->setAdvanced('maxmembers', $config->maxmembers_adv);
         $mform->addHelpButton('maxmembers', 'maxmembers', 'mod_groupselect');
+        
+        $mform->addElement('text', 'minmembers', get_string('minmembers', 'mod_groupselect'), array('size'=>'4'));
+        $mform->setType('minmembers', PARAM_INT);
+        $mform->setDefault('minmembers', 0);
+        //$mform->setAdvanced('maxmembers', $config->maxmembers_adv);
+        $mform->addHelpButton('minmembers', 'minmembers', 'mod_groupselect');
 
         $mform->addElement('date_time_selector', 'timeavailable', get_string('timeavailable', 'mod_groupselect'), array('optional'=>true));
         $mform->setDefault('timeavailable', 0);
@@ -87,6 +93,7 @@ class mod_groupselect_mod_form extends moodleform_mod {
         		array('optional'=>true, 'group'=>null), array(0,1));
         $mform->addHelpButton('studentcancreate', 'studentcancreate', 'mod_groupselect');
      //   $mform->setDefault('studentcancreate', true);
+     
 
         //-------------------------------------------------------------------------------
         // buttons
@@ -101,9 +108,17 @@ class mod_groupselect_mod_form extends moodleform_mod {
         $errors = parent::validation($data, $files);
 
         $maxmembers = $data['maxmembers'];
+        $minmembers = $data['minmembers'];
 
         if ($maxmembers < 0) {
             $errors['maxmembers'] = get_string('error');
+        }
+        if ($minmembers < 0) {
+        	$errors['minmembers'] = get_string('error');
+        }
+        if ($minmembers > $maxmembers) {
+        	$errors['minmembers'] = get_string('error');
+        	$errors['maxmembers'] = get_string('error');
         }
 
         return $errors;

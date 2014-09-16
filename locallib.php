@@ -27,8 +27,8 @@
 defined('MOODLE_INTERNAL') || die;
 
 require_once("$CFG->dirroot/group/lib.php");
+//require_once("$CFG->dirroot/group/externallib.php");
 require_once("$CFG->dirroot/mod/groupselect/lib.php");
-
 
 function groupselect_get_group_info($group) {
     $group = clone($group);

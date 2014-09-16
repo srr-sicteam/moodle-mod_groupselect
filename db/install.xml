@@ -28,9 +28,12 @@
         <FIELD SEQUENCE="false" TYPE="int" NOTNULL="true"
         	NAME="deleteemptygroups" PREVIOUS="hidefullgroups" LENGTH="1"
         	DEFAULT="1" NEXT="studentcancreate" />
+        <FIELD SEQUENCE="false" TYPE="int" NOTNULL="true"
+        	NAME="studentcancreate" PREVIOUS="deleteemptygroups" LENGTH="1"
+        	DEFAULT="1" NEXT="minmembers" />
         <FIELD SEQUENCE="false" TYPE="int"
-        	NOTNULL="true" NAME="studentcancreate" PREVIOUS="deleteemptygroups" LENGTH="1"
-        	DEFAULT="1" />
+        	NOTNULL="true" NAME="minmembers" PREVIOUS="studentcancreate" LENGTH="10"
+        	DEFAULT="0" />
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

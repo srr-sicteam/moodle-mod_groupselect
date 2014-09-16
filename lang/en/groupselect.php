@@ -29,6 +29,11 @@ $string['maxmembers_help'] = 'Maximum number of members per group, 0 for unlimit
 $string['membercount'] = 'Count';
 $string['membershidden'] = 'Member list not available';
 $string['memberslist'] = 'Members';
+$string['minmembers'] = 'Min members per group';
+$string['minmembers_help'] = 'Minimum number of members per group. Adds notifications for groups which are
+		under this limit. Default is 0 (disabled).'
+$string['minmembers_icon'] = 'Group has less members than required';
+$string['minmembers_notification'] = 'Your group has less members than required! Minimum is {%a}.'
 $string['modulename'] = 'Group self-formation';
 $string['modulename_help'] = <<<'END_OF_HELP'
 <p>Lets students create and select groups. Features:
@@ -48,7 +53,7 @@ $string['modulenameplural'] = 'Group self-formations';
 $string['nogroups'] = 'No groups available to select from, sorry.';
 $string['notavailableanymore'] = 'Group selection is not available anymore, sorry (since {$a}).';
 $string['notavailableyet'] = 'Group selection will be available on {$a}.';
-$string['password'] = 'Require password';
+$string['password'] = 'Requires password';
 $string['pluginadministration'] = 'Module administration';
 $string['pluginname'] = 'Group self-formation';
 $string['selectconfirm'] = 'Do you really want to become member of the group <em>{$a}</em>?';

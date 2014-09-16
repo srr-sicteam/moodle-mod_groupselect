@@ -140,6 +140,9 @@ if ($cancreate and $isopen) {
                 'courseid' => $course->id
         );
         $id = groups_create_group($data, false);
+        if($groupselect->targetgrouping != 0) {
+        	groups_assign_grouping($groupselect->targetgrouping, $id);
+        }
         
         groups_add_member($id, $USER->id);
         add_to_log($course->id, 'groupselect', 'select', 
@@ -305,6 +308,17 @@ if (trim(strip_tags($groupselect->intro))) {
     echo format_module_intro('page', $groupselect, $cm->id);
     echo $OUTPUT->box_end();
 }
+
+// Too few members in my group -notification
+if($groupselect->minmembers > 0 and !empty($mygroups)) {
+    $mygroup = $mygroups[0];
+    $usercount = isset($counts[$mygroup->id]) ? $counts[$mygroup-id]->usercount : 0;
+    if($groupselect->minmembers > $usercount) {
+        echo $OUTPUT->notification(get_string('minmembers_notification', 'mod_groupselect', $groupselect->minmembers)); 
+    }
+}
+
+// Activity opening/closing related notificatinos        
 if($groupselect->timeavailable !== 0 and $groupselect->timeavailable > time()) {
 	echo $OUTPUT->notification(get_string('timeavailable', 'mod_groupselect') .
 			' ' . strval(userdate($groupselect->timeavailable)));
@@ -337,6 +351,7 @@ if (empty($groups)) {
 
     $data = array();
     $actionpresent = false;
+
     // Group list
     foreach ($groups as $group) {
                
@@ -404,13 +419,15 @@ if (empty($groups)) {
             $line[3] = '<div class="membershidden">'.get_string('membershidden', 'mod_groupselect').'</div>';
         }
         
-        // Password locked icon
+        // Icons
+        $line[4] = '<div class="icons">';
+        if (3 > $usercount) {
+        	$line[4] = $line[4] . $OUTPUT->pix_icon('i/risk_xss', get_string('minmembers_icon', 'mod_groupselect'), null, array('align'=>'left'));
+        }
         if ($group->password) {
-            $line[4] = $OUTPUT->pix_icon('t/locked', get_string('password', 'mod_groupselect'));
+            $line[4] = $line[4] . $OUTPUT->pix_icon('t/locked', get_string('password', 'mod_groupselect'), null, array('align'=>'right'));
         }
-        else {
-            $line[4] ='';
-        }
+        $line[4] = $line[4] . '</div>';
         
         // Action buttons
         if ($isopen and !$accessall) {
@@ -431,13 +448,16 @@ if (empty($groups)) {
         $data[] = $line;
     }
 
+    $sortscript = file_get_contents('./lib/sorttable/sorttable.js');
+    echo html_writer::script($sortscript);
     $table = new html_table();
+    $table->attributes = array('class' => 'generaltable sortable');
     $table->head  = array($strgroup, $strgroupdesc, $strcount, $strmembers, '');
-    $table->size  = array('5%', '30%', '5%', '55%', '5%', '0%');
+    $table->size  = array('5%', '30%', '5%', '53%', '7%', '0%');
     $table->align = array('left', 'center', 'left', 'left', 'left', 'center');
     if ($actionpresent) {
 		$table->head[] = $straction;
-    	$table->size    = array('5%', '30%', '5%', '45%', '5%', '10%');
+    	$table->size    = array('5%', '30%', '5%', '43%', '7%', '10%');
     }
     $table->data  = $data;
     echo html_writer::table($table);
