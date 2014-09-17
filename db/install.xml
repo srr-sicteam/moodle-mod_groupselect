@@ -61,5 +61,21 @@
     		<KEY NAME="primary" FIELDS="id" TYPE="primary" />
     	</KEYS>
     </TABLE>
+    <TABLE NAME="groupselect_groups_teachers" COMMENT="Stores group-teacher relations">
+    	<FIELDS>
+    		<FIELD SEQUENCE="true" TYPE="int" NOTNULL="true" NAME="id"
+    			LENGTH="10" UNSIGNED="true" NEXT="groupid" /><FIELD
+    			SEQUENCE="false" TYPE="int" NOTNULL="true" NAME="groupid"
+    			UNSIGNED="true" LENGTH="10" NEXT="teacherid" PREVIOUS="id" />
+    		<FIELD SEQUENCE="false" TYPE="int" NOTNULL="true"
+    			NAME="teacherid" UNSIGNED="true" LENGTH="10" PREVIOUS="groupid"
+    			NEXT="instance_id" /><FIELD SEQUENCE="false" TYPE="int"
+    			NOTNULL="true" NAME="instance_id" LENGTH="10" PREVIOUS="teacherid"
+    			UNSIGNED="true" />
+    	</FIELDS>
+    	<KEYS>
+    		<KEY NAME="primary" FIELDS="id" TYPE="primary" />
+    	</KEYS>
+    </TABLE>
   </TABLES>
 </XMLDB>

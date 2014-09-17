@@ -150,7 +150,9 @@ function groupselect_update_instance($groupselect) {
 function groupselect_delete_instance($id) {
     global $DB;
     // delete group password rows related to this instance (but not the groups)
-    $DB->delete_records('groupselect_passwords', array('instance_id'=>$id));    
+    $DB->delete_records('groupselect_passwords', array('instance_id'=>$id)); 
+    
+    $DB->delete_records('groupselect_groups_teachers', array('instance_id'=>$id));
     
     $DB->delete_records('groupselect', array('id'=>$id));
 

@@ -38,6 +38,7 @@ $confirm    = optional_param('confirm', 0, PARAM_BOOL);
 $create     = optional_param('create', 0, PARAM_BOOL);
 $password   = optional_param('group_password', 0, PARAM_BOOL);
 $export     = optional_param('export', 0, PARAM_BOOL);
+$assign     = optional_param('assign', 0, PARAM_BOOL);
 
 if ($g) {
     $groupselect = $DB->get_record('groupselect', array('id'=>$g), '*', MUST_EXIST);
@@ -76,6 +77,7 @@ $canselect      = (has_capability('mod/groupselect:select', $context) and is_enr
 $canunselect    = (has_capability('mod/groupselect:unselect', $context) and is_enrolled($context) and !empty($mygroups));
 $cancreate      = ($groupselect->studentcancreate and has_capability('mod/groupselect:create', $context) and is_enrolled($context) and empty($mygroups));
 $canexport      = (has_capability('mod/groupselect:export', $context) and count($groups) > 0);
+$canassign		= has_capability('mod/groupselect:export', $context);
 
 if ($course->id == SITEID) {
     $viewothers = has_capability('moodle/site:viewparticipants', $context);
@@ -299,6 +301,42 @@ if ($export and $canexport) {
             $file->get_itemid(), $file->get_filepath(), $file->get_filename());
 }
 
+if ($assign and $canassign) {
+	
+	$already_assigned = count($DB->get_records('groupselect_groups_teachers', 
+			array('instance_id'=>$id))) > 0 ? true : false;
+	if ($already_assigned) {
+		$DB->delete_records('groupselect_groups_teachers', array('instance_id'=>$id));
+	}
+			
+	$course_context = context_course::instance($course->id)->id;
+	$teachers = groupselect_get_context_members_by_role($course_context, 4);
+	
+	$group_teacher_relations = array();
+	$groupcount = count($groups);
+	$agroups = $groups;
+	foreach($teachers as $teacher) {
+		$i = 0;
+		$iterations = min(round($groupcount / count($teachers)), count($agroups));
+		while($i < $iterations) {
+			$group = array_rand($agroups);
+			unset($agroups[$group]);
+			array_push($group_teacher_relations, (object) array(
+			'groupid'=>$group,
+			'teacherid'=>$teacher->userid,
+			'instance_id'=>$id
+			));
+			$i++;
+		}		
+	}
+	$DB->insert_records('groupselect_groups_teachers', $group_teacher_relations);
+// 	foreach($group_teacher_relations as $g) {
+// 		echo $g->groupid . ' ';
+// 		echo $g->teacherid . '; ';
+// 	}
+// 	die;
+}
+
 // Page output
 echo $OUTPUT->header();
 echo $OUTPUT->heading(format_string($groupselect->name, true, array('context'=>$context)));
@@ -311,8 +349,9 @@ if (trim(strip_tags($groupselect->intro))) {
 
 // Too few members in my group -notification
 if($groupselect->minmembers > 0 and !empty($mygroups)) {
-    $mygroup = $mygroups[0];
-    $usercount = isset($counts[$mygroup->id]) ? $counts[$mygroup-id]->usercount : 0;
+    $mygroup = array_keys($mygroups);
+    $mygroup = $mygroup[0];
+    $usercount = isset($counts[$mygroup]) ? $counts[$mygroup]->usercount : 0;
     if($groupselect->minmembers > $usercount) {
         echo $OUTPUT->notification(get_string('minmembers_notification', 'mod_groupselect', $groupselect->minmembers)); 
     }
@@ -337,6 +376,9 @@ if ($canexport) {
         echo $OUTPUT->action_link($exporturl, get_string('export_download', 'mod_groupselect'));
     }
 }
+if ($canassign) {
+	echo $OUTPUT->single_button(new moodle_url('/mod/groupselect/view.php', array('id'=>$cm->id, 'assign'=>true)), get_string('assigngroup', 'mod_groupselect'));
+}
 
 
 if (empty($groups)) {
@@ -351,6 +393,24 @@ if (empty($groups)) {
 
     $data = array();
     $actionpresent = false;
+    
+//     $assigned_relation = $DB->get_records_sql('SELECT g.id AS rid, g.teacherid AS id, g.groupid
+//     											FROM  {groupselect_groups_teachers} g
+//     									     	WHERE g.instance_id = ?;',  array('instance_id'=>$id));
+//     $assigned_teacher_ids = array();
+//     foreach($assigned_relation as $r) {
+//     	if(array_search($needle, $haystack))
+//     	array_push($assigned_teacher_ids, $r->id);
+//     }
+    
+//     $assigned_teachers = $DB->get_records_sql(' SELECT   *
+//     											FROM     {user} u
+//     											WHERE    u.id = ?;', $assigned_teacher_ids );
+//     foreach ($assigned_teachers as $t) {
+//     	echo $t->firstname;
+//     }
+//     die;
+    		
 
     // Group list
     foreach ($groups as $group) {
@@ -421,7 +481,7 @@ if (empty($groups)) {
         
         // Icons
         $line[4] = '<div class="icons">';
-        if (3 > $usercount) {
+        if ($groupselect->minmembers > $usercount) {
         	$line[4] = $line[4] . $OUTPUT->pix_icon('i/risk_xss', get_string('minmembers_icon', 'mod_groupselect'), null, array('align'=>'left'));
         }
         if ($group->password) {
@@ -453,11 +513,11 @@ if (empty($groups)) {
     $table = new html_table();
     $table->attributes = array('class' => 'generaltable sortable');
     $table->head  = array($strgroup, $strgroupdesc, $strcount, $strmembers, '');
-    $table->size  = array('5%', '30%', '5%', '53%', '7%', '0%');
+    $table->size  = array('5%', '30%', '5%', '52%', '8%', '0%');
     $table->align = array('left', 'center', 'left', 'left', 'left', 'center');
     if ($actionpresent) {
 		$table->head[] = $straction;
-    	$table->size    = array('5%', '30%', '5%', '43%', '7%', '10%');
+    	$table->size    = array('5%', '30%', '5%', '42%', '8%', '10%');
     }
     $table->data  = $data;
     echo html_writer::table($table);

@@ -88,11 +88,11 @@ class mod_groupselect_mod_form extends moodleform_mod {
         $mform->addElement('advcheckbox', 'deleteemptygroups', get_string('deleteemptygroups', 'mod_groupselect'), '',
         		array('optional'=>true, 'group'=>null), array(0,1));
         $mform->addHelpButton('deleteemptygroups', 'deleteemptygroups', 'mod_groupselect');
-    //    $mform->setDefault('deleteemptygroups', true);
+        $mform->setDefault('deleteemptygroups', true);
         $mform->addElement('advcheckbox', 'studentcancreate', get_string('studentcancreate', 'mod_groupselect'), '',
         		array('optional'=>true, 'group'=>null), array(0,1));
         $mform->addHelpButton('studentcancreate', 'studentcancreate', 'mod_groupselect');
-     //   $mform->setDefault('studentcancreate', true);
+        $mform->setDefault('studentcancreate', true);
      
 
         //-------------------------------------------------------------------------------

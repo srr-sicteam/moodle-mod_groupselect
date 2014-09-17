@@ -1,12 +1,15 @@
 <?php
 
 $string['action'] = 'Action';
+$string['assigngroup'] = 'Assign teachers to groups';
 $string['cannotselectclosed'] = 'You can not become group member any more.';
 $string['cannotselectmaxed'] = 'You can not join group {$a} - maximum number of members reached.';
 $string['cannotselectnocap'] = 'You are not allowed to select group.';
 $string['cannotselectnoenrol'] = 'You need to be enrolled into course in order to become a group member.';
 $string['creategroup'] = 'Create a new group';
 $string['cannotunselectclosed'] = 'You can not leave group any more';
+$string['deleteemptygroups'] = 'Delete group when last student leaves';
+$string['deleteemptygroups_help'] = 'If set, automatically deletes group when last student leaves from it';
 $string['description'] = 'Group description';
 $string['export'] = 'Create a download link for group data file (CSV)';
 $string['export_download'] = 'Download CSV-file';
@@ -14,11 +17,12 @@ $string['fromallgroups'] = 'All groups';
 $string['globalpassword_help'] = 'Set a global password for group joining. Overrides student set passwords.';
 $string['groupid'] = 'Group ID';
 $string['groupselect:addinstance'] = 'Add a new group self-selection';
+$string['groupselect:assign'] = 'Allow to assign teachers to groups';
 $string['groupselect:create'] = 'Allow creating of group';
 $string['groupselect:select'] = 'Allow becoming of group member';
 $string['groupselect:unselect'] = 'Allow leaving of group';
 $string['hidefullgroups'] = 'Hide full groups from the main view';
-$string['hidefullgroups_help'] = 'Hides all groups, which have reached max member count, from the main list view.
+$string['hidefullgroups_help'] = 'If set, hides all groups, which have reached max member count, from the main list view.
         (excluding user\'s own group). May be useful if the activity has lots of groups.';
 $string['incorrectpassword'] = 'Incorrect password';
 $string['managegroups'] = 'Manage groups';
@@ -31,9 +35,9 @@ $string['membershidden'] = 'Member list not available';
 $string['memberslist'] = 'Members';
 $string['minmembers'] = 'Min members per group';
 $string['minmembers_help'] = 'Minimum number of members per group. Adds notifications for groups which are
-		under this limit. Default is 0 (disabled).'
+		under this limit. Default is 0 (disabled).';
 $string['minmembers_icon'] = 'Group has less members than required';
-$string['minmembers_notification'] = 'Your group has less members than required! Minimum is {%a}.'
+$string['minmembers_notification'] = 'Your group has less members than required! Minimum is {$a}.';
 $string['modulename'] = 'Group self-formation';
 $string['modulename_help'] = <<<'END_OF_HELP'
 <p>Lets students create and select groups. Features:
@@ -57,6 +61,8 @@ $string['password'] = 'Requires password';
 $string['pluginadministration'] = 'Module administration';
 $string['pluginname'] = 'Group self-formation';
 $string['selectconfirm'] = 'Do you really want to become member of the group <em>{$a}</em>?';
+$string['studentcancreate'] = 'Students can create groups';
+$string['studentcancreate_help'] = 'If set, students without group (in selected grouping) can create groups';
 $string['unselectconfirm'] = 'Do you really want to leave the group <em>{$a}</em>?';
 $string['unselect'] = 'Leave group {$a}';
 $string['select'] = 'Become member of {$a}';
