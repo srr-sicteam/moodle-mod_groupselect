@@ -1,7 +1,9 @@
 <?php
 
 $string['action'] = 'Action';
-$string['assigngroup'] = 'Assign teachers to groups';
+$string['assigngroup'] = 'Assign non-editing teachers to groups';
+$string['assignteachers_help'] = 'If set, enables the button which assigns non-editing teachers to the groups.';
+$string['assignedteacher'] = 'Assigned non-editing teacher';
 $string['cannotselectclosed'] = 'You can not become group member any more.';
 $string['cannotselectmaxed'] = 'You can not join group {$a} - maximum number of members reached.';
 $string['cannotselectnocap'] = 'You are not allowed to select group.';
@@ -66,6 +68,6 @@ $string['studentcancreate_help'] = 'If set, students without group (in selected 
 $string['unselectconfirm'] = 'Do you really want to leave the group <em>{$a}</em>?';
 $string['unselect'] = 'Leave group {$a}';
 $string['select'] = 'Become member of {$a}';
-$string['targetgrouping'] = 'Select group from grouping';
+$string['targetgrouping'] = 'Select groups from grouping';
 $string['timeavailable'] = 'Open from';
 $string['timedue'] = 'Open until';

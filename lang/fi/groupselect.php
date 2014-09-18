@@ -41,6 +41,6 @@ $string['selectconfirm'] = 'Haluatko todella liittyä ryhmään <em>{$a}</em>?';
 $string['unselectconfirm'] = 'Haluatko todella lähteä ryhmästä <em>{$a}</em>?';
 $string['unselect'] = 'Lähde ryhmästä {$a}';
 $string['select'] = 'Liity ryhmään {$a}';
-$string['targetgrouping'] = 'Valitse ryhmä groupingista';
+$string['targetgrouping'] = 'Käytä ryhmittelyä';
 $string['timeavailable'] = 'Avautuu';
 $string['timedue'] = 'Sulkeutuu';

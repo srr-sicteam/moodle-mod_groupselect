@@ -77,7 +77,7 @@ $canselect      = (has_capability('mod/groupselect:select', $context) and is_enr
 $canunselect    = (has_capability('mod/groupselect:unselect', $context) and is_enrolled($context) and !empty($mygroups));
 $cancreate      = ($groupselect->studentcancreate and has_capability('mod/groupselect:create', $context) and is_enrolled($context) and empty($mygroups));
 $canexport      = (has_capability('mod/groupselect:export', $context) and count($groups) > 0);
-$canassign		= has_capability('mod/groupselect:export', $context);
+$canassign		= (has_capability('mod/groupselect:assign', $context) and $groupselect->assignteachers);
 
 if ($course->id == SITEID) {
     $viewothers = has_capability('moodle/site:viewparticipants', $context);
@@ -235,6 +235,7 @@ if ($select and $canselect and isset($groups[$select]) and $isopen) {
 // Group user data export
 if ($export and $canexport) {
 
+	// TODO: groupings
     // Get the wanted student & group data
     $sql = 'SELECT u.username, u.idnumber, u.firstname, u.lastname, u.email, g.name, g.id AS groupid
             FROM   {user} u, {groups} g, {groups_members} m
@@ -394,23 +395,34 @@ if (empty($groups)) {
     $data = array();
     $actionpresent = false;
     
-//     $assigned_relation = $DB->get_records_sql('SELECT g.id AS rid, g.teacherid AS id, g.groupid
-//     											FROM  {groupselect_groups_teachers} g
-//     									     	WHERE g.instance_id = ?;',  array('instance_id'=>$id));
-//     $assigned_teacher_ids = array();
-//     foreach($assigned_relation as $r) {
-//     	if(array_search($needle, $haystack))
-//     	array_push($assigned_teacher_ids, $r->id);
+    $assigned_relation = $DB->get_records_sql('SELECT g.id AS rid, g.teacherid AS id, g.groupid
+    											FROM  {groupselect_groups_teachers} g
+    									     	WHERE g.instance_id = ?;',  array('instance_id'=>$id));
+    $assigned_teacher_ids = array();
+    foreach($assigned_relation as $r) {
+    	array_push($assigned_teacher_ids, $r->id);
+    }
+    $assigned_teacher_ids = array_unique($assigned_teacher_ids);
+//     echo 'count ' . count($assigned_teacher_ids) . '<br>';
+//     foreach ($assigned_teacher_ids as $i) {
+//     	echo strval($i) . ', ';
 //     }
-    
-//     $assigned_teachers = $DB->get_records_sql(' SELECT   *
-//     											FROM     {user} u
-//     											WHERE    u.id = ?;', $assigned_teacher_ids );
+    if(count($assigned_teacher_ids) > 0) {
+    	$sql = 'SELECT   *
+    		      FROM   {user} u
+    		     WHERE ';
+		foreach ( $assigned_teacher_ids as $i ) {
+			$sql = $sql . 'u.id = ? OR ';
+		}
+		$sql = substr($sql, 0, -3);
+		$sql = $sql . ';';
+		$assigned_teachers = $DB->get_records_sql ( $sql, $assigned_teacher_ids );
+    }
+
+//     echo count($assigned_teachers);
 //     foreach ($assigned_teachers as $t) {
 //     	echo $t->firstname;
-//     }
-//     die;
-    		
+//     }    		
 
     // Group list
     foreach ($groups as $group) {
@@ -470,6 +482,29 @@ if (empty($groups)) {
                     } else {
                         $membernames[] = $pic.'&nbsp;<a href="'.$CFG->wwwroot.'/user/view.php?id='.$member->id.'&amp;course='.$course->id.'">'.fullname($member, $viewfullnames).'</a>';
                     }
+                }
+                $teacherid = null;
+                foreach($assigned_relation as $r) {
+            //    	echo $r->id . ' ' . $r->groupid . ' ' . $r->teacherid . '<br>';
+                	if($r->groupid === $group->id) {
+                		$teacherid = $r->id;
+                		break;
+                	}
+                }
+                if($teacherid) {
+                	$teacher = null;
+                	foreach ($assigned_teachers as $a) {
+                		if($a->id === $teacherid) {
+                			$teacher = $a;
+                			$break;
+                		}
+                	}
+                	$pic = $OUTPUT->user_picture($teacher, array('courseid'=>$course->id));
+                	if ($teacher->id == $USER->id) {
+                		$membernames[] = '<span class="me">'.$pic.'&nbsp;'.fullname($teacher, $viewfullnames).'</span>';
+                	} else {
+                		$membernames[] = $pic.'&nbsp;<a href="'.$CFG->wwwroot.'/user/view.php?id='.$teacher->id.'&amp;course='.$course->id.'">'.fullname($teacher, $viewfullnames).' ('.get_string('assignedteacher', 'mod_groupselect').')</a>';
+                	}
                 }
                 $line[3] = implode(', ', $membernames);
             } else {
