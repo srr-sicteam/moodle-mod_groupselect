@@ -32,6 +32,7 @@ $string['maxcharlenreached'] = 'Maximum character number reached';
 $string['maxlimitreached'] = 'Maximum number reached';
 $string['maxmembers'] = 'Max members per group';
 $string['maxmembers_help'] = 'Maximum number of members per group, 0 for unlimited.';
+$string['member'] = 'Member';
 $string['membercount'] = 'Count';
 $string['membershidden'] = 'Member list not available';
 $string['memberslist'] = 'Members';

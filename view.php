@@ -249,26 +249,61 @@ if ($select and $canselect and isset ( $groups [$select] ) and $isopen) {
 // Group user data export
 if ($export and $canexport) {
 	
+	// Fetch groups & assigned teachers
 	$sql = 'SELECT g.id AS groupid, g.name, g.description, u.username, u.firstname, u.lastname, u.email
-			  FROM {groups} g, {user} u, {groupselect_groups_teachers} gt
+			  FROM {groups} g
+		 LEFT JOIN {groupselect_groups_teachers} gt
+			    ON g.id = gt.groupid
+		 FULL JOIN {user} u 
+			    ON u.id = gt.teacherid
 			 WHERE g.courseid = ?
-			   AND g.id = gt.groupid
-			   AND gt.teacherid = u.id
 		  ORDER BY g.id ASC;';
 	
-	$groups = $DB->get_records_sql ( $sql, array (
+	$group_list = $DB->get_records_sql ( $sql, array (
 			$course->id 
 	) );
 	
-	$sql = 'SELECT g.id AS groupid, u.username, u.idnumber, u.firstname, u.lastname, u.email
+	// Fetch students & groups
+	$sql = 'SELECT u.username, u.idnumber, u.firstname, u.lastname, u.email, g.id AS groupid 
             FROM   {user} u, {groups} g, {groups_members} m
             WHERE  g.courseid = ?
             AND    g.id = m.groupid
             AND    u.id = m.userid
-            ORDER BY u.lastname, u.firstname ASC;';
+            ORDER BY groupid ASC;';
+	
 	$students = $DB->get_records_sql ( $sql, array (
 			$course->id 
 	) );
+	
+	// Fetch max number of students in a group (may differ from setting, because teacher may add members w/o limits)
+	$sql = 'SELECT MAX(m.members) AS max
+			  FROM (SELECT s.groupid, COUNT(s.groupid) AS members 
+			          FROM (SELECT g.id AS groupid
+            				  FROM {user} u, {groups} g, {groups_members} m
+                             WHERE g.courseid = ?
+                               AND g.id = m.groupid
+                               AND u.id = m.userid
+                          ORDER BY groupid ASC) s
+			      GROUP BY s.groupid) m;';		
+			
+	$max_group_size = $DB->get_records_sql ( $sql, array (
+			$course->id 
+	) );
+	$max_group_size = array_pop($max_group_size)->max;
+	
+	 foreach ($students as $student) {
+	 	$gid = $student->groupid;
+	 	foreach ($group_list as $group) {
+	 		if($gid === $group->groupid) {
+	 			for($i=1; $i < intval($max_group_size) + 1; $i++) {
+	 				if(!isset($group->$i)) {
+	 					$group->$i = $student;
+	 					break;
+	 				}
+	 			}
+	 		}
+	 	}
+	 }
 	
 	// Format data to csv
 	$header = array (
@@ -281,8 +316,16 @@ if ($export and $canexport) {
 			get_string ( 'assignedteacher', 'mod_groupselect' ) . ' ' . get_string ( 'email' ) 
 	)
 	;
+	for($i=0; $i < $max_group_size; $i++) {
+		$header[] = get_string('member', 'mod_groupselect').' '.strval($i+1).' '. get_string ( 'username' );
+		$header[] = get_string('member', 'mod_groupselect').' '.strval($i+1).' '. get_string ( 'idnumber' );
+		$header[] = get_string('member', 'mod_groupselect').' '.strval($i+1).' '. get_string ( 'firstname' );
+		$header[] = get_string('member', 'mod_groupselect').' '.strval($i+1).' '. get_string ( 'lastname' );
+		$header[] = get_string('member', 'mod_groupselect').' '.strval($i+1).' '. get_string ( 'email' );
+	}
 	$content = implode ( (', '), $header ) . "\n";
-	foreach ( $result as $r ) {
+	
+	foreach ( $group_list as $r ) {
 		$row = array (
 				$r->groupid,
 				$r->name,
@@ -290,8 +333,17 @@ if ($export and $canexport) {
 				$r->username,
 				$r->firstname,
 				$r->lastname,
-				$r->email 
+				$r->email, 
+				
 		);
+		for($i=1; $i < $max_group_size +1; $i++) {
+			if(isset($r->$i)) {
+				foreach ($r->$i as $member_field) {
+					$row[] = $member_field;
+				}
+				array_pop($row);
+			}
+		}
 		$content = $content . implode ( (', '), $row ) . "\n";
 	}
 	
