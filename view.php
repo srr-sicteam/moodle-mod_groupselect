@@ -306,24 +306,40 @@ if ($export and $canexport) {
 	 }
 	
 	// Format data to csv
-	$header = array (
-			get_string ( 'groupid', 'mod_groupselect' ),
-			get_string ( 'groupname', 'group' ),
-			get_string ( 'groupdescription', 'group' ),
-			get_string ( 'assignedteacher', 'mod_groupselect' ) . ' ' . get_string ( 'username' ),
-			get_string ( 'assignedteacher', 'mod_groupselect' ) . ' ' . get_string ( 'firstname' ),
-			get_string ( 'assignedteacher', 'mod_groupselect' ) . ' ' . get_string ( 'lastname' ),
-			get_string ( 'assignedteacher', 'mod_groupselect' ) . ' ' . get_string ( 'email' ) 
-	)
-	;
-	for($i=0; $i < $max_group_size; $i++) {
-		$header[] = get_string('member', 'mod_groupselect').' '.strval($i+1).' '. get_string ( 'username' );
-		$header[] = get_string('member', 'mod_groupselect').' '.strval($i+1).' '. get_string ( 'idnumber' );
-		$header[] = get_string('member', 'mod_groupselect').' '.strval($i+1).' '. get_string ( 'firstname' );
-		$header[] = get_string('member', 'mod_groupselect').' '.strval($i+1).' '. get_string ( 'lastname' );
-		$header[] = get_string('member', 'mod_groupselect').' '.strval($i+1).' '. get_string ( 'email' );
+	$assigned_teacher = 'Assigned teacher ';
+        $group_member = 'Member ';
+         $header = array(
+//			get_string ( 'groupid', 'mod_groupselect' ),
+//			get_string ( 'groupname', 'group' ),
+//			get_string ( 'groupdescription', 'group' ),
+//			get_string ( 'assignedteacher', 'mod_groupselect' ) . ' ' . get_string ( 'username' ),
+//			get_string ( 'assignedteacher', 'mod_groupselect' ) . ' ' . get_string ( 'firstname' ),
+//			get_string ( 'assignedteacher', 'mod_groupselect' ) . ' ' . get_string ( 'lastname' ),
+//			get_string ( 'assignedteacher', 'mod_groupselect' ) . ' ' . get_string ( 'email' ) 
+
+        'Group ID',
+        'Group Name',
+        'Group Description',
+        $assigned_teacher . 'Username',
+        $assigned_teacher . 'Firstname',
+        $assigned_teacher . 'Lastname',
+        $assigned_teacher . 'Email',
+            )
+    ;
+    for($i=0; $i < $max_group_size; $i++) {
+//		$header[] = get_string('member', 'mod_groupselect').' '.strval($i+1).' '. get_string ( 'username' );
+//		$header[] = get_string('member', 'mod_groupselect').' '.strval($i+1).' '. get_string ( 'idnumber' );
+//		$header[] = get_string('member', 'mod_groupselect').' '.strval($i+1).' '. get_string ( 'firstname' );
+//		$header[] = get_string('member', 'mod_groupselect').' '.strval($i+1).' '. get_string ( 'lastname' );
+//		$header[] = get_string('member', 'mod_groupselect').' '.strval($i+1).' '. get_string ( 'email' );
+            
+            $header[] = $group_member.strval($i+1).' '.'Username';
+            $header[] = $group_member.strval($i+1).' '.'ID Number';
+            $header[] = $group_member.strval($i+1).' '.'Firstname';
+            $header[] = $group_member.strval($i+1).' '.'Lastname';
+            $header[] = $group_member.strval($i+1).' '.'Email';
 	}
-	$content = implode ( (', '), $header ) . "\n";
+	$content = implode ( (','), $header ) . "\n";
 	
 	foreach ( $group_list as $r ) {
 		$row = array (
@@ -344,7 +360,7 @@ if ($export and $canexport) {
 				array_pop($row);
 			}
 		}
-		$content = $content . implode ( (', '), $row ) . "\n";
+		$content = $content . implode ( (','), $row ) . "\n";
 	}
 	
 	// // TODO: groupings
