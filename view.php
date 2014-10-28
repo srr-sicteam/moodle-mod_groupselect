@@ -83,7 +83,8 @@ $canselect = (has_capability ( 'mod/groupselect:select', $context ) and is_enrol
 $canunselect = (has_capability ( 'mod/groupselect:unselect', $context ) and is_enrolled ( $context ) and ! empty ( $mygroups ));
 $cancreate = ($groupselect->studentcancreate and has_capability ( 'mod/groupselect:create', $context ) and is_enrolled ( $context ) and empty ( $mygroups ));
 $canexport = (has_capability ( 'mod/groupselect:export', $context ) and count ( $groups ) > 0);
-$canassign = (has_capability ( 'mod/groupselect:assign', $context ) and $groupselect->assignteachers);
+$canassign = (has_capability ( 'mod/groupselect:assign', $context ) and 
+        count($groupselect->assignteachers and groupselect_get_context_members_by_role ( $course_context, 4 ) > 0));
 
 if ($course->id == SITEID) {
 	$viewothers = has_capability ( 'moodle/site:viewparticipants', $context );
@@ -254,7 +255,7 @@ if ($export and $canexport) {
 			  FROM {groups} g
 		 LEFT JOIN {groupselect_groups_teachers} gt
 			    ON g.id = gt.groupid
-		 FULL JOIN {user} u 
+		 LEFT JOIN {user} u 
 			    ON u.id = gt.teacherid
 			 WHERE g.courseid = ?
 		  ORDER BY g.id ASC;';
@@ -340,8 +341,11 @@ if ($export and $canexport) {
             $header[] = $group_member.strval($i+1).' '.'Email';
 	}
 	$content = implode ( (','), $header ) . "\n";
+        
+        // Workaround for Excel
+        $content = 'sep=,' . "\n" . $content;
 	
-	foreach ( $group_list as $r ) {
+        foreach ( $group_list as $r ) {
 		$row = array (
 				$r->groupid,
 				$r->name,
@@ -439,13 +443,13 @@ if ($assign and $canassign) {
 	
 	$course_context = context_course::instance ( $course->id )->id;
 	$teachers = groupselect_get_context_members_by_role ( $course_context, 4 );
+        shuffle( $teachers );
 	
 	$group_teacher_relations = array ();
-	$groupcount = count ( $groups );
 	$agroups = $groups;
 	foreach ( $teachers as $teacher ) {
 		$i = 0;
-		$iterations = min ( round ( $groupcount / count ( $teachers ) ), count ( $agroups ) );
+		$iterations = ceil ( count( $agroups ) / count ( $teachers ));
 		while ( $i < $iterations ) {
 			$group = array_rand ( $agroups );
 			unset ( $agroups [$group] );
@@ -502,11 +506,13 @@ if ($cancreate and $isopen and ! $create) {
 	) ), get_string ( 'creategroup', 'mod_groupselect' ) );
 }
 if ($canexport) {
-	echo $OUTPUT->single_button ( new moodle_url ( '/mod/groupselect/view.php', array (
+    if( $exporturl === '' ) {
+    echo $OUTPUT->single_button ( new moodle_url ( '/mod/groupselect/view.php', array (
 			'id' => $cm->id,
 			'export' => true 
 	) ), get_string ( 'export', 'mod_groupselect' ) );
-	if ($exporturl !== '') {
+    }
+    else{
 		echo $OUTPUT->action_link ( $exporturl, get_string ( 'export_download', 'mod_groupselect' ) );
 	}
 }
