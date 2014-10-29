@@ -40,7 +40,7 @@ function groupselect_get_group_info($group) {
     }
     $options = new stdClass;
     $options->overflowdiv = true;
-    return format_text($group->description, $group->descriptionformat, array('overflowdiv'=>true, 'context'=>$context));
+    return format_text($group->description, $group->descriptionformat, array('filter'=>false, 'overflowdiv'=>true, 'context'=>$context));
 }
 
 /**

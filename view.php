@@ -28,6 +28,7 @@ require_once ($CFG->dirroot . '/lib/password_compat/lib/password.php');
 require_once ('locallib.php');
 require_once ('select_form.php');
 require_once ('create_form.php');
+$PAGE->requires->jquery_plugin('groupselect-jquery.jeditable', 'mod_groupselect');
 
 $id = optional_param ( 'id', 0, PARAM_INT ); // Course Module ID, or
 $g = optional_param ( 'g', 0, PARAM_INT ); // Page instance ID
@@ -83,8 +84,7 @@ $canselect = (has_capability ( 'mod/groupselect:select', $context ) and is_enrol
 $canunselect = (has_capability ( 'mod/groupselect:unselect', $context ) and is_enrolled ( $context ) and ! empty ( $mygroups ));
 $cancreate = ($groupselect->studentcancreate and has_capability ( 'mod/groupselect:create', $context ) and is_enrolled ( $context ) and empty ( $mygroups ));
 $canexport = (has_capability ( 'mod/groupselect:export', $context ) and count ( $groups ) > 0);
-$canassign = (has_capability ( 'mod/groupselect:assign', $context ) and 
-        count($groupselect->assignteachers and groupselect_get_context_members_by_role ( $course_context, 4 ) > 0));
+$canassign = (has_capability ( 'mod/groupselect:assign', $context ) and $groupselect->assignteachers and (count(groupselect_get_context_members_by_role ( context_course::instance ( $course->id )->id, 4 )) > 0));
 
 if ($course->id == SITEID) {
 	$viewothers = has_capability ( 'moodle/site:viewparticipants', $context );
@@ -447,9 +447,11 @@ if ($assign and $canassign) {
 	
 	$group_teacher_relations = array ();
 	$agroups = $groups;
+        $teacher_count = count($teachers);
+        echo 'There is ' . strval(count($teachers)) . ' teachers and ' . strval(count($groups)) . ' groups';
 	foreach ( $teachers as $teacher ) {
 		$i = 0;
-		$iterations = ceil ( count( $agroups ) / count ( $teachers ));
+		$iterations = ceil ( count( $agroups ) / $teacher_count );
 		while ( $i < $iterations ) {
 			$group = array_rand ( $agroups );
 			unset ( $agroups [$group] );
@@ -460,6 +462,7 @@ if ($assign and $canassign) {
 			) );
 			$i ++;
 		}
+                $teacher_count --;
 	}
 	$DB->insert_records ( 'groupselect_groups_teachers', $group_teacher_relations );
 	// foreach($group_teacher_relations as $g) {
@@ -595,8 +598,13 @@ if (empty ( $groups )) {
 		}
 		
 		// Group description
-		$line [1] = groupselect_get_group_info ( $group );
-		
+                if( $ismember ) {
+                    $line [1] = '<div class="edit">' . $group->description . '</div>';
+                }
+                else {
+                    $line [1] = groupselect_get_group_info ( $group );
+                }
+                
 		// Member count
 		if ($groupselect->maxmembers) {
 			$line [2] = $usercount . '/' . $groupselect->maxmembers;
@@ -742,7 +750,14 @@ if (empty ( $groups )) {
 	}
 	$table->data = $data;
 	echo html_writer::table ( $table );
+  
 }
 
 echo $OUTPUT->footer ();
-
+$url = new moodle_url ( '/mod/groupselect/view.php' );
+echo '<script type="text/javascript">$(document).ready(function() {
+     $(".edit").editable("' . $url .'", {
+         indicator : "Saving...",
+         tooltip   : "Click to edit..."
+     });
+     });</script>';
