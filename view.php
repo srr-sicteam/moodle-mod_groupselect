@@ -28,7 +28,7 @@ require_once ($CFG->dirroot . '/lib/password_compat/lib/password.php');
 require_once ('locallib.php');
 require_once ('select_form.php');
 require_once ('create_form.php');
-$PAGE->requires->jquery_plugin('groupselect-jquery.jeditable', 'mod_groupselect');
+$PAGE->requires->jquery_plugin('groupselect-jeditable', 'mod_groupselect');
 
 $id = optional_param ( 'id', 0, PARAM_INT ); // Course Module ID, or
 $g = optional_param ( 'g', 0, PARAM_INT ); // Page instance ID
@@ -39,6 +39,10 @@ $create = optional_param ( 'create', 0, PARAM_BOOL );
 $password = optional_param ( 'group_password', 0, PARAM_BOOL );
 $export = optional_param ( 'export', 0, PARAM_BOOL );
 $assign = optional_param ( 'assign', 0, PARAM_BOOL );
+$groupid = optional_param ( 'groupid', 0, PARAM_INT );
+$newdescription = optional_param ( 'newdescription', 0, PARAM_TEXT );
+echo $groupid;
+echo $newdescription;
 
 if ($g) {
 	$groupselect = $DB->get_record ( 'groupselect', array (
@@ -85,6 +89,7 @@ $canunselect = (has_capability ( 'mod/groupselect:unselect', $context ) and is_e
 $cancreate = ($groupselect->studentcancreate and has_capability ( 'mod/groupselect:create', $context ) and is_enrolled ( $context ) and empty ( $mygroups ));
 $canexport = (has_capability ( 'mod/groupselect:export', $context ) and count ( $groups ) > 0);
 $canassign = (has_capability ( 'mod/groupselect:assign', $context ) and $groupselect->assignteachers and (count(groupselect_get_context_members_by_role ( context_course::instance ( $course->id )->id, 4 )) > 0));
+$canedit = true; // TODO
 
 if ($course->id == SITEID) {
 	$viewothers = has_capability ( 'moodle/site:viewparticipants', $context );
@@ -472,7 +477,25 @@ if ($assign and $canassign) {
 	// die;
 }
 
-// Page output
+if($groupid and $canedit) {
+   // echo 'LOL'; die;
+    $group = $groups[$groupid];
+    $group->description = $newdescription;
+    $DB->update_record( 'groups', $group, false);
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+// *** PAGE OUTPUT ***
 echo $OUTPUT->header ();
 echo $OUTPUT->heading ( format_string ( $groupselect->name, true, array (
 		'context' => $context 
@@ -599,7 +622,7 @@ if (empty ( $groups )) {
 		
 		// Group description
                 if( $ismember ) {
-                    $line [1] = '<div class="edit">' . $group->description . '</div>';
+                    $line [1] = '<div id="' . $group->id . '" class="edit">' . $group->description . '</div>';
                 }
                 else {
                     $line [1] = groupselect_get_group_info ( $group );
@@ -757,7 +780,11 @@ echo $OUTPUT->footer ();
 $url = new moodle_url ( '/mod/groupselect/view.php' );
 echo '<script type="text/javascript">$(document).ready(function() {
      $(".edit").editable("' . $url .'", {
-         indicator : "Saving...",
-         tooltip   : "Click to edit..."
+        id        : "groupid",
+        name      : "newdescription",
+        type      : "textarea", 
+        submit    : "OK",
+        indicator : "Saving...",
+        tooltip   : "Click to edit..."
      });
      });</script>';

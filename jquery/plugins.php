@@ -1,7 +1,8 @@
+<?php
 $plugins = array(
-	    'jquery.jeditable' => array(
+	    'groupselect-jeditable' => array(
 	        'files' => array(
-	            'jquery.jeditable.js',
+	            'jeditable/jquery.jeditable.js',
 	        ),
 	     ),
 	);
