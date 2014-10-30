@@ -43,6 +43,15 @@ $groupid = optional_param ( 'groupid', 0, PARAM_INT );
 $newdescription = optional_param ( 'newdescription', 0, PARAM_TEXT );
 echo $groupid;
 echo $newdescription;
+//$groupid = 262;
+//$newdescription = 'afdasdf';
+//$egroup = $DB->get_record_sql('SELECT *
+//                                 FROM {groups} g
+//                                WHERE g.id = ?', array($groupid));
+//$egroup->description = $newdescription;
+//groups_update_group($egroup);
+//echo var_dump($egroup);
+
 
 if ($g) {
 	$groupselect = $DB->get_record ( 'groupselect', array (
@@ -116,6 +125,23 @@ if (! is_enrolled ( $context )) {
 	}
 }
 
+// Group description edit 
+if($groupid and $canedit) {
+    $egroup = $DB->get_record_sql('SELECT *
+                                 FROM {groups} g
+                                WHERE g.id = ?', array($groupid));
+   
+
+// echo 'LOL'; die;
+//    $group = $groups[$groupid];
+    $egroup->description = $newdescription;
+    groups_update_group($egroup);
+    //$DB->update_record( 'groups', $egroup, false);
+//    redirect ( $PAGE->url );
+    die;
+}
+
+
 // Student group self-creation
 if ($cancreate and $isopen) {
 	$data = array (
@@ -140,7 +166,7 @@ if ($cancreate and $isopen) {
 		
 		$max = 0;
 		foreach ( $names as $n ) {
-			if (intval ( $n->name ) >= $max) {
+			redirect ( $PAGE->url );if (intval ( $n->name ) >= $max) {
 				$max = intval ( $n->name );
 			}
 		}
@@ -477,15 +503,6 @@ if ($assign and $canassign) {
 	// die;
 }
 
-if($groupid and $canedit) {
-   // echo 'LOL'; die;
-    $group = $groups[$groupid];
-    $group->description = $newdescription;
-    $DB->update_record( 'groups', $group, false);
-    
-}
-
-
 
 
 
@@ -622,7 +639,9 @@ if (empty ( $groups )) {
 		
 		// Group description
                 if( $ismember ) {
-                    $line [1] = '<div id="' . $group->id . '" class="edit">' . $group->description . '</div>';
+                    echo $group->name.' '.$group->description;
+                    $line [1] = '<div id="' . $group->id . '" class="edit" style="word-wrap: break-word;">' . 
+                            $group->description . '</div>';
                 }
                 else {
                     $line [1] = groupselect_get_group_info ( $group );
@@ -777,7 +796,7 @@ if (empty ( $groups )) {
 }
 
 echo $OUTPUT->footer ();
-$url = new moodle_url ( '/mod/groupselect/view.php' );
+$url = $PAGE->url;
 echo '<script type="text/javascript">$(document).ready(function() {
      $(".edit").editable("' . $url .'", {
         id        : "groupid",
