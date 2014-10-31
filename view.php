@@ -41,8 +41,6 @@ $export = optional_param ( 'export', 0, PARAM_BOOL );
 $assign = optional_param ( 'assign', 0, PARAM_BOOL );
 $groupid = optional_param ( 'groupid', 0, PARAM_INT );
 $newdescription = optional_param ( 'newdescription', 0, PARAM_TEXT );
-echo $groupid;
-echo $newdescription;
 //$groupid = 262;
 //$newdescription = 'afdasdf';
 //$egroup = $DB->get_record_sql('SELECT *
@@ -135,6 +133,7 @@ if($groupid and $canedit) {
 // echo 'LOL'; die;
 //    $group = $groups[$groupid];
     $egroup->description = $newdescription;
+    echo $newdescription;
     groups_update_group($egroup);
     //$DB->update_record( 'groups', $egroup, false);
 //    redirect ( $PAGE->url );
@@ -588,10 +587,7 @@ if (empty ( $groups )) {
 		array_push ( $assigned_teacher_ids, $r->id );
 	}
 	$assigned_teacher_ids = array_unique ( $assigned_teacher_ids );
-	// echo 'count ' . count($assigned_teacher_ids) . '<br>';
-	// foreach ($assigned_teacher_ids as $i) {
-	// echo strval($i) . ', ';
-	// }
+
 	if (count ( $assigned_teacher_ids ) > 0) {
 		$sql = 'SELECT   *
     		      FROM   {user} u
@@ -603,12 +599,7 @@ if (empty ( $groups )) {
 		$sql = $sql . ';';
 		$assigned_teachers = $DB->get_records_sql ( $sql, $assigned_teacher_ids );
 	}
-	
-	// echo count($assigned_teachers);
-	// foreach ($assigned_teachers as $t) {
-	// echo $t->firstname;
-	// }
-	
+		
 	// Group list
 	foreach ( $groups as $group ) {
 		
@@ -639,8 +630,7 @@ if (empty ( $groups )) {
 		
 		// Group description
                 if( $ismember ) {
-                    echo $group->name.' '.$group->description;
-                    $line [1] = '<div id="' . $group->id . '" class="edit" style="word-wrap: break-word;">' . 
+                    $line [1] = '<div id="' . $group->id . '" class="edit">' . 
                             $group->description . '</div>';
                 }
                 else {
@@ -754,7 +744,8 @@ if (empty ( $groups )) {
 	echo html_writer::script ( $sortscript );
 	$table = new html_table ();
 	$table->attributes = array (
-			'class' => 'generaltable sortable' 
+			'class' => 'generaltable sortable',
+                        'width' => '50'
 	);
 	$table->head = array (
 			$strgroup,

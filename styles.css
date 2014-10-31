@@ -12,6 +12,10 @@
   color:#AAAAAA;
 }
 
+.mod_groupselect .edit, .text_to_html, td {
+  word-break:break-all !important;
+}
+
 /* .mod_groupselect .icons {
 	margin-left:50px;
 	margin-right:50px;
