@@ -82,24 +82,37 @@ class mod_groupselect_mod_form extends moodleform_mod {
         $mform->addElement('date_time_selector', 'timedue', get_string('timedue', 'mod_groupselect'), array('optional'=>true));
         $mform->setDefault('timedue', 0);
 
+        $mform->addElement('advcheckbox', 'studentcancreate', get_string('studentcancreate', 'mod_groupselect'), '',
+        		array('optional'=>true, 'group'=>null), array(0,1));
+        $mform->addHelpButton('studentcancreate', 'studentcancreate', 'mod_groupselect');
+        $mform->setDefault('studentcancreate', true);
+        
+        $mform->addElement('advcheckbox', 'studentcansetdesc', get_string('studentcansetdesc', 'mod_groupselect'), '',
+        		array('optional'=>true, 'group'=>null), array(0,1));
+        $mform->addHelpButton('studentcansetdesc', 'studentcansetdesc', 'mod_groupselect');
+        $mform->setDefault('studentcansetdesc', true);
+
+        $mform->addElement('advcheckbox', 'assignteachers', get_string('assigngroup', 'mod_groupselect'), '',
+        		array('optional'=>true, 'group'=>null), array(0,1));
+        $mform->addHelpButton('assignteachers', 'assignteachers', 'mod_groupselect');
+        $mform->setDefault('assignteachers', false);
+        
+        $mform->addElement('advcheckbox', 'showassignedteacher', get_string('showassignedteacher', 'mod_groupselect'), '',
+        		array('optional'=>true, 'group'=>null), array(0,1));
+        $mform->addHelpButton('showassignedteacher', 'showassignedteacher', 'mod_groupselect');
+        $mform->setDefault('showassignedteacher', false);
+        $mform->disabledIf('showassignedteacher', 'assignteachers', 'notchecked');
+        
         $mform->addElement('advcheckbox', 'hidefullgroups', get_string('hidefullgroups', 'mod_groupselect'), '', 
-                array('optional'=>true, 'group'=>null), array(0,1));
+                        array('optional'=>true, 'group'=>null), array(0,1));
         $mform->addHelpButton('hidefullgroups', 'hidefullgroups', 'mod_groupselect');
 
         $mform->addElement('advcheckbox', 'deleteemptygroups', get_string('deleteemptygroups', 'mod_groupselect'), '',
         		array('optional'=>true, 'group'=>null), array(0,1));
         $mform->addHelpButton('deleteemptygroups', 'deleteemptygroups', 'mod_groupselect');
         $mform->setDefault('deleteemptygroups', true);
-
-        $mform->addElement('advcheckbox', 'studentcancreate', get_string('studentcancreate', 'mod_groupselect'), '',
-        		array('optional'=>true, 'group'=>null), array(0,1));
-        $mform->addHelpButton('studentcancreate', 'studentcancreate', 'mod_groupselect');
-        $mform->setDefault('studentcancreate', true);
-
-        $mform->addElement('advcheckbox', 'assignteachers', get_string('assigngroup', 'mod_groupselect'), '',
-        		array('optional'=>true, 'group'=>null), array(0,1));
-        $mform->addHelpButton('assignteachers', 'assignteachers', 'mod_groupselect');
-        $mform->setDefault('assignteachers', false);
+        
+        
          
      
 

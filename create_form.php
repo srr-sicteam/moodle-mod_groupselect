@@ -40,8 +40,15 @@ class create_form extends moodleform {
 		$mform->addElement('hidden','id');
 		$mform->setType('id', PARAM_INT);
 		
+                if($this->groupselect->studentcansetdesc) {
 		$mform->addElement('textarea', 'description', get_string('description', 'mod_groupselect'), array('wrap'=>'virtual', 'maxlength'=>self::DESCRIPTION_MAXLEN, 'rows'=>'3', 'cols'=>'25', ''));
-		$mform->setType('description', PARAM_NOTAGS);
+                }
+                else {
+                    $mform->addElement('hidden', 'description', '');
+                }
+                $mform->setType('description', PARAM_NOTAGS);
+                
+                
 		$mform->addElement('passwordunmask', 'password', get_string('password'), array('maxlength'=>self::PASSWORD_MAXLEN, 'size'=>"24"));
 		$mform->setType('password', PARAM_RAW);
 		
