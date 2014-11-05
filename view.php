@@ -87,7 +87,7 @@ $canunselect = (has_capability ( 'mod/groupselect:unselect', $context ) and is_e
 $cancreate = ($groupselect->studentcancreate and has_capability ( 'mod/groupselect:create', $context ) and is_enrolled ( $context ) and empty ( $mygroups ));
 $canexport = (has_capability ( 'mod/groupselect:export', $context ) and count ( $groups ) > 0);
 $canassign = (has_capability ( 'mod/groupselect:assign', $context ) and $groupselect->assignteachers and (count(groupselect_get_context_members_by_role ( context_course::instance ( $course->id )->id, 4 )) > 0));
-$canedit = ($groupselect->studentcansetdesc); //and isset($mygroups[$groupid]);
+$canedit = ($groupselect->studentcansetdesc and $isopen); //and isset($mygroups[$groupid]);
 
 if ($course->id == SITEID) {
 	$viewothers = has_capability ( 'moodle/site:viewparticipants', $context );
@@ -468,7 +468,7 @@ if ($assign and $canassign) {
 	$group_teacher_relations = array ();
 	$agroups = $groups;
         $teacher_count = count($teachers);
-       // echo 'There is ' . strval(count($teachers)) . ' teachers and ' . strval(count($groups)) . ' groups';
+
 	foreach ( $teachers as $teacher ) {
 		$i = 0;
 		$iterations = ceil ( count( $agroups ) / $teacher_count );
@@ -588,7 +588,7 @@ if (empty ( $groups )) {
 		$sql = $sql . ';';
 		$assigned_teachers = $DB->get_records_sql ( $sql, $assigned_teacher_ids );
 	}
-		
+	
 	// Group list
 	foreach ( $groups as $group ) {
 		
@@ -728,7 +728,12 @@ if (empty ( $groups )) {
 				$line [5] = '';
 			}
 		}
-		$data [] = $line;
+                if(!$ismember) {
+                    $data [] = $line;
+                }
+                else {
+                    array_unshift($data, $line);
+                }
 	}
 	
 	$sortscript = file_get_contents ( './lib/sorttable/sorttable.js' );
@@ -784,8 +789,8 @@ echo '<script type="text/javascript">$(document).ready(function() {
         id        : "groupid",
         name      : "newdescription",
         type      : "textarea", 
-        submit    : "OK",
-        indicator : "Saving...",
-        tooltip   : "Click to edit..."
+        submit    : "'.get_string('ok', 'mod_groupselect').'",
+        indicator : "'.get_string('saving', 'mod_groupselect').'",
+        tooltip   : "'.get_string('edittooltip', 'mod_groupselect').'"
      });
 });</script>'; }

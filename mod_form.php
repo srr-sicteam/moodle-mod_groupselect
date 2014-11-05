@@ -94,7 +94,7 @@ class mod_groupselect_mod_form extends moodleform_mod {
 
         $mform->addElement('advcheckbox', 'assignteachers', get_string('assigngroup', 'mod_groupselect'), '',
         		array('optional'=>true, 'group'=>null), array(0,1));
-        $mform->addHelpButton('assignteachers', 'assignteachers', 'mod_groupselect');
+        $mform->addHelpButton('assignteachers', 'assigngroup', 'mod_groupselect');
         $mform->setDefault('assignteachers', false);
         
         $mform->addElement('advcheckbox', 'showassignedteacher', get_string('showassignedteacher', 'mod_groupselect'), '',
