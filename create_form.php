@@ -29,7 +29,7 @@ require_once($CFG->dirroot.'/lib/formslib.php');
 
 class create_form extends moodleform {
     
-    const DESCRIPTION_MAXLEN = 160;
+    const DESCRIPTION_MAXLEN = 1024;
     const PASSWORD_MAXLEN = 254;
     
 	function definition() {	    
@@ -41,7 +41,7 @@ class create_form extends moodleform {
 		$mform->setType('id', PARAM_INT);
 		
                 if($this->groupselect->studentcansetdesc) {
-		$mform->addElement('textarea', 'description', get_string('description', 'mod_groupselect'), array('wrap'=>'virtual', 'maxlength'=>self::DESCRIPTION_MAXLEN, 'rows'=>'3', 'cols'=>'25', ''));
+		$mform->addElement('textarea', 'description', get_string('description', 'mod_groupselect'), array('wrap'=>'virtual', 'maxlength'=>self::DESCRIPTION_MAXLEN-1, 'rows'=>'3', 'cols'=>'25', ''));
                 }
                 else {
                     $mform->addElement('hidden', 'description', '');
@@ -49,7 +49,7 @@ class create_form extends moodleform {
                 $mform->setType('description', PARAM_NOTAGS);
                 
                 
-		$mform->addElement('passwordunmask', 'password', get_string('password'), array('maxlength'=>self::PASSWORD_MAXLEN, 'size'=>"24"));
+		$mform->addElement('passwordunmask', 'password', get_string('password'), array('maxlength'=>self::PASSWORD_MAXLEN-1, 'size'=>"24"));
 		$mform->setType('password', PARAM_RAW);
 		
 		$this->add_action_buttons(true, get_string('creategroup', 'mod_groupselect'));

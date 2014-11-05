@@ -87,7 +87,7 @@ $canunselect = (has_capability ( 'mod/groupselect:unselect', $context ) and is_e
 $cancreate = ($groupselect->studentcancreate and has_capability ( 'mod/groupselect:create', $context ) and is_enrolled ( $context ) and empty ( $mygroups ));
 $canexport = (has_capability ( 'mod/groupselect:export', $context ) and count ( $groups ) > 0);
 $canassign = (has_capability ( 'mod/groupselect:assign', $context ) and $groupselect->assignteachers and (count(groupselect_get_context_members_by_role ( context_course::instance ( $course->id )->id, 4 )) > 0));
-$canedit = ($groupselect->studentcansetdesc and $isopen); //and isset($mygroups[$groupid]);
+$canedit = ($groupselect->studentcansetdesc and $isopen); 
 
 if ($course->id == SITEID) {
 	$viewothers = has_capability ( 'moodle/site:viewparticipants', $context );
@@ -115,14 +115,16 @@ if (! is_enrolled ( $context )) {
 }
 
 // Group description edit 
-if($groupid and $canedit and isset($mygroups[$groupid])) {
+if($groupid and $canedit and isset($mygroups[$groupid]) and data_submitted()) {
     $egroup = $DB->get_record_sql('SELECT *
                                  FROM {groups} g
                                 WHERE g.id = ?', array($groupid));
-   
+    if(strlen($newdescription) > create_form::DESCRIPTION_MAXLEN) {
+        $newdescription = substr($newdescription, 0, create_form::DESCRIPTION_MAXLEN);
+    }
     $egroup->description = $newdescription;
-    echo $newdescription;
     groups_update_group($egroup);
+    echo strip_tags(groupselect_get_group_info($egroup));
     die;
 }
 
@@ -387,7 +389,7 @@ if ($export and $canexport) {
 		$content = $content . implode ( (','), $row ) . "\n";
 	}
 	
-	// // TODO: groupings
+	// Old user list implementation
 	// // Get the wanted student & group data
 	// $sql = 'SELECT u.username, u.idnumber, u.firstname, u.lastname, u.email, g.name, g.id AS groupid
 	// FROM {user} u, {groups} g, {groups_members} m
@@ -620,10 +622,13 @@ if (empty ( $groups )) {
 		// Group description
                 if( $ismember and $canedit ) {
                     $line [1] = '<div id="' . $group->id . '" class="edit">' . 
-                            $group->description . '</div>';
+                            //$group->description
+                            strip_tags(groupselect_get_group_info ( $group ))
+                            . '</div>';
                 }
                 else {
-                    $line [1] = groupselect_get_group_info ( $group );
+                    $line [1] = strip_tags(groupselect_get_group_info ( $group ));
+                    
                 }
                 
 		// Member count
@@ -661,7 +666,6 @@ if (empty ( $groups )) {
 				if($groupselect->showassignedteacher) {
                                 $teacherid = null;
 				foreach ( $assigned_relation as $r ) {
-					// echo $r->id . ' ' . $r->groupid . ' ' . $r->teacherid . '<br>';
 					if ($r->groupid === $group->id) {
 						$teacherid = $r->id;
 						break;
