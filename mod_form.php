@@ -65,18 +65,17 @@ class mod_groupselect_mod_form extends moodleform_mod {
        // $mform->setType('password', PARAM_RAW);
        // $mform->addHelpButton('password', 'globalpassword', 'mod_groupselect');
 
+        $mform->addElement('text', 'minmembers', get_string('minmembers', 'mod_groupselect'), array('size'=>'4'));
+        $mform->setType('minmembers', PARAM_INT);
+        $mform->setDefault('minmembers', 0);
+        $mform->addHelpButton('minmembers', 'minmembers', 'mod_groupselect');
+        
         $mform->addElement('text', 'maxmembers', get_string('maxmembers', 'mod_groupselect'), array('size'=>'4'));
         $mform->setType('maxmembers', PARAM_INT);
         $mform->setDefault('maxmembers', $config->maxmembers);
         $mform->setAdvanced('maxmembers', $config->maxmembers_adv);
         $mform->addHelpButton('maxmembers', 'maxmembers', 'mod_groupselect');
         
-        $mform->addElement('text', 'minmembers', get_string('minmembers', 'mod_groupselect'), array('size'=>'4'));
-        $mform->setType('minmembers', PARAM_INT);
-        $mform->setDefault('minmembers', 0);
-        //$mform->setAdvanced('maxmembers', $config->maxmembers_adv);
-        $mform->addHelpButton('minmembers', 'minmembers', 'mod_groupselect');
-
         $mform->addElement('date_time_selector', 'timeavailable', get_string('timeavailable', 'mod_groupselect'), array('optional'=>true));
         $mform->setDefault('timeavailable', 0);
         $mform->addElement('date_time_selector', 'timedue', get_string('timedue', 'mod_groupselect'), array('optional'=>true));
@@ -130,7 +129,9 @@ class mod_groupselect_mod_form extends moodleform_mod {
 
         $maxmembers = $data['maxmembers'];
         $minmembers = $data['minmembers'];
-
+        $timeavailable = $data['timeavailable'];
+        $timedue = $data['timedue'];
+ 
         if ($maxmembers < 0) {
             $errors['maxmembers'] = get_string('error');
         }
@@ -140,6 +141,10 @@ class mod_groupselect_mod_form extends moodleform_mod {
         if ($minmembers > $maxmembers) {
         	$errors['minmembers'] = get_string('error');
         	$errors['maxmembers'] = get_string('error');
+        }
+        if ($timeavailable >= $timedue and $timeavailable > 0) { 
+                $errors['timeavailable'] = get_string('error');
+        	$errors['timedue'] = get_string('error');
         }
 
         return $errors;

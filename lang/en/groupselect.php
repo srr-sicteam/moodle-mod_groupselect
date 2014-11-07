@@ -2,6 +2,7 @@
 
 $string['action'] = 'Action';
 $string['assigngroup'] = 'Assign non-editing teachers to groups';
+$string['assigngroup_confirm'] = 'This will assign non-editing teachers to groups, overriding possible previous assignment irreversibly. Are you sure?';
 $string['assigngroup_help'] = 'If set, enables a button which assigns non-editing teachers to the groups. Assigned non-editing teachers are not group members, '
         . 'but they show up in export file and in the main view (if set). Useful if course uses assistants to handle groups.';
 $string['assignedteacher'] = 'Assigned non-editing teacher';
@@ -39,7 +40,7 @@ $string['membercount'] = 'Count';
 $string['membershidden'] = 'Member list not available';
 $string['memberslist'] = 'Members';
 $string['minmembers'] = 'Min members per group';
-$string['minmembers_help'] = 'Minimum number of members per group. Adds notifications for groups which are'
+$string['minmembers_help'] = 'Minimum number of members per group. Adds notifications for members of groups which are'
         . ' under this limit. Default is 0 (disabled).';
 $string['minmembers_icon'] = 'Group has less members than required';
 $string['minmembers_notification'] = 'Your group has less members than required! Minimum is {$a}.';

@@ -26,10 +26,10 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$module->version   = 2014091600; // The current module version (Date: YYYYMMDDXX)
+$module->version   = 2014110700; // The current module version (Date: YYYYMMDDXX)
 $module->requires  = 2011070101; // Requires this Moodle version
 $module->cron      = 0;          // Period for cron to check this module (secs)
 $module->component = 'mod_groupselect'; // Full name of the plugin (used for diagnostics)
 
 $module->maturity  = MATURITY_ALPHA;
-$module->release   = "0.23 alpha (20140916)"; // User-friendly version number
+$module->release   = "0.3 alpha (20141107)"; // User-friendly version number

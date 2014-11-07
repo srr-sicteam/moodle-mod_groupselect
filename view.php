@@ -342,6 +342,7 @@ if ($export and $canexport) {
 
         'Group ID',
         'Group Name',
+        'Group Size',
         'Group Description',
         $assigned_teacher . 'Username',
         $assigned_teacher . 'Firstname',
@@ -378,14 +379,17 @@ if ($export and $canexport) {
 				$QUOTE.strtr($r->email, $CHARS_TO_ESCAPE).$QUOTE               
 				
 		);
+                $groupsize = 0;
 		for($i=1; $i < $max_group_size +1; $i++) {
 			if(isset($r->$i)) {
 				foreach ($r->$i as $member_field) {
 					$row[] = $QUOTE.strtr($member_field, $CHARS_TO_ESCAPE).$QUOTE;
 				}
 				array_pop($row);
+                                $groupsize++;
 			}
 		}
+                array_splice($row, 2, 0, $QUOTE.strval($groupsize).$QUOTE);
 		$content = $content . implode ( (','), $row ) . "\n";
 	}
 	
@@ -453,7 +457,7 @@ if ($export and $canexport) {
 }
 
 if ($assign and $canassign) {
-	
+
 	$already_assigned = count ( $DB->get_records ( 'groupselect_groups_teachers', array (
 			'instance_id' => $id 
 	) ) ) > 0 ? true : false;
@@ -549,11 +553,20 @@ if ($canexport) {
         
     }
 }
-if ($canassign) {
-	echo $OUTPUT->single_button ( new moodle_url ( '/mod/groupselect/view.php', array (
+if ($canassign and count($groups) > 0 )  {
+    $action = new confirm_action(get_string('assigngroup_confirm', 'mod_groupselect'), 'openpopup');
+    $action->jsfunctionargs['callbackargs'] = array(
+        null,
+        array('url'=> new moodle_url ( '/mod/groupselect/view.php', array (
 			'id' => $cm->id,
-			'assign' => true 
+			'assign' => true )
+    )));
+    $button = new single_button(new moodle_url ( '/mod/groupselect/view.php', array (
+			'id' => $cm->id,
+                        'assign' => true
 	) ), get_string ( 'assigngroup', 'mod_groupselect' ) );
+    $button->add_action($action);
+    echo $OUTPUT->render($button);
 }
 
 if (empty ( $groups )) {
@@ -594,7 +607,7 @@ if (empty ( $groups )) {
 	// Group list
 	foreach ( $groups as $group ) {
 		
-		$ismember = isset ( $mygroups [$group->id] );
+		$ismember = isset ( $mygroups [$group->id] );                
 		$usercount = isset ( $counts [$group->id] ) ? $counts [$group->id]->usercount : 0;
 		$grpname = format_string ( $group->name, true, array (
 				'context' => $context 
@@ -662,8 +675,8 @@ if (empty ( $groups )) {
 						$membernames [] = $pic . '&nbsp;<a href="' . $CFG->wwwroot . '/user/view.php?id=' . $member->id . '&amp;course=' . $course->id . '">' . fullname ( $member, $viewfullnames ) . '</a>';
 					}
 				}
-                                // Show assigned teacher if enabled & exists
-				if($groupselect->showassignedteacher) {
+                                // Show assigned teacher, if exists, when enabled or when user is non-assigned teacher
+				if($groupselect->showassignedteacher or user_has_role_assignment($USER->id, 4, context_course::instance ( $course->id )->id)) {
                                 $teacherid = null;
 				foreach ( $assigned_relation as $r ) {
 					if ($r->groupid === $group->id) {
@@ -683,7 +696,7 @@ if (empty ( $groups )) {
 							'courseid' => $course->id 
 					) );
 					if ($teacher->id == $USER->id) {
-						$membernames [] = '<span class="me">' . $pic . '&nbsp;' . fullname ( $teacher, $viewfullnames ) . '</span>';
+						$membernames [] = '<span class="me">' . $pic . '&nbsp;' . fullname ( $teacher, $viewfullnames ) . ' (' . get_string ( 'assignedteacher', 'mod_groupselect' ) . ')'.'</span>';
 					} else {
 						$membernames [] = $pic . '&nbsp;<a href="' . $CFG->wwwroot . '/user/view.php?id=' . $teacher->id . '&amp;course=' . $course->id . '">' . fullname ( $teacher, $viewfullnames ) . ' (' . get_string ( 'assignedteacher', 'mod_groupselect' ) . ')</a>';
 					}
@@ -711,7 +724,7 @@ if (empty ( $groups )) {
 		$line [4] = $line [4] . '</div>';
                 
 		// Action buttons
-		if ($isopen and ! $accessall) {
+		if ($isopen) {
 			if (! $ismember and $canselect and $groupselect->maxmembers and $groupselect->maxmembers <= $usercount) {
 				$line [5] = '<div class="maxlimitreached">' . get_string ( 'maxlimitreached', 'mod_groupselect' ) . '</div>'; // full - no more members
 				$actionpresent = true;

@@ -1,13 +1,33 @@
 Group self-formation module, based on Group self-selection module
 
-Copyright 2014 Tampere University of Technology, P. Pyykkönen (pirkka.pyykkonen ÄT tut.fi)
+Copyright 2014 Tampere University of Technology, Pirkka Pyykkönen (pirkka.pyykkonen ÄT tut.fi)
 
-Activity module, lets students create, select and join groups.
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details: http://www.gnu.org/copyleft/gpl.html
+
+Lets students create and select groups. Features:
+
+* Students can create groups, give them a description and set them password protected, if wanted
+* Students can select and join groups
+* Non-editing teachers may be assigned to groups
+* Teacher can export course group list as a csv-file
+* Full compatibility with basic Moodle groups: groups may be created by other means if needed, supports group assignment submissions etc.
 
 Currently in alpha stage, any feedback would be appreciated!
 
+https://github.com/birrel/moodle-mod_groupformation
+
 UPDATES:
-11.09.2014: Fixed mysql insertion related bug, added some notifications and small fixes
+
+2014.11.07: Non-editing teacher assignment, group description editing, improved csv-export, small optional features added
+2014.09.11: Fixed mysql insertion related bug, added some notifications and small fixes
 
 
 

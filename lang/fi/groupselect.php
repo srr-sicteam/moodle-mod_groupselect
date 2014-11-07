@@ -2,6 +2,8 @@
 
 $string['action'] = 'Toiminto';
 $string['assigngroup'] = 'Jaa assistentit ryhmiin';
+$string['assigngroup_confirm'] = 'Jakaa opettaja ilman muokkausoikeutta -roolin käyttäjät ryhmiin. Toiminto korvaa mahdollisen aikaisemman jaon'
+        . ' jaon peruuttamattomasti. Oletko varma?';
 $string['assigngroup_help'] = 'Jos päällä, opettajalle näkyy päänäkymässä painike, joka mahdollistaa assistenttien (kurssilla olevien opettaja'
         . ' ilman muokkausoikeutta -roolin omaavien käyttäjien) jakamisen ryhmiin. Jaetut assistentit eivät ole ryhmien jäseniä, mutta näkyvät viedyssä csv-'
         . 'tiedostossa ja päänäkymässä (jos asetettu).';
@@ -40,7 +42,7 @@ $string['membercount'] = 'Lukumäärä';
 $string['membershidden'] = 'Jäsenlista ei nähtävissä';
 $string['memberslist'] = 'Jäsenet';
 $string['minmembers'] = 'Ryhmän jäsenten vähimmäismäärä';
-$string['minmembers_help'] = 'Ryhmän jäsenten vähimmäismäärä. Jos käytössä, näyttää vähimmäismäärän alittaville ryhmille huomautuksen. Oletusarvo 0 (pois käytöstä)';
+$string['minmembers_help'] = 'Ryhmän jäsenten vähimmäismäärä. Jos käytössä, näyttää vähimmäismäärän alittavien ryhmien jäsenille huomautuksen. Oletusarvo 0 (pois käytöstä)';
 $string['minmembers_icon'] = 'Ryhmässä on liian vähän jäseniä';
 $string['minmembers_notification'] = 'Ryhmässäsi on liian vähän jäseniä! Vähimmäismäärä on {$a}.';
 $string['modulename'] = 'Ryhmänmuodostus';
