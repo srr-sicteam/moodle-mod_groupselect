@@ -1,23 +1,23 @@
 
-.mod_groupselect .mygroup,
-#page-mod-groupselect-view .me {
+.mod_groupformation .mygroup,
+#page-mod-groupformation-view .me {
   font-weight: bold;
 }
 
-.mod_groupselect .membershidden {
+.mod_groupformation .membershidden {
   color:#AAAAAA;
 }
 
-.mod_groupselect .maxlimitreached {
+.mod_groupformation .maxlimitreached {
   color:#AAAAAA;
 }
 
-.mod_groupselect .export_url {
+.mod_groupformation .export_url {
     background-color: yellow;
     color: red;
 }
 
-.mod_groupselect .edit, .text_to_html, td {
+.mod_groupformation .edit, .text_to_html, td {
   /*word-wrap:break-word !important;*/
   word-break: break-all !important;
 }
@@ -26,7 +26,7 @@ table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sor
     content: " \25B4\25BE" 
 }
 
-/* .mod_groupselect .icons {
+/* .mod_groupformation .icons {
 	margin-left:50px;
 	margin-right:50px;
 }  */

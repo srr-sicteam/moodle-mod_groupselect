@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/groupselect/db" VERSION="20111018" COMMENT="XMLDB file for Moodle mod/groupselect"
+<XMLDB PATH="mod/groupformation/db" VERSION="20111018" COMMENT="XMLDB file for Moodle mod/groupformation"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="groupselect" COMMENT="Defines groupselects">
+    <TABLE NAME="groupformation" COMMENT="Defines groupformations">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="course"/>
         <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="name"/>
@@ -52,7 +52,7 @@
         <INDEX NAME="course" UNIQUE="false" FIELDS="course"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="groupselect_passwords" COMMENT="Stores password hashes of groups">
+    <TABLE NAME="groupformation_passwords" COMMENT="Stores password hashes of groups">
     	<FIELDS>
     		<FIELD LENGTH="10" NAME="id" NOTNULL="true" SEQUENCE="true" TYPE="int"
     			UNSIGNED="true" NEXT="groupid">
@@ -65,13 +65,13 @@
     			NAME="password" LENGTH="60" PREVIOUS="groupid" NEXT="instance_id" />
     		<FIELD SEQUENCE="false" TYPE="int" NOTNULL="true"
     			NAME="instance_id" PREVIOUS="password"
-    			COMMENT="groupselect instance id" LENGTH="10" UNSIGNED="true" />
+    			COMMENT="groupformation instance id" LENGTH="10" UNSIGNED="true" />
     	</FIELDS>
     	<KEYS>
     		<KEY NAME="primary" FIELDS="id" TYPE="primary" />
     	</KEYS>
     </TABLE>
-    <TABLE NAME="groupselect_groups_teachers" COMMENT="Stores group-teacher relations">
+    <TABLE NAME="groupformation_groups_teache" COMMENT="Stores group-teacher relations">
     	<FIELDS>
     		<FIELD SEQUENCE="true" TYPE="int" NOTNULL="true" NAME="id"
     			LENGTH="10" UNSIGNED="true" NEXT="groupid" /><FIELD

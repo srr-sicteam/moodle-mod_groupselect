@@ -26,8 +26,9 @@ https://github.com/birrel/moodle-mod_groupformation
 
 UPDATES:
 
-2014.11.07: Non-editing teacher assignment, group description editing, improved csv-export, small optional features added
-2014.09.11: Fixed mysql insertion related bug, added some notifications and small fixes
+
+* 2014.11.07: Non-editing teacher assignment, group description editing, improved csv-export, small optional features added
+* 2014.09.11: Fixed mysql insertion related bug, added some notifications and small fixes
 
 
 

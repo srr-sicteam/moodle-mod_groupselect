@@ -15,29 +15,29 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Define all the restore steps that will be used by the restore_groupselect_activity_task
+ * Define all the restore steps that will be used by the restore_groupformation_activity_task
  *
  * @package    mod
- * @subpackage groupselect
+ * @subpackage groupformation
  * @copyright  2011 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 /**
- * Structure step to restore one groupselect activity
+ * Structure step to restore one groupformation activity
  */
-class restore_groupselect_activity_structure_step extends restore_activity_structure_step {
+class restore_groupformation_activity_structure_step extends restore_activity_structure_step {
 
     protected function define_structure() {
 
         $paths = array();
-        $paths[] = new restore_path_element('groupselect', '/activity/groupselect');
+        $paths[] = new restore_path_element('groupformation', '/activity/groupformation');
 
         // Return the paths wrapped into standard activity structure
         return $this->prepare_activity_structure($paths);
     }
 
-    protected function process_groupselect($data) {
+    protected function process_groupformation($data) {
         global $DB;
 
         $data = (object)$data;
@@ -47,15 +47,15 @@ class restore_groupselect_activity_structure_step extends restore_activity_struc
             $data->targetgrouping = $this->get_mappingid('grouping', $data->targetgrouping);
         }
 
-        // insert the groupselect record
-        $newitemid = $DB->insert_record('groupselect', $data);
+        // insert the groupformation record
+        $newitemid = $DB->insert_record('groupformation', $data);
         // immediately after inserting "activity" record, call this
         $this->apply_activity_instance($newitemid);
     }
 
     protected function after_execute() {
-        // Add groupselect related files, no need to match by itemname (just internally handled context)
-        $this->add_related_files('mod_groupselect', 'intro', null);
-        $this->add_related_files('mod_groupselect', 'content', null);
+        // Add groupformation related files, no need to match by itemname (just internally handled context)
+        $this->add_related_files('mod_groupformation', 'intro', null);
+        $this->add_related_files('mod_groupformation', 'content', null);
     }
 }

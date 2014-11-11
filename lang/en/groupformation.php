@@ -3,7 +3,7 @@
 $string['action'] = 'Action';
 $string['assigngroup'] = 'Assign non-editing teachers to groups';
 $string['assigngroup_confirm'] = 'This will assign non-editing teachers to groups, overriding possible previous assignment irreversibly. Are you sure?';
-$string['assigngroup_help'] = 'If set, enables a button which assigns non-editing teachers to the groups. Assigned non-editing teachers are not group members, '
+$string['assigngroup_help'] = 'If set, enables a button which assigns non-editing teachers to groups. Assigned non-editing teachers are not group members, '
         . 'but they show up in export file and in the main view (if set). Useful if course uses assistants to handle groups.';
 $string['assignedteacher'] = 'Assigned non-editing teacher';
 $string['cannotselectclosed'] = 'You can not become group member any more.';
@@ -21,11 +21,11 @@ $string['export_download'] = 'Download CSV-file';
 $string['fromallgroups'] = 'All groups';
 $string['globalpassword_help'] = 'Set a global password for group joining. Overrides student set passwords.';
 $string['groupid'] = 'Group ID';
-$string['groupselect:addinstance'] = 'Add a new group self-selection';
-$string['groupselect:assign'] = 'Allow to assign teachers to groups';
-$string['groupselect:create'] = 'Allow creating of group';
-$string['groupselect:select'] = 'Allow becoming of group member';
-$string['groupselect:unselect'] = 'Allow leaving of group';
+$string['groupformation:addinstance'] = 'Add a new group self-selection';
+$string['groupformation:assign'] = 'Allow to assign teachers to groups';
+$string['groupformation:create'] = 'Allow creating of group';
+$string['groupformation:select'] = 'Allow becoming of group member';
+$string['groupformation:unselect'] = 'Allow leaving of group';
 $string['hidefullgroups'] = 'Hide full groups from the main view';
 $string['hidefullgroups_help'] = 'If set, hides all groups, which have reached max member count, from the main list view.'
         . ' (excluding user\'s own group). May be useful if the activity has lots of groups.';
@@ -74,7 +74,7 @@ $string['showassignedteacher'] = 'Show assigned teachers';
 $string['showassignedteacher_help'] = 'If set, assigned teachers will show up in group members. Useful if students need to know their assigned teacher';
 $string['studentcancreate'] = 'Students can create groups';
 $string['studentcancreate_help'] = 'If set, students without group (in selected grouping) can create groups';
-$string['studentcansetdesc'] = 'Students can set or edit group description';
+$string['studentcansetdesc'] = 'Students can set and edit group description';
 $string['studentcansetdesc_help'] = 'If set, student can set a a group description when creating one and group members can edit it';
 $string['unselectconfirm'] = 'Do you really want to leave the group <em>{$a}</em>?';
 $string['unselect'] = 'Leave group {$a}';

@@ -18,7 +18,7 @@
  * Definition of log events
  *
  * @package    mod
- * @subpackage groupselect
+ * @subpackage groupformation
  * @copyright  2011 Petr Skoda (http://skodak.org)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,10 +26,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $logs = array(
-    array('module'=>'groupselect', 'action'=>'select', 'mtable'=>'groupselect', 'field'=>'name'),
-    array('module'=>'groupselect', 'action'=>'unselect', 'mtable'=>'groupselect', 'field'=>'name'),
-    array('module'=>'groupselect', 'action'=>'view', 'mtable'=>'groupselect', 'field'=>'name'),
-    array('module'=>'groupselect', 'action'=>'view all', 'mtable'=>'groupselect', 'field'=>'name'),
-    array('module'=>'groupselect', 'action'=>'update', 'mtable'=>'groupselect', 'field'=>'name'),
-    array('module'=>'groupselect', 'action'=>'add', 'mtable'=>'groupselect', 'field'=>'name'),
+    array('module'=>'groupformation', 'action'=>'select', 'mtable'=>'groupformation', 'field'=>'name'),
+    array('module'=>'groupformation', 'action'=>'unselect', 'mtable'=>'groupformation', 'field'=>'name'),
+    array('module'=>'groupformation', 'action'=>'view', 'mtable'=>'groupformation', 'field'=>'name'),
+    array('module'=>'groupformation', 'action'=>'view all', 'mtable'=>'groupformation', 'field'=>'name'),
+    array('module'=>'groupformation', 'action'=>'update', 'mtable'=>'groupformation', 'field'=>'name'),
+    array('module'=>'groupformation', 'action'=>'add', 'mtable'=>'groupformation', 'field'=>'name'),
 );

@@ -18,7 +18,7 @@
  * Group self selection module admin settings and defaults
  *
  * @package    mod
- * @subpackage groupselect
+ * @subpackage groupformation
  * @copyright  2008-2011 Petr Skoda (http://skodak.org)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,13 +28,13 @@ defined('MOODLE_INTERNAL') || die;
 if ($ADMIN->fulltree) {
 
     //--- general settings -----------------------------------------------------------------------------------
-    $settings->add(new admin_setting_configcheckbox('groupselect/requiremodintro',
+    $settings->add(new admin_setting_configcheckbox('groupformation/requiremodintro',
         get_string('requiremodintro', 'admin'), get_string('configrequiremodintro', 'admin'), 1));
 
     //--- modedit defaults -----------------------------------------------------------------------------------
-    $settings->add(new admin_setting_heading('groupselectmodeditdefaults', get_string('modeditdefaults', 'admin'), get_string('condifmodeditdefaults', 'admin')));
+    $settings->add(new admin_setting_heading('groupformationmodeditdefaults', get_string('modeditdefaults', 'admin'), get_string('condifmodeditdefaults', 'admin')));
 
-    $settings->add(new admin_setting_configtext_with_advanced('groupselect/maxmembers',
-        get_string('maxmembers', 'mod_groupselect'), '',
+    $settings->add(new admin_setting_configtext_with_advanced('groupformation/maxmembers',
+        get_string('maxmembers', 'mod_groupformation'), '',
         array('value'=>0, 'adv'=>false), PARAM_INT, 4));
 }

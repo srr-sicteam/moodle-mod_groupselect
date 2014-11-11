@@ -1,6 +1,6 @@
 <?php
 $plugins = array(
-	    'groupselect-jeditable' => array(
+	    'groupformation-jeditable' => array(
 	        'files' => array(
 	            'jeditable/jquery.jeditable.js',
 	        ),
