@@ -1,7 +1,7 @@
 Group self-selection module for Moodle
 
-Copyright (C) 2008-2011 Petr Skoda (http://skodak.org/)
-Copyright 2014 Tampere University of Technology, Pirkka Pyykkönen
+* Copyright (C) 2008-2011 Petr Skoda (http://skodak.org/)
+* Copyright 2014 Tampere University of Technology, Pirkka Pyykkönen
 (pirkka.pyykkonen ÄT tut.fi)
 
 This program is free software; you can redistribute it and/or modify
@@ -27,7 +27,7 @@ Currently in beta stage, any feedback would be appreciated!
 Project page:
 
 * https://github.com/birrel/moodle-mod_groupselect
-* https://github.com/skodak/moodle-mod_groupselect (earlier version)
+* https://github.com/skodak/moodle-mod_groupselect (original version)
 
 NOTABLE UPDATES:
 * 2014.12.01: Fixed upgrade.php, project renamed as groupselect
