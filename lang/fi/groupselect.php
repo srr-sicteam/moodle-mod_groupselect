@@ -59,7 +59,7 @@ $string['modulename_help'] = <<<'END_OF_HELP'
     voi tehdä ryhmäpalautuksia jne.</li>
 </ul>
 
-<p>Alpha-versio, kaikki palaute on tervetullutta! (pirkka.pyykkonen@tut.fi)</p>
+<p>Beta-versio, kaikki palaute on tervetullutta! (pirkka.pyykkonen@tut.fi)</p>
 END_OF_HELP;
 $string['modulenameplural'] = 'Ryhmänmuodostukset';
 $string['nogroups'] = 'Ei luotuja ryhmiä.';
