@@ -18,7 +18,7 @@
  * Library of functions and constants of Group selection module
  *
  * @package    mod
- * @subpackage groupformation
+ * @subpackage groupselect
  * @copyright  2008-2011 Petr Skoda (http://skodak.org)
  * @copyright  2014 Tampere University of Technology, P. Pyykkönen (pirkka.pyykkonen ÄT tut.fi)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,11 +27,11 @@
 defined('MOODLE_INTERNAL') || die;
 
 /**
- * List of features supported in groupformation module
+ * List of features supported in groupselect module
  * @param string $feature FEATURE_xx constant for requested feature
  * @return mixed True if module supports feature, false if not, null if doesn't know
  */
-function groupformation_supports($feature) {
+function groupselect_supports($feature) {
     switch($feature) {
         case FEATURE_MOD_ARCHETYPE:           return MOD_ARCHETYPE_OTHER;
         case FEATURE_GROUPS:                  return true;  // only separate mode makes sense - you hide members of other groups here
@@ -51,7 +51,7 @@ function groupformation_supports($feature) {
  * Returns all other caps used in module
  * @return array
  */
-function groupformation_get_extra_capabilities() {
+function groupselect_get_extra_capabilities() {
     return array('moodle/site:accessallgroups', 'moodle/site:viewfullnames');
 }
 
@@ -59,82 +59,82 @@ function groupformation_get_extra_capabilities() {
  * Given an object containing all the necessary data, (defined by the form in mod.html)
  * this function will create a new instance and return the id number of the new instance.
  *
- * @param object $groupformation Object containing all the necessary data defined by the form in mod_form.php
+ * @param object $groupselect Object containing all the necessary data defined by the form in mod_form.php
  * $return int The id of the newly created instance
  */
-function groupformation_add_instance($groupformation) {
+function groupselect_add_instance($groupselect) {
     global $DB, $CFG;
 
     require_once($CFG->dirroot.'/calendar/lib.php');
 
-    $groupformation->timecreated = time();
-    $groupformation->timemodified = time();
+    $groupselect->timecreated = time();
+    $groupselect->timemodified = time();
 
-    $groupformation->id = $DB->insert_record('groupformation', $groupformation);
+    $groupselect->id = $DB->insert_record('groupselect', $groupselect);
 
-    if ($groupformation->timedue) {
+    if ($groupselect->timedue) {
         $event = new stdClass();
-        $event->name         = $groupformation->name;
-        $event->description  = format_module_intro('groupformation', $groupformation, $groupformation->coursemodule); // TODO: this is weird
-        $event->courseid     = $groupformation->course;
+        $event->name         = $groupselect->name;
+        $event->description  = format_module_intro('groupselect', $groupselect, $groupselect->coursemodule); // TODO: this is weird
+        $event->courseid     = $groupselect->course;
         $event->groupid      = 0;
         $event->userid       = 0;
-        $event->modulename   = 'groupformation';
-        $event->instance     = $groupformation->id;
+        $event->modulename   = 'groupselect';
+        $event->instance     = $groupselect->id;
         $event->eventtype    = 'due';
-        $event->timestart    = $groupformation->timedue;
+        $event->timestart    = $groupselect->timedue;
         $event->timeduration = 0;
 
         calendar_event::create($event);
     }
 
-    return $groupformation->id;
+    return $groupselect->id;
 }
 
 
 /**
  * Update an existing instance with new data.
  *
- * @param object $groupformation An object containing all the necessary data defined by the mod_form.php
+ * @param object $groupselect An object containing all the necessary data defined by the mod_form.php
  * @return bool
  */
-function groupformation_update_instance($groupformation) {
+function groupselect_update_instance($groupselect) {
     global $DB, $CFG;
 
     require_once($CFG->dirroot.'/calendar/lib.php');
 
-    $groupformation->timemodified = time();
-    $groupformation->id = $groupformation->instance;
+    $groupselect->timemodified = time();
+    $groupselect->id = $groupselect->instance;
 
-    $DB->update_record('groupformation', $groupformation);
+    $DB->update_record('groupselect', $groupselect);
 
-    if ($groupformation->timedue) {
-        if ($event->id = $DB->get_field('event', 'id', array('modulename'=>'groupformation', 'instance'=>$groupformation->id))) {
-            $event->name         = $groupformation->name;
-            $event->description  = format_module_intro('groupformation', $groupformation, $groupformation->coursemodule);
-            $event->timestart    = $groupformation->timedue;
+    if ($groupselect->timedue) {
+        if ($event->id = $DB->get_field('event', 'id', array('modulename'=>'groupselect', 'instance'=>$groupselect->id))) {
+            $event->name         = $groupselect->name;
+            $event->description  = format_module_intro('groupselect', $groupselect, $groupselect->coursemodule);
+            $event->timestart    = $groupselect->timedue;
 
             $calendarevent = calendar_event::load($event->id);
             $calendarevent->update($event);
 
         } else {
             $event = new stdClass();
-            $event->name         = $groupformation->name;
-            $event->description  = format_module_intro('groupformation', $groupformation, $groupformation->coursemodule);// TODO: this is weird
-            $event->courseid     = $groupformation->course;
+            $event->name         = $groupselect->name;
+            $event->description  = format_module_intro('groupselect', $groupselect, $groupselect->coursemodule);// TODO: this is weird
+            $event->courseid     = $groupselect->course;
             $event->groupid      = 0;
             $event->userid       = 0;
-            $event->modulename   = 'groupformation';
-            $event->instance     = $groupformation->id;
+            $event->modulename   = 'groupselect';
+            $event->instance     = $groupselect->id;
             $event->eventtype    = 'due';
-            $event->timestart    = $groupformation->timedue;
+            $event->timestart    = $groupselect->timedue;
             $event->timeduration = 0;
 
             calendar_event::create($event);
         }
 
     } else {
-        $DB->delete_records('event', array('modulename'=>'groupformation', 'instance'=>$groupformation->id));
+        $DB->delete_records('event', array('modulename'=>'groupselect', 'instance'=>$groupselect->id));
     }
 
     return true;
@@ -147,14 +147,14 @@ function groupformation_update_instance($groupformation) {
  * @param int $id Instance id
  * @return bool
  */
-function groupformation_delete_instance($id) {
+function groupselect_delete_instance($id) {
     global $DB;
     // delete group password rows related to this instance (but not the groups)
-    $DB->delete_records('groupformation_passwords', array('instance_id'=>$id)); 
+    $DB->delete_records('groupselect_passwords', array('instance_id'=>$id)); 
     
-    $DB->delete_records('groupformation_groups_teache', array('instance_id'=>$id));
+    $DB->delete_records('groupselect_groups_teachers', array('instance_id'=>$id));
     
-    $DB->delete_records('groupformation', array('id'=>$id));
+    $DB->delete_records('groupselect', array('id'=>$id));
 
     return true;
 }
@@ -165,32 +165,32 @@ function groupformation_delete_instance($id) {
  *
  * We have no data/users here but this must exists in every module
  *
- * @param int $groupformationid
+ * @param int $groupselectid
  * @return bool
  */
-function groupformation_get_participants($groupformationid) {
+function groupselect_get_participants($groupselectid) {
     // no participants here - all data is stored in the group tables
     return false;
 }
 
 
 /**
- * groupformation_get_view_actions
+ * groupselect_get_view_actions
  *
  * @return array
  */
-function groupformation_get_view_actions() {
+function groupselect_get_view_actions() {
     return array('view', 'export');
 }
 
 
 /**
- * groupformation_get_post_actions
+ * groupselect_get_post_actions
  *
  * @return array
  */
-function groupformation_get_post_actions() {
-    return array('select', 'unselect', 'create');
+function groupselect_get_post_actions() {
+    return array('select', 'unselect', 'create', 'assign');
 }
 
 
@@ -200,12 +200,18 @@ function groupformation_get_post_actions() {
  * @param $data the data submitted from the reset course.
  * @return array status array
  */
-function groupformation_reset_userdata($data) {
+function groupselect_reset_userdata($data) {
     // no resetting here - all data is stored in the group tables
     return array();
 }
 
-function groupformation_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
+/**
+ * Used to create exportable csv-file in view.php
+ *
+ * @param $data the data submitted from the reset course.
+ * @return array status array
+ */
+function groupselect_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
     // Check the contextlevel is as expected - if your plugin is a block, this becomes CONTEXT_BLOCK, etc.
     if ($context->contextlevel != CONTEXT_MODULE) {
         return false; 
@@ -220,7 +226,7 @@ function groupformation_pluginfile($course, $cm, $context, $filearea, $args, $fo
     require_login($course, true, $cm);
  
     // Check the relevant capabilities - these may vary depending on the filearea being accessed.
-    if (!has_capability('mod/groupformation:export', $context)) {
+    if (!has_capability('mod/groupselect:export', $context)) {
         return false;
     }
  
@@ -240,7 +246,7 @@ function groupformation_pluginfile($course, $cm, $context, $filearea, $args, $fo
  
     // Retrieve the file from the Files API.
     $fs = get_file_storage();
-    $file = $fs->get_file($context->id, 'mod_groupformation', $filearea, $itemid, $filepath, $filename);
+    $file = $fs->get_file($context->id, 'mod_groupselect', $filearea, $itemid, $filepath, $filename);
     if (!$file) {
         return false; // The file does not exist.
     }

@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Define all the backup steps that will be used by the backup_groupformation_activity_task
+ * Define all the backup steps that will be used by the backup_groupselect_activity_task
  *
  * @package    mod
- * @subpackage groupformation
+ * @subpackage groupselect
  * @copyright  2011 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,9 +26,9 @@
 defined('MOODLE_INTERNAL') || die;
 
 /**
- * Define the complete groupformation structure for backup, with file and id annotations
+ * Define the complete groupselect structure for backup, with file and id annotations
  */
-class backup_groupformation_activity_structure_step extends backup_activity_structure_step {
+class backup_groupselect_activity_structure_step extends backup_activity_structure_step {
 
     protected function define_structure() {
 
@@ -36,7 +36,7 @@ class backup_groupformation_activity_structure_step extends backup_activity_stru
         $userinfo = $this->get_setting_value('userinfo');
 
         // Define each element separated
-        $groupformation = new backup_nested_element('groupformation', array('id'), array(
+        $groupselect = new backup_nested_element('groupselect', array('id'), array(
             'name', 'intro', 'introformat', 'targetgrouping', 'contentformat',
             'password', 'maxmembers', 'timeavailable', 'timedue',
             'timecreated', 'timemodified'));
@@ -45,16 +45,16 @@ class backup_groupformation_activity_structure_step extends backup_activity_stru
         // (love this)
 
         // Define sources
-        $groupformation->set_source_table('groupformation', array('id' => backup::VAR_ACTIVITYID));
+        $groupselect->set_source_table('groupselect', array('id' => backup::VAR_ACTIVITYID));
 
         // Define id annotations
         // (none)
 
         // Define file annotations
-        $groupformation->annotate_files('mod_groupformation', 'intro', null); // This file areas haven't itemid
-        $groupformation->annotate_files('mod_groupformation', 'content', null); // This file areas haven't itemid
+        $groupselect->annotate_files('mod_groupselect', 'intro', null); // This file areas haven't itemid
+        $groupselect->annotate_files('mod_groupselect', 'content', null); // This file areas haven't itemid
 
-        // Return the root element (groupformation), wrapped into standard activity structure
-        return $this->prepare_activity_structure($groupformation);
+        // Return the root element (groupselect), wrapped into standard activity structure
+        return $this->prepare_activity_structure($groupselect);
     }
 }

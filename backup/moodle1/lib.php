@@ -18,7 +18,7 @@
  * Provides support for the conversion of moodle1 backup to the moodle2 format
  *
  * @package    mod
- * @subpackage groupformation
+ * @subpackage groupselect
  * @copyright  2011 Petr Skoda (http://skodak.org)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Book conversion handler
  */
-class moodle1_mod_groupformation_handler extends moodle1_mod_handler {
+class moodle1_mod_groupselect_handler extends moodle1_mod_handler {
 
     /** @var moodle1_file_manager */
     protected $fileman = null;
@@ -44,7 +44,7 @@ class moodle1_mod_groupformation_handler extends moodle1_mod_handler {
      * defined. The method process_xxx() is not executed if the associated path element is
      * empty (i.e. it contains none elements or sub-paths only).
      *
-     * Note that the path /MOODLE_BACKUP/COURSE/MODULES/MOD/groupformation does not
+     * Note that the path /MOODLE_BACKUP/COURSE/MODULES/MOD/groupselect does not
      * actually exist in the file. The last element with the module name was
      * appended by the moodle1_converter class.
      *
@@ -52,7 +52,7 @@ class moodle1_mod_groupformation_handler extends moodle1_mod_handler {
      */
     public function get_paths() {
         return array(
-            new convert_path('groupformation', '/MOODLE_BACKUP/COURSE/MODULES/MOD/groupformation',
+            new convert_path('groupselect', '/MOODLE_BACKUP/COURSE/MODULES/MOD/groupselect',
                     array(
                         'newfields' => array(
                             'introformat' => FORMAT_MOODLE,
@@ -63,11 +63,11 @@ class moodle1_mod_groupformation_handler extends moodle1_mod_handler {
     }
 
     /**
-     * This is executed every time we have one /MOODLE_BACKUP/COURSE/MODULES/MOD/groupformation
+     * This is executed every time we have one /MOODLE_BACKUP/COURSE/MODULES/MOD/groupselect
      * data available
      * @param array $data
      */
-    public function process_groupformation($data) {
+    public function process_groupselect($data) {
         global $CFG;
 
         // get the course module id and context id
@@ -83,18 +83,18 @@ class moodle1_mod_groupformation_handler extends moodle1_mod_handler {
         }
 
         // get a fresh new file manager for this instance
-        $this->fileman = $this->converter->get_file_manager($contextid, 'mod_groupformation');
+        $this->fileman = $this->converter->get_file_manager($contextid, 'mod_groupselect');
 
         // convert course files embedded into the intro
         $this->fileman->filearea = 'intro';
         $this->fileman->itemid   = 0;
         $data['intro'] = moodle1_converter::migrate_referenced_files($data['intro'], $this->fileman);
 
-        // start writing groupformation.xml
-        $this->open_xml_writer("activities/groupformation_{$this->moduleid}/groupformation.xml");
+        // start writing groupselect.xml
+        $this->open_xml_writer("activities/groupselect_{$this->moduleid}/groupselect.xml");
         $this->xmlwriter->begin_tag('activity', array('id' => $instanceid, 'moduleid' => $this->moduleid,
-            'modulename' => 'groupformation', 'contextid' => $contextid));
-        $this->xmlwriter->begin_tag('groupformation', array('id' => $instanceid));
+            'modulename' => 'groupselect', 'contextid' => $contextid));
+        $this->xmlwriter->begin_tag('groupselect', array('id' => $instanceid));
 
         foreach ($data as $field => $value) {
             if ($field <> 'id') {
@@ -104,16 +104,16 @@ class moodle1_mod_groupformation_handler extends moodle1_mod_handler {
     }
 
     /**
-     * This is executed when we reach the closing </MOD> tag of our 'groupformation' path
+     * This is executed when we reach the closing </MOD> tag of our 'groupselect' path
      */
-    public function on_groupformation_end() {
-        // finalize groupformation.xml
-        $this->xmlwriter->end_tag('groupformation');
+    public function on_groupselect_end() {
+        // finalize groupselect.xml
+        $this->xmlwriter->end_tag('groupselect');
         $this->xmlwriter->end_tag('activity');
         $this->close_xml_writer();
 
         // write inforef.xml
-        $this->open_xml_writer("activities/groupformation_{$this->moduleid}/inforef.xml");
+        $this->open_xml_writer("activities/groupselect_{$this->moduleid}/inforef.xml");
         $this->xmlwriter->begin_tag('inforef');
         $this->xmlwriter->begin_tag('fileref');
         foreach ($this->fileman->get_fileids() as $fileid) {

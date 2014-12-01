@@ -18,7 +18,7 @@
  * Group self selection - group creation form
 *
 * @package    mod
-* @subpackage groupformation
+* @subpackage groupselect
 * @copyright  2014 Tampere University of Technology, P. Pyykkönen (pirkka.pyykkonen ÄT tut.fi)
 * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
@@ -35,13 +35,13 @@ class create_form extends moodleform {
 	function definition() {	    
 	    
 	    $mform = $this->_form;
-		list($data, $this->groupformation) = $this->_customdata;
+		list($data, $this->groupselect) = $this->_customdata;
         
 		$mform->addElement('hidden','id');
 		$mform->setType('id', PARAM_INT);
 		
-                if($this->groupformation->studentcansetdesc) {
-		$mform->addElement('textarea', 'description', get_string('description', 'mod_groupformation'), array('wrap'=>'virtual', 'maxlength'=>self::DESCRIPTION_MAXLEN-1, 'rows'=>'3', 'cols'=>'25', ''));
+                if($this->groupselect->studentcansetdesc) {
+		$mform->addElement('textarea', 'description', get_string('description', 'mod_groupselect'), array('wrap'=>'virtual', 'maxlength'=>self::DESCRIPTION_MAXLEN-1, 'rows'=>'3', 'cols'=>'25', ''));
                 }
                 else {
                     $mform->addElement('hidden', 'description', '');
@@ -52,7 +52,7 @@ class create_form extends moodleform {
 		$mform->addElement('passwordunmask', 'password', get_string('password'), array('maxlength'=>self::PASSWORD_MAXLEN-1, 'size'=>"24"));
 		$mform->setType('password', PARAM_RAW);
 		
-		$this->add_action_buttons(true, get_string('creategroup', 'mod_groupformation'));
+		$this->add_action_buttons(true, get_string('creategroup', 'mod_groupselect'));
 		$this->set_data($data);
 	}
 
@@ -61,11 +61,11 @@ class create_form extends moodleform {
         
  		$description = $data['description'];
   		if(strlen($description) > self::DESCRIPTION_MAXLEN) {
- 		    $errors['description'] = get_string('maxcharlenreached', 'mod_groupformation');
+ 		    $errors['description'] = get_string('maxcharlenreached', 'mod_groupselect');
  		}
         $password = $data['password'];
         if(strlen($password) > self::PASSWORD_MAXLEN) {
-            $errors['password'] = get_string('maxcharlenreached', 'mod_groupformation');
+            $errors['password'] = get_string('maxcharlenreached', 'mod_groupselect');
         }
 
 		return $errors;

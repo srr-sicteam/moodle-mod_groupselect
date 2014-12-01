@@ -18,7 +18,7 @@
  * Page module capability definition
  *
  * @package mod
- * @subpackage groupformation
+ * @subpackage groupselect
  * @copyright 2011 Petr Skoda (http://skodak.org)
  * @copyright 2014 Tampere University of Technology, P. Pyykkönen (pirkka.pyykkonen ÄT tut.fi)
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
-        'mod/groupformation:addinstance' => array(
+        'mod/groupselect:addinstance' => array(
                 'riskbitmask' => RISK_XSS,
                 'captype' => 'write',
                 'contextlevel' => CONTEXT_COURSE,
@@ -37,7 +37,7 @@ $capabilities = array(
                 'clonepermissionsfrom' => 'moodle/course:manageactivities'
         ),
         
-        'mod/groupformation:create' => array(
+        'mod/groupselect:create' => array(
                 'riskbitmask' => RISK_XSS,
                 'captype' => 'write',
                 'contextlevel' => CONTEXT_MODULE,
@@ -46,7 +46,7 @@ $capabilities = array(
                 )
         ),
         
-        'mod/groupformation:select' => array(
+        'mod/groupselect:select' => array(
                 'captype' => 'write',
                 'contextlevel' => CONTEXT_MODULE,
                 'archetypes' => array(
@@ -54,7 +54,7 @@ $capabilities = array(
                 )
         ),
         
-        'mod/groupformation:unselect' => array(
+        'mod/groupselect:unselect' => array(
                 'captype' => 'write',
                 'contextlevel' => CONTEXT_MODULE,
                 'archetypes' => array(
@@ -62,7 +62,7 @@ $capabilities = array(
                 )
         ),
         
-        'mod/groupformation:export' => array(
+        'mod/groupselect:export' => array(
                 'riskbitmask' => RISK_PERSONAL,
                     'captype' => 'read',
                 'contextlevel' => CONTEXT_MODULE,
@@ -71,7 +71,7 @@ $capabilities = array(
                         'editingteacher' => CAP_ALLOW
                 )
         ),
-        'mod/groupformation:assign' => array(
+        'mod/groupselect:assign' => array(
         		'captype' => 'write',
         		'contextlevel' => CONTEXT_MODULE,
         		'archetypes' => array(

@@ -18,7 +18,7 @@
  * Group self selection instance configuration
  *
  * @package    mod
- * @subpackage groupformation
+ * @subpackage groupselect
  * @copyright  2008-2011 Petr Skoda (http://skodak.org)
  * @copyright  2014 Tampere University of Technology, P. Pyykkönen (pirkka.pyykkonen ÄT tut.fi)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -29,14 +29,14 @@ defined('MOODLE_INTERNAL') || die;
 require_once ($CFG->dirroot.'/course/moodleform_mod.php');
 
 
-class mod_groupformation_mod_form extends moodleform_mod {
+class mod_groupselect_mod_form extends moodleform_mod {
 
     function definition() {
         global $CFG, $COURSE; //TODO: get rid of the sloppy $COURSE
 
         $mform = $this->_form;
 
-        $config = get_config('groupformation');
+        $config = get_config('groupselect');
 
         $mform->addElement('header', 'general', get_string('general', 'form'));
         $mform->addElement('text', 'name', get_string('name'), array('size'=>'48'));
@@ -52,63 +52,63 @@ class mod_groupformation_mod_form extends moodleform_mod {
         //-------------------------------------------------------
 
         $options = array();
-        $options[0] = get_string('fromallgroups', 'mod_groupformation');
+        $options[0] = get_string('fromallgroups', 'mod_groupselect');
         if ($groupings = groups_get_all_groupings($COURSE->id)) {
             foreach ($groupings as $grouping) {
                 $options[$grouping->id] = format_string($grouping->name);
             }
         }
-        $mform->addElement('select', 'targetgrouping', get_string('targetgrouping', 'mod_groupformation'), $options);
+        $mform->addElement('select', 'targetgrouping', get_string('targetgrouping', 'mod_groupselect'), $options);
 
        // Legacy master-password functionality. 
-       // $mform->addElement('passwordunmask', 'password', get_string('password', 'mod_groupformation'), 'maxlength="254" size="24"');
+       // $mform->addElement('passwordunmask', 'password', get_string('password', 'mod_groupselect'), 'maxlength="254" size="24"');
        // $mform->setType('password', PARAM_RAW);
-       // $mform->addHelpButton('password', 'globalpassword', 'mod_groupformation');
+       // $mform->addHelpButton('password', 'globalpassword', 'mod_groupselect');
 
-        $mform->addElement('text', 'minmembers', get_string('minmembers', 'mod_groupformation'), array('size'=>'4'));
+        $mform->addElement('text', 'minmembers', get_string('minmembers', 'mod_groupselect'), array('size'=>'4'));
         $mform->setType('minmembers', PARAM_INT);
         $mform->setDefault('minmembers', 0);
-        $mform->addHelpButton('minmembers', 'minmembers', 'mod_groupformation');
+        $mform->addHelpButton('minmembers', 'minmembers', 'mod_groupselect');
         
-        $mform->addElement('text', 'maxmembers', get_string('maxmembers', 'mod_groupformation'), array('size'=>'4'));
+        $mform->addElement('text', 'maxmembers', get_string('maxmembers', 'mod_groupselect'), array('size'=>'4'));
         $mform->setType('maxmembers', PARAM_INT);
         $mform->setDefault('maxmembers', $config->maxmembers);
         $mform->setAdvanced('maxmembers', $config->maxmembers_adv);
-        $mform->addHelpButton('maxmembers', 'maxmembers', 'mod_groupformation');
+        $mform->addHelpButton('maxmembers', 'maxmembers', 'mod_groupselect');
         
-        $mform->addElement('date_time_selector', 'timeavailable', get_string('timeavailable', 'mod_groupformation'), array('optional'=>true));
+        $mform->addElement('date_time_selector', 'timeavailable', get_string('timeavailable', 'mod_groupselect'), array('optional'=>true));
         $mform->setDefault('timeavailable', 0);
-        $mform->addElement('date_time_selector', 'timedue', get_string('timedue', 'mod_groupformation'), array('optional'=>true));
+        $mform->addElement('date_time_selector', 'timedue', get_string('timedue', 'mod_groupselect'), array('optional'=>true));
         $mform->setDefault('timedue', 0);
 
-        $mform->addElement('advcheckbox', 'studentcancreate', get_string('studentcancreate', 'mod_groupformation'), '',
+        $mform->addElement('advcheckbox', 'studentcancreate', get_string('studentcancreate', 'mod_groupselect'), '',
         		array('optional'=>true, 'group'=>null), array(0,1));
-        $mform->addHelpButton('studentcancreate', 'studentcancreate', 'mod_groupformation');
+        $mform->addHelpButton('studentcancreate', 'studentcancreate', 'mod_groupselect');
         $mform->setDefault('studentcancreate', true);
         
-        $mform->addElement('advcheckbox', 'studentcansetdesc', get_string('studentcansetdesc', 'mod_groupformation'), '',
+        $mform->addElement('advcheckbox', 'studentcansetdesc', get_string('studentcansetdesc', 'mod_groupselect'), '',
         		array('optional'=>true, 'group'=>null), array(0,1));
-        $mform->addHelpButton('studentcansetdesc', 'studentcansetdesc', 'mod_groupformation');
+        $mform->addHelpButton('studentcansetdesc', 'studentcansetdesc', 'mod_groupselect');
         $mform->setDefault('studentcansetdesc', true);
 
-        $mform->addElement('advcheckbox', 'assignteachers', get_string('assigngroup', 'mod_groupformation'), '',
+        $mform->addElement('advcheckbox', 'assignteachers', get_string('assigngroup', 'mod_groupselect'), '',
         		array('optional'=>true, 'group'=>null), array(0,1));
-        $mform->addHelpButton('assignteachers', 'assigngroup', 'mod_groupformation');
+        $mform->addHelpButton('assignteachers', 'assigngroup', 'mod_groupselect');
         $mform->setDefault('assignteachers', false);
         
-        $mform->addElement('advcheckbox', 'showassignedteacher', get_string('showassignedteacher', 'mod_groupformation'), '',
+        $mform->addElement('advcheckbox', 'showassignedteacher', get_string('showassignedteacher', 'mod_groupselect'), '',
         		array('optional'=>true, 'group'=>null), array(0,1));
-        $mform->addHelpButton('showassignedteacher', 'showassignedteacher', 'mod_groupformation');
+        $mform->addHelpButton('showassignedteacher', 'showassignedteacher', 'mod_groupselect');
         $mform->setDefault('showassignedteacher', false);
         $mform->disabledIf('showassignedteacher', 'assignteachers', 'notchecked');
         
-        $mform->addElement('advcheckbox', 'hidefullgroups', get_string('hidefullgroups', 'mod_groupformation'), '', 
+        $mform->addElement('advcheckbox', 'hidefullgroups', get_string('hidefullgroups', 'mod_groupselect'), '', 
                         array('optional'=>true, 'group'=>null), array(0,1));
-        $mform->addHelpButton('hidefullgroups', 'hidefullgroups', 'mod_groupformation');
+        $mform->addHelpButton('hidefullgroups', 'hidefullgroups', 'mod_groupselect');
 
-        $mform->addElement('advcheckbox', 'deleteemptygroups', get_string('deleteemptygroups', 'mod_groupformation'), '',
+        $mform->addElement('advcheckbox', 'deleteemptygroups', get_string('deleteemptygroups', 'mod_groupselect'), '',
         		array('optional'=>true, 'group'=>null), array(0,1));
-        $mform->addHelpButton('deleteemptygroups', 'deleteemptygroups', 'mod_groupformation');
+        $mform->addHelpButton('deleteemptygroups', 'deleteemptygroups', 'mod_groupselect');
         $mform->setDefault('deleteemptygroups', true);
         
         

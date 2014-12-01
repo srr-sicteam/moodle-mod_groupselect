@@ -21,11 +21,11 @@ $string['export_download'] = 'Download CSV-file';
 $string['fromallgroups'] = 'All groups';
 $string['globalpassword_help'] = 'Set a global password for group joining. Overrides student set passwords.';
 $string['groupid'] = 'Group ID';
-$string['groupformation:addinstance'] = 'Add a new group self-selection';
-$string['groupformation:assign'] = 'Allow to assign teachers to groups';
-$string['groupformation:create'] = 'Allow creating of group';
-$string['groupformation:select'] = 'Allow becoming of group member';
-$string['groupformation:unselect'] = 'Allow leaving of group';
+$string['groupselect:addinstance'] = 'Add a new group self-selection';
+$string['groupselect:assign'] = 'Allow to assign teachers to groups';
+$string['groupselect:create'] = 'Allow creating of group';
+$string['groupselect:select'] = 'Allow becoming of group member';
+$string['groupselect:unselect'] = 'Allow leaving of group';
 $string['hidefullgroups'] = 'Hide full groups from the main view';
 $string['hidefullgroups_help'] = 'If set, hides all groups, which have reached max member count, from the main list view.'
         . ' (excluding user\'s own group). May be useful if the activity has lots of groups.';
@@ -44,7 +44,7 @@ $string['minmembers_help'] = 'Minimum number of members per group. Adds notifica
         . ' under this limit. Default is 0 (disabled).';
 $string['minmembers_icon'] = 'Group has less members than required';
 $string['minmembers_notification'] = 'Your group has less members than required! Minimum is {$a}.';
-$string['modulename'] = 'Group self-formation';
+$string['modulename'] = 'Group self-selection';
 $string['modulename_help'] = <<<'END_OF_HELP'
 <p>Lets students create and select groups. Features:
 </p>
@@ -58,16 +58,16 @@ $string['modulename_help'] = <<<'END_OF_HELP'
         assignment submissions etc.</li>
 </ul>
 
-<p>Currently in alpha stage, any feedback would be appreciated! (pirkka.pyykkonen@tut.fi)</p>
+<p>Currently in beta stage, any feedback would be appreciated! (pirkka.pyykkonen@tut.fi)</p>
 END_OF_HELP;
-$string['modulenameplural'] = 'Group self-formations';
+$string['modulenameplural'] = 'Group self-selections';
 $string['nogroups'] = 'No groups available to select from, sorry.';
 $string['notavailableanymore'] = 'Group selection is not available anymore, sorry (since {$a}).';
 $string['notavailableyet'] = 'Group selection will be available on {$a}.';
 $string['ok'] = 'OK';
 $string['password'] = 'Requires password';
 $string['pluginadministration'] = 'Module administration';
-$string['pluginname'] = 'Group self-formation';
+$string['pluginname'] = 'Group self-selection';
 $string['saving'] = 'Saving...';
 $string['selectconfirm'] = 'Do you really want to become member of the group <em>{$a}</em>?';
 $string['showassignedteacher'] = 'Show assigned teachers';

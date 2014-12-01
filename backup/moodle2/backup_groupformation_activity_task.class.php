@@ -16,20 +16,20 @@
 
 /**
  * @package    mod
- * @subpackage groupformation
+ * @subpackage groupselect
  * @copyright  2011 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
 
-require_once($CFG->dirroot . '/mod/groupformation/backup/moodle2/backup_groupformation_stepslib.php'); // Because it exists (must)
+require_once($CFG->dirroot . '/mod/groupselect/backup/moodle2/backup_groupselect_stepslib.php'); // Because it exists (must)
 
 /**
- * groupformation backup task that provides all the settings and steps to perform one
+ * groupselect backup task that provides all the settings and steps to perform one
  * complete backup of the activity
  */
-class backup_groupformation_activity_task extends backup_activity_task {
+class backup_groupselect_activity_task extends backup_activity_task {
 
     /**
      * Define (add) particular settings this activity can have
@@ -43,7 +43,7 @@ class backup_groupformation_activity_task extends backup_activity_task {
      */
     protected function define_my_steps() {
         // Choice only has one structure step
-        $this->add_step(new backup_groupformation_activity_structure_step('groupformation_structure', 'groupformation.xml'));
+        $this->add_step(new backup_groupselect_activity_structure_step('groupselect_structure', 'groupselect.xml'));
     }
 
     /**
@@ -55,13 +55,13 @@ class backup_groupformation_activity_task extends backup_activity_task {
 
         $base = preg_quote($CFG->wwwroot,"/");
 
-        // Link to the list of groupformations
-        $search="/(".$base."\/mod\/groupformation\/index.php\?id\=)([0-9]+)/";
-        $content= preg_replace($search, '$@groupformationINDEX*$2@$', $content);
+        // Link to the list of groupselects
+        $search="/(".$base."\/mod\/groupselect\/index.php\?id\=)([0-9]+)/";
+        $content= preg_replace($search, '$@groupselectINDEX*$2@$', $content);
 
-        // Link to groupformation view by moduleid
-        $search="/(".$base."\/mod\/groupformation\/view.php\?id\=)([0-9]+)/";
-        $content= preg_replace($search, '$@groupformationVIEWBYID*$2@$', $content);
+        // Link to groupselect view by moduleid
+        $search="/(".$base."\/mod\/groupselect\/view.php\?id\=)([0-9]+)/";
+        $content= preg_replace($search, '$@groupselectVIEWBYID*$2@$', $content);
 
         return $content;
     }

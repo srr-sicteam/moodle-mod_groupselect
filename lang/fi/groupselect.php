@@ -23,11 +23,11 @@ $string['export_download'] = 'Lataa CSV-tiedosto';
 $string['fromallgroups'] = 'Kaikki ryhmät';
 $string['globalpassword_help'] = 'Aseta yleinen salasana ryhmään liittymiselle. Korvaa mahdollisen ryhmäkohtaisen salasanan.';
 $string['groupid'] = 'Ryhmätunniste';
-$string['groupformation:addinstance'] = 'Luo uusi ryhmävalinta';
-$string['groupformation:assign'] = 'Salli assistenttien jakaminen ryhmiin';
-$string['groupformation:create'] = 'Salli ryhmän luonti';
-$string['groupformation:select'] = 'Salli ryhmään liittyminen';
-$string['groupformation:unselect'] = 'Salli ryhmästä lähteminen';
+$string['groupselect:addinstance'] = 'Luo uusi ryhmävalinta';
+$string['groupselect:assign'] = 'Salli assistenttien jakaminen ryhmiin';
+$string['groupselect:create'] = 'Salli ryhmän luonti';
+$string['groupselect:select'] = 'Salli ryhmään liittyminen';
+$string['groupselect:unselect'] = 'Salli ryhmästä lähteminen';
 $string['hidefullgroups'] = 'Piilota täynnä olevat ryhmät';
 $string['hidefullgroups_help'] = 'Piilottaa täynnä olevat ryhmät listanäkymästä (poislukien käyttäjän'
         . ' oman ryhmän). Voi olla hyödyllinen, jos ryhmiä on paljon.';

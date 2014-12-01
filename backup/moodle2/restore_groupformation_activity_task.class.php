@@ -16,20 +16,20 @@
 
 /**
  * @package    mod
- * @subpackage groupformation
+ * @subpackage groupselect
  * @copyright  2011 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/mod/groupformation/backup/moodle2/restore_groupformation_stepslib.php'); // Because it exists (must)
+require_once($CFG->dirroot . '/mod/groupselect/backup/moodle2/restore_groupselect_stepslib.php'); // Because it exists (must)
 
 /**
- * groupformation restore task that provides all the settings and steps to perform one
+ * groupselect restore task that provides all the settings and steps to perform one
  * complete restore of the activity
  */
-class restore_groupformation_activity_task extends restore_activity_task {
+class restore_groupselect_activity_task extends restore_activity_task {
 
     /**
      * Define (add) particular settings this activity can have
@@ -43,7 +43,7 @@ class restore_groupformation_activity_task extends restore_activity_task {
      */
     protected function define_my_steps() {
         // label only has one structure step
-        $this->add_step(new restore_groupformation_activity_structure_step('groupformation_structure', 'groupformation.xml'));
+        $this->add_step(new restore_groupselect_activity_structure_step('groupselect_structure', 'groupselect.xml'));
     }
 
     /**
@@ -53,7 +53,7 @@ class restore_groupformation_activity_task extends restore_activity_task {
     static public function define_decode_contents() {
         $contents = array();
 
-        $contents[] = new restore_decode_content('groupformation', array('intro'), 'groupformation');
+        $contents[] = new restore_decode_content('groupselect', array('intro'), 'groupselect');
 
         return $contents;
     }
@@ -65,8 +65,8 @@ class restore_groupformation_activity_task extends restore_activity_task {
     static public function define_decode_rules() {
         $rules = array();
 
-        $rules[] = new restore_decode_rule('groupformationVIEWBYID', '/mod/groupformation/view.php?id=$1', 'course_module');
-        $rules[] = new restore_decode_rule('groupformationINDEX', '/mod/groupformation/index.php?id=$1', 'course');
+        $rules[] = new restore_decode_rule('groupselectVIEWBYID', '/mod/groupselect/view.php?id=$1', 'course_module');
+        $rules[] = new restore_decode_rule('groupselectINDEX', '/mod/groupselect/index.php?id=$1', 'course');
 
         return $rules;
 
@@ -75,17 +75,17 @@ class restore_groupformation_activity_task extends restore_activity_task {
     /**
      * Define the restore log rules that will be applied
      * by the {@link restore_logs_processor} when restoring
-     * groupformation logs. It must return one array
+     * groupselect logs. It must return one array
      * of {@link restore_log_rule} objects
      */
     static public function define_restore_log_rules() {
         $rules = array();
 
-        $rules[] = new restore_log_rule('groupformation', 'select', 'view.php?id={course_module}', '{groupformation}');
-        $rules[] = new restore_log_rule('groupformation', 'unselect', 'view.php?id={course_module}', '{groupformation}');
-        $rules[] = new restore_log_rule('groupformation', 'add', 'view.php?id={course_module}', '{groupformation}');
-        $rules[] = new restore_log_rule('groupformation', 'update', 'view.php?id={course_module}', '{groupformation}');
-        $rules[] = new restore_log_rule('groupformation', 'view', 'view.php?id={course_module}', '{groupformation}');
+        $rules[] = new restore_log_rule('groupselect', 'select', 'view.php?id={course_module}', '{groupselect}');
+        $rules[] = new restore_log_rule('groupselect', 'unselect', 'view.php?id={course_module}', '{groupselect}');
+        $rules[] = new restore_log_rule('groupselect', 'add', 'view.php?id={course_module}', '{groupselect}');
+        $rules[] = new restore_log_rule('groupselect', 'update', 'view.php?id={course_module}', '{groupselect}');
+        $rules[] = new restore_log_rule('groupselect', 'view', 'view.php?id={course_module}', '{groupselect}');
 
         return $rules;
     }
@@ -103,7 +103,7 @@ class restore_groupformation_activity_task extends restore_activity_task {
     static public function define_restore_log_rules_for_course() {
         $rules = array();
 
-        $rules[] = new restore_log_rule('groupformation', 'view all', 'index.php?id={course}', null);
+        $rules[] = new restore_log_rule('groupselect', 'view all', 'index.php?id={course}', null);
 
         return $rules;
     }
