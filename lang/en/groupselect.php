@@ -3,7 +3,7 @@
 $string['action'] = 'Action';
 $string['assigngroup'] = 'Assign non-editing teachers to groups';
 $string['assigngroup_confirm'] = 'This will assign non-editing teachers to groups, overriding possible previous assignment irreversibly. Are you sure?';
-$string['assigngroup_help'] = 'If set, enables a button which assigns non-editing teachers to groups. Assigned non-editing teachers are not group members, '
+$string['assigngroup_help'] = 'If set, enables a button which assigns non-editing teachers to groups (if course has non-editing teachers). Assigned non-editing teachers are not group members, '
         . 'but they show up in export file and in the main view (if set). Useful if course uses assistants to handle groups.';
 $string['assignedteacher'] = 'Assigned non-editing teacher';
 $string['cannotselectclosed'] = 'You can not become group member any more.';

@@ -32,4 +32,4 @@ $module->cron      = 0;          // Period for cron to check this module (secs)
 $module->component = 'mod_groupselect'; // Full name of the plugin (used for diagnostics)
 
 $module->maturity  = MATURITY_BETA;
-$module->release   = "0.4 beta (20141201)"; // User-friendly version number
+$module->release   = "3.0 beta (20141201)"; // User-friendly version number
