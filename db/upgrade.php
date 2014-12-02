@@ -120,7 +120,7 @@ function xmldb_groupselect_upgrade($oldversion) {
         $fields[] = new xmldb_field('studentcansetdesc', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '1', 'assignteachers');
         $fields[] = new xmldb_field('showassignedteacher', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'studentcansetdesc');
 
-        foreach($field as $field) {
+        foreach($fields as $field) {
             if (!$dbman->field_exists($table, $field)) {
                 $dbman->add_field($table, $field);
             }
@@ -131,8 +131,8 @@ function xmldb_groupselect_upgrade($oldversion) {
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
         $table->add_field('groupid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, 'id');
         $table->add_field('password', XMLDB_TYPE_CHAR, '60', null, XMLDB_NOTNULL, null, null, 'groupid');
-        $table->add_field('instance_id', XMLDB_TYPE_INTERGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, 'password');
-        $table->add_key('primary', XMLDB_KEY_PRIMARY, 'id');
+        $table->add_field('instance_id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, 'password');
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
         
         if(!$dbman->table_exists($table)) {
             $dbman->create_table($table);
@@ -142,9 +142,9 @@ function xmldb_groupselect_upgrade($oldversion) {
         $table = new xmldb_table('groupselect_groups_teachers');
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
         $table->add_field('groupid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, 'id');
-        $table->add_field('teacherid', XMLDB_TYPE_INTERGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, 'groupid');
-        $table->add_field('instance_id', XMLDB_TYPE_INTERGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, 'teacherid');
-        $table->add_key('primary', XMLDB_KEY_PRIMARY, 'id');
+        $table->add_field('teacherid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, 'groupid');
+        $table->add_field('instance_id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, 'teacherid');
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
         
         if(!$dbman->table_exists($table)) {
             $dbman->create_table($table);
