@@ -287,7 +287,7 @@ if ($export and $canexport) {
 	) );
 	
 	// Fetch students & groups
-	$sql = 'SELECT u.username, u.idnumber, u.firstname, u.lastname, u.email, g.id AS groupid 
+	$sql = 'SELECT m.id, u.username, u.idnumber, u.firstname, u.lastname, u.email, g.id AS groupid 
             FROM   {user} u, {groups} g, {groups_members} m
             WHERE  g.courseid = ?
             AND    g.id = m.groupid
@@ -387,8 +387,14 @@ if ($export and $canexport) {
                 $groupsize = 0;
 		for($i=1; $i < $max_group_size +1; $i++) {
 			if(isset($r->$i)) {
+                                // First element contains group-member relation id which is not needed, so skip it
+                                $first = true;
 				foreach ($r->$i as $member_field) {
-					$row[] = $QUOTE.strtr($member_field, $CHARS_TO_ESCAPE).$QUOTE;
+                                   if($first) {
+                                      $first = false;
+                                      continue;
+                                   }
+                                   $row[] = $QUOTE.strtr($member_field, $CHARS_TO_ESCAPE).$QUOTE;
 				}
 				array_pop($row);
                                 $groupsize++;
