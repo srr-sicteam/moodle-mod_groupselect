@@ -52,7 +52,7 @@ class moodle1_mod_groupselect_handler extends moodle1_mod_handler {
      */
     public function get_paths() {
         return array(
-            new convert_path('groupselect', '/MOODLE_BACKUP/COURSE/MODULES/MOD/groupselect',
+            new convert_path('groupselect', '/MOODLE_BACKUP/COURSE/MODULES/MOD/GROUPSELECT',
                     array(
                         'newfields' => array(
                             'introformat' => FORMAT_MOODLE,
