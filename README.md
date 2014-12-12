@@ -1,8 +1,7 @@
 Group self-selection module for Moodle
 
+* Copyright (C) 2014 Tampere University of Technology, Pirkka Pyykkönen (pirkka.pyykkonen ÄT tut.fi)
 * Copyright (C) 2008-2011 Petr Skoda (http://skodak.org/)
-* Copyright 2014 Tampere University of Technology, Pirkka Pyykkönen
-(pirkka.pyykkonen ÄT tut.fi)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -12,7 +11,8 @@ the Free Software Foundation; either version 3 of the License, or
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details: http://www.gnu.org/copyleft/gpl.html
+GNU General Public License for more details:
+http://www.gnu.org/copyleft/gpl.html
 
 Lets students create and select groups. Features:
 
@@ -24,10 +24,13 @@ Lets students create and select groups. Features:
 
 Currently in beta stage, any feedback would be appreciated!
 
+Thanks to Petr Skoda, Helen Foster, Daniel Neis Araujo and other
+contributors, on whose earlier work this plugin is based on.
+
 Project page:
 
-* https://github.com/birrel/moodle-mod_groupselect
-* https://github.com/skodak/moodle-mod_groupselect (original version)
+* https://github.com/birrel/moodle-mod_groupselect (current)
+* https://github.com/skodak/moodle-mod_groupselect (original <= 2.1 versions) by Petr Skoda
 
 NOTABLE UPDATES:
 * 2014.12.01: Fixed upgrade.php, project renamed as groupselect
