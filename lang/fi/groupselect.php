@@ -2,11 +2,8 @@
 
 $string['action'] = 'Toiminto';
 $string['assigngroup'] = 'Jaa assistentit ryhmiin';
-$string['assigngroup_confirm'] = 'Jakaa opettaja ilman muokkausoikeutta -roolin käyttäjät ryhmiin. Toiminto korvaa mahdollisen aikaisemman jaon'
-        . ' jaon peruuttamattomasti. Oletko varma?';
-$string['assigngroup_help'] = 'Jos päällä, opettajalle näkyy päänäkymässä painike, joka mahdollistaa assistenttien (kurssilla olevien opettaja'
-        . ' ilman muokkausoikeutta -roolin omaavien käyttäjien) jakamisen ryhmiin. Jaetut assistentit eivät ole ryhmien jäseniä, mutta näkyvät viedyssä csv-'
-        . 'tiedostossa ja päänäkymässä (jos asetettu).';
+$string['assigngroup_confirm'] = 'Jakaa opettaja ilman muokkausoikeutta -roolin käyttäjät ryhmiin. Toiminto korvaa mahdollisen aikaisemman jaon peruuttamattomasti. Oletko varma?';
+$string['assigngroup_help'] = 'Jos päällä, opettajalle näkyy päänäkymässä painike, joka mahdollistaa assistenttien (kurssilla olevien opettaja ilman muokkausoikeutta -roolin omaavien käyttäjien) jakamisen ryhmiin. Jaetut assistentit eivät ole ryhmien jäseniä, mutta näkyvät viedyssä csv-tiedostossa ja päänäkymässä (jos asetettu).';
 $string['assignedteacher'] = 'Ryhmän assistentti';
 $string['cannotselectclosed'] = 'Et voi enää liittyä ryhmään.';
 $string['cannotselectmaxed'] = 'Et voi liittyä ryhmään {$a} - ryhmä on täynnä.';
@@ -29,8 +26,7 @@ $string['groupselect:create'] = 'Salli ryhmän luonti';
 $string['groupselect:select'] = 'Salli ryhmään liittyminen';
 $string['groupselect:unselect'] = 'Salli ryhmästä lähteminen';
 $string['hidefullgroups'] = 'Piilota täynnä olevat ryhmät';
-$string['hidefullgroups_help'] = 'Piilottaa täynnä olevat ryhmät listanäkymästä (poislukien käyttäjän'
-        . ' oman ryhmän). Voi olla hyödyllinen, jos ryhmiä on paljon.';
+$string['hidefullgroups_help'] = 'Piilottaa täynnä olevat ryhmät listanäkymästä (poislukien käyttäjän oman ryhmän). Voi olla hyödyllinen, jos ryhmiä on paljon.';
 $string['incorrectpassword'] = 'Virheellinen salasana';
 $string['managegroups'] = 'Hallinnoi ryhmiä';
 $string['maxcharlenreached'] = 'Merkkien enimmäismäärä saavutettu';
@@ -46,21 +42,7 @@ $string['minmembers_help'] = 'Ryhmän jäsenten vähimmäismäärä. Jos käytö
 $string['minmembers_icon'] = 'Ryhmässä on liian vähän jäseniä';
 $string['minmembers_notification'] = 'Ryhmässäsi on liian vähän jäseniä! Vähimmäismäärä on {$a}.';
 $string['modulename'] = 'Ryhmänmuodostus';
-$string['modulename_help'] = <<<'END_OF_HELP'
-<p>Antaa opiskelijoiden itse muodostaa ryhmät. Ominaisuudet:
-</p>
-
-<ul>
-<li>Opiskelija voi luoda ryhmän, antaa sille kuvauksen ja salasanan</li>
-<li>Opiskelijat voivat liittyä ryhmiin</li>
-<li>Assistenttien jakaminen ryhmiin</li>
-<li>Opettaja voi ladata listan ryhmistä csv-tiedostona </li>
-<li>Yhteensopiva Moodlen ryhmien kanssa: ryhmiä voi tarvittaessa luoda käyttäjähallinnan kautta,
-    voi tehdä ryhmäpalautuksia jne.</li>
-</ul>
-
-<p>Beta-versio, kaikki palaute on tervetullutta! (pirkka.pyykkonen@tut.fi)</p>
-END_OF_HELP;
+$string['modulename_help'] = '<p>Antaa opiskelijoiden itse muodostaa ryhmät. Ominaisuudet:</p><ul><li>Opiskelija voi luoda ryhmän, antaa sille kuvauksen ja salasanan</li><li>Opiskelijat voivat liittyä ryhmiin</li><li>Assistenttien jakaminen ryhmiin</li><li>Opettaja voi ladata listan ryhmistä csv-tiedostona </li><li>Yhteensopiva Moodlen ryhmien kanssa: ryhmiä voi tarvittaessa luoda käyttäjähallinnan kautta, voi tehdä ryhmäpalautuksia jne.</li></ul><p>Beta-versio, kaikki palaute on tervetullutta! (pirkka.pyykkonen@tut.fi)</p>';
 $string['modulenameplural'] = 'Ryhmänmuodostukset';
 $string['nogroups'] = 'Ei luotuja ryhmiä.';
 $string['notavailableanymore'] = 'Ryhmävalinta sulkeutunut {$a}.';
@@ -72,8 +54,7 @@ $string['pluginname'] = 'Ryhmänmuodostus';
 $string['saving'] = 'Tallennetaan';
 $string['selectconfirm'] = 'Haluatko todella liittyä ryhmään <em>{$a}</em>?';
 $string['showassignedteacher'] = 'Näytä jaetut assistentit';
-$string['showassignedteacher_help'] = 'Jos asetettu, ryhmälle jaettu assistentti näkyy päänäkymän jäsenlistassa. Hyödyllinen, jos opiskelijoiden on'
-        . ' tarpeen tietää ryhmänsä assistentti.';
+$string['showassignedteacher_help'] = 'Jos asetettu, ryhmälle jaettu assistentti näkyy päänäkymän jäsenlistassa. Hyödyllinen, jos opiskelijoiden on tarpeen tietää ryhmänsä assistentti.';
 $string['studentcancreate'] = 'Opiskelijat voivat luoda ryhmiä';
 $string['studentcancreate_help'] = 'Salli ryhmättömien opiskelijoiden (valitussa ryhmittelyssä) luoda ryhmiä';
 $string['studentcansetdesc'] = 'Opiskelijat voivat asettaa ryhmälleen kuvauksen ja muokata sitä';
