@@ -33,6 +33,8 @@ Project page:
 * https://github.com/skodak/moodle-mod_groupselect (original <= 2.1 versions) by Petr Skoda
 
 NOTABLE UPDATES:
+* 2014.12.17: Migrated to new logging system
+* 2014.12.15: Small fixes
 * 2014.12.01: Fixed upgrade.php, project renamed as groupselect
 * 2014.11.07: Non-editing teacher assignment, group description editing, improved csv-export, small optional features added
 * 2014.09.11: Fixed mysql insertion related bug, added some notifications and small fixes

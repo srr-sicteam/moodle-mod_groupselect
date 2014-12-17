@@ -61,7 +61,7 @@ $course = $DB->get_record ( 'course', array (
 require_login ( $course, true, $cm );
 $context = context_module::instance ( $cm->id );
 
-add_to_log ( $course->id, 'groupselect', 'view', 'view.php?id=' . $cm->id, $groupselect->id, $cm->id );
+//add_to_log ( $course->id, 'groupselect', 'view', 'view.php?id=' . $cm->id, $groupselect->id, $cm->id );
 
 $PAGE->set_url ( '/mod/groupselect/view.php', array (
 		'id' => $cm->id 
@@ -70,6 +70,14 @@ $PAGE->add_body_class ( 'mod_groupselect' );
 $PAGE->set_title ( $course->shortname . ': ' . $groupselect->name );
 $PAGE->set_heading ( $course->fullname );
 $PAGE->set_activity_record ( $groupselect );
+
+$event = \mod_groupselect\event\course_module_viewed::create(array(
+    'objectid' => $groupselect->id,
+    'context' => $context,
+));
+$event->add_record_snapshot('course', $course);
+$event->add_record_snapshot('groupselect', $groupselect);
+$event->trigger();
 
 $mygroups = groups_get_all_groups ( $course->id, $USER->id, $groupselect->targetgrouping, 'g.*' );
 $isopen = groupselect_is_open ( $groupselect );
@@ -172,7 +180,7 @@ if ($cancreate and $isopen) {
 		}
 		
 		groups_add_member ( $id, $USER->id );
-		add_to_log ( $course->id, 'groupselect', 'select', 'view.php?id=' . $cm->id, $groupselect->id, $cm->id );
+		//add_to_log ( $course->id, 'groupselect', 'select', 'view.php?id=' . $cm->id, $groupselect->id, $cm->id );
 		
 		if ($formdata->password !== '') {
 			$passworddata = ( object ) array (
@@ -222,7 +230,7 @@ if ($select and $canselect and isset ( $groups [$select] ) and $isopen) {
 		$problems [] = get_string ( 'cannotselectmaxed', 'mod_groupselect', $grpname );
 	} else if ($return = $mform->get_data ()) {
 		groups_add_member ( $select, $USER->id );
-		add_to_log ( $course->id, 'groupselect', 'select', 'view.php?id=' . $cm->id, $groupselect->id, $cm->id );
+		//add_to_log ( $course->id, 'groupselect', 'select', 'view.php?id=' . $cm->id, $groupselect->id, $cm->id );
 		redirect ( $PAGE->url );
 	} else {
 		echo $OUTPUT->header ();
@@ -247,7 +255,7 @@ if ($select and $canselect and isset ( $groups [$select] ) and $isopen) {
 					'groupid' => $unselect 
 			) );
 		}
-		add_to_log ( $course->id, 'groupselect', 'unselect', 'view.php?id=' . $cm->id, $groupselect->id, $cm->id );
+		//add_to_log ( $course->id, 'groupselect', 'unselect', 'view.php?id=' . $cm->id, $groupselect->id, $cm->id );
 		redirect ( $PAGE->url );
 	} else {
 		$grpname = format_string ( $mygroups [$unselect]->name, true, array (
