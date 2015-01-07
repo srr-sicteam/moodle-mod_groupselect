@@ -109,7 +109,8 @@ function groupselect_update_instance($groupselect) {
     $DB->update_record('groupselect', $groupselect);
 
     if ($groupselect->timedue) {
-        if ($event->id = $DB->get_field('event', 'id', array('modulename'=>'groupselect', 'instance'=>$groupselect->id))) {
+       $event = new stdClass(); 
+       if ($event->id = $DB->get_field('event', 'id', array('modulename'=>'groupselect', 'instance'=>$groupselect->id))) {
             $event->name         = $groupselect->name;
             $event->description  = format_module_intro('groupselect', $groupselect, $groupselect->coursemodule);
             $event->timestart    = $groupselect->timedue;
@@ -118,7 +119,6 @@ function groupselect_update_instance($groupselect) {
             $calendarevent->update($event);
 
         } else {
-            $event = new stdClass();
             $event->name         = $groupselect->name;
             $event->description  = format_module_intro('groupselect', $groupselect, $groupselect->coursemodule);// TODO: this is weird
             $event->courseid     = $groupselect->course;
