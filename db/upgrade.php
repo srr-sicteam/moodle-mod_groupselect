@@ -153,6 +153,17 @@ function xmldb_groupselect_upgrade($oldversion) {
     	// search savepoint reached
     	upgrade_mod_savepoint(true, 2014090201, 'groupselect');
     }
-
+   
+   if ($oldversion < 2015032500) {
+      $table = new xmldb_table('groupselect');
+      $field = new xmldb_field('password', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, 'maxmembers');
+      if($dbman->table_exists( $table ) and $dbman->field_exists($table, $field)) 
+      { 
+         
+             $dbman->drop_field($table, $field);
+      }
+      
+    	upgrade_mod_savepoint(true, 2015032500, 'groupselect');
+    }
     return true;
 }

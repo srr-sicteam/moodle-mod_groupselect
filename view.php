@@ -126,9 +126,9 @@ if (! is_enrolled ( $context )) {
 
 // Group description edit 
 if($groupid and $canedit and isset($mygroups[$groupid]) and data_submitted()) {
-    $egroup = $DB->get_record_sql('SELECT *
+    $egroup = $DB->get_record_sql("SELECT *
                                  FROM {groups} g
-                                WHERE g.id = ?', array($groupid));
+                                WHERE g.id = ?", array($groupid));
     if(strlen($newdescription) > create_form::DESCRIPTION_MAXLEN) {
         $newdescription = substr($newdescription, 0, create_form::DESCRIPTION_MAXLEN);
     }
@@ -281,33 +281,33 @@ if ($export and $canexport) {
 	// TODO: export only from target grouping
         // 
 	// Fetch groups & assigned teachers
-	$sql = 'SELECT g.id AS groupid, g.name, g.description, u.username, u.firstname, u.lastname, u.email
+	$sql = "SELECT g.id AS groupid, g.name, g.description, u.username, u.firstname, u.lastname, u.email
 			  FROM {groups} g
 		 LEFT JOIN {groupselect_groups_teachers} gt
 			    ON g.id = gt.groupid
 		 LEFT JOIN {user} u 
 			    ON u.id = gt.teacherid
 			 WHERE g.courseid = ?
-		  ORDER BY g.id ASC;';
+		  ORDER BY g.id ASC";
 	
 	$group_list = $DB->get_records_sql ( $sql, array (
 			$course->id 
 	) );
 	
 	// Fetch students & groups
-	$sql = 'SELECT m.id, u.username, u.idnumber, u.firstname, u.lastname, u.email, g.id AS groupid 
+	$sql = "SELECT m.id, u.username, u.idnumber, u.firstname, u.lastname, u.email, g.id AS groupid 
             FROM   {user} u, {groups} g, {groups_members} m
             WHERE  g.courseid = ?
             AND    g.id = m.groupid
             AND    u.id = m.userid
-            ORDER BY groupid ASC;';
+            ORDER BY groupid ASC";
 	
 	$students = $DB->get_records_sql ( $sql, array (
 			$course->id 
 	) );
 	
 	// Fetch max number of students in a group (may differ from setting, because teacher may add members w/o limits)
-	$sql = 'SELECT MAX(m.members) AS max
+	$sql = "SELECT MAX(m.members) AS max
 			  FROM (SELECT s.groupid, COUNT(s.groupid) AS members 
 			          FROM (SELECT g.id AS groupid
             				  FROM {user} u, {groups} g, {groups_members} m
@@ -315,7 +315,7 @@ if ($export and $canexport) {
                                AND g.id = m.groupid
                                AND u.id = m.userid
                           ORDER BY groupid ASC) s
-			      GROUP BY s.groupid) m;';		
+			      GROUP BY s.groupid) m";		
 			
 	$max_group_size = $DB->get_records_sql ( $sql, array (
 			$course->id 
@@ -478,15 +478,6 @@ if ($assign and $canassign) {
 
 }
 
-
-
-
-
-
-
-
-
-
 // *** PAGE OUTPUT ***
 echo $OUTPUT->header ();
 echo $OUTPUT->heading ( format_string ( $groupselect->name, true, array (
@@ -570,10 +561,10 @@ if (empty ( $groups )) {
 	$data = array ();
 	$actionpresent = false;
 	
-	$assigned_relation = $DB->get_records_sql ( 'SELECT g.id AS rid, g.teacherid AS id, g.groupid
+	$assigned_relation = $DB->get_records_sql ( "SELECT g.id AS rid, g.teacherid AS id, g.groupid
     											FROM  {groupselect_groups_teachers} g
-    									     	WHERE g.instance_id = ?;', array (
-			'instance_id' => $id 
+    									     	WHERE g.instance_id = ?", array (
+                                                                                    'instance_id' => $id 
 	) );
 	$assigned_teacher_ids = array ();
 	foreach ( $assigned_relation as $r ) {
@@ -582,14 +573,14 @@ if (empty ( $groups )) {
 	$assigned_teacher_ids = array_unique ( $assigned_teacher_ids );
 
 	if (count ( $assigned_teacher_ids ) > 0) {
-		$sql = 'SELECT   *
-    		      FROM   {user} u
-    		     WHERE ';
+		$sql = "SELECT   *
+    		          FROM   {user} u
+    		         WHERE ";
 		foreach ( $assigned_teacher_ids as $i ) {
-			$sql = $sql . 'u.id = ? OR ';
+			$sql = $sql . "u.id = ? OR ";
 		}
 		$sql = substr ( $sql, 0, - 3 );
-		$sql = $sql . ';';
+	//	$sql = $sql . ";";
 		$assigned_teachers = $DB->get_records_sql ( $sql, $assigned_teacher_ids );
 	}
 	

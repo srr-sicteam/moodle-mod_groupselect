@@ -37,10 +37,11 @@ class select_form extends moodleform {
 		
 		list ( $data, $this->groupselect, $grpname ) = $this->_customdata;
 		
-		if ($this->groupselect->password !== '') {
-			$mform->addElement ( 'passwordunmask', 'password', get_string ( 'password', 'mod_groupselect' ), 'maxlength="254" size="24"' );
-			$mform->setType ( 'password', PARAM_RAW );
-		} else if ($data ['group_password']) {
+//		if ($this->groupselect->password !== '') {
+//			$mform->addElement ( 'passwordunmask', 'password', get_string ( 'password', 'mod_groupselect' ), 'maxlength="254" size="24"' );
+//			$mform->setType ( 'password', PARAM_RAW );
+//		} 
+                if ($data ['group_password']) {
 			$mform->addElement ( 'passwordunmask', 'password', get_string ( 'password', 'mod_groupselect' ), 'maxlength="254" size="24"' );
 			$mform->setType ( 'password', PARAM_RAW );
 		}
@@ -63,15 +64,16 @@ class select_form extends moodleform {
 		
 		$errors = parent::validation ( $data, $files );
 		
-		if ($this->groupselect->password !== '') {
-			if ($this->groupselect->password !== $data ['password']) {
-				$errors ['password'] = get_string ( 'incorrectpassword', 'mod_groupselect' );
-			}
-		} else if ($data ['group_password']) {
+	//	if ($this->groupselect->password !== '') {
+	//		if ($this->groupselect->password !== $data ['password']) {
+	//			$errors ['password'] = get_string ( 'incorrectpassword', 'mod_groupselect' );
+	//		}
+	//	} else
+                if ($data ['group_password']) {
 			global $DB;
 			$sql = "SELECT  g.password
-                    FROM    {groupselect_passwords} g
-                    WHERE   g.groupid = ?";
+                                  FROM    {groupselect_passwords} g
+                                 WHERE   g.groupid = ?";
 			$params = array (
 					'id' => $data ['select'] 
 			);

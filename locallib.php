@@ -116,10 +116,10 @@ function groupselect_get_password_protected_groups($groupselect) {
  */
 function groupselect_get_context_members_by_role($context, $roleid) {
 	global $DB;
-	$sql = 'SELECT r.userid
-            FROM   {role_assignments} r
-            WHERE  r.contextid = ?
-			AND    r.roleid = ?;';
+	$sql = "SELECT r.userid
+                  FROM   {role_assignments} r
+                 WHERE  r.contextid = ?
+              	   AND    r.roleid = ?";
 	
 	return $DB->get_records_sql($sql, array($context, $roleid));
 }
