@@ -46,7 +46,7 @@ class mod_groupselect_mod_form extends moodleform_mod {
         }
         $mform->addRule('name', null, 'required', null, 'client');
 
-        $this->add_intro_editor($CFG->requiremodintro);
+        $this->standard_intro_elements();
 
         //-------------------------------------------------------
 
