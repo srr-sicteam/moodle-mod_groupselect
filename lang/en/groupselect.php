@@ -26,6 +26,7 @@ $string['groupid'] = 'Group ID';
 $string['groupselect:addinstance'] = 'Add a new group self-selection';
 $string['groupselect:assign'] = 'Allow to assign teachers to groups';
 $string['groupselect:create'] = 'Allow creating of group';
+$string['groupselect:export'] = 'Allow export of group members';
 $string['groupselect:select'] = 'Allow becoming of group member';
 $string['groupselect:unselect'] = 'Allow leaving of group';
 $string['hidefullgroups'] = 'Hide full groups from the main view';

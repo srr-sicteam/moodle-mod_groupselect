@@ -293,48 +293,49 @@ if ($select and $canselect and isset ( $groups [$select] ) and $isopen) {
 
 // Group user data export
 if ($export and $canexport) {
-	// TODO: export only from target grouping
-	//
 	// Fetch groups & assigned teachers
-	$sql = "SELECT gt.id, g.id AS groupid, g.name, g.description, u.username, u.firstname, u.lastname, u.email
+        $params = ['cmid' => $id, 'courseid' => $course->id, 'instanceid' => $groupselect->id];
+        $groupingsql = '';
+        if ($groupselect->targetgrouping) {
+            $groupingsql = "JOIN {groupings_groups} gg ON gg.groupid = g.id AND gg.groupingid = :grouping";
+            $params['grouping'] = $groupselect->targetgrouping;
+        }
+	$sql = "SELECT g.id AS groupid, g.name, g.description, u.username, u.firstname, u.lastname, u.email
 			  FROM {groups} g
+                 $groupingsql
 		 LEFT JOIN {groupselect_groups_teachers} gt
-			    ON g.id = gt.groupid
+			    ON g.id = gt.groupid AND gt.instance_id = :instanceid
 		 LEFT JOIN {user} u
 			    ON u.id = gt.teacherid
-			 WHERE g.courseid = ?
+			 WHERE g.courseid = :courseid
 		  ORDER BY g.id ASC";
-
-	$group_list = $DB->get_records_sql ( $sql, array (
-			$course->id
-	) );
+	$group_list = $DB->get_records_sql ( $sql, $params );
 
 	// Fetch students & groups
 	$sql = "SELECT m.id, u.username, u.idnumber, u.firstname, u.lastname, u.email, g.id AS groupid
-            FROM   {user} u, {groups} g, {groups_members} m
-            WHERE  g.courseid = ?
-            AND    g.id = m.groupid
-            AND    u.id = m.userid
+            FROM   {groups} g
+            $groupingsql
+            JOIN {groups_members} m ON g.id = m.groupid
+            JOIN {user} u ON u.id = m.userid
+            WHERE  g.courseid = :courseid
             ORDER BY groupid ASC";
 
-	$students = $DB->get_records_sql ( $sql, array (
-			$course->id
-	) );
+	$students = $DB->get_records_sql ( $sql, $params );
 
 	// Fetch max number of students in a group (may differ from setting, because teacher may add members w/o limits)
-	$sql = "SELECT MAX(m.members) AS max
-			  FROM (SELECT s.groupid, COUNT(s.groupid) AS members
-			          FROM (SELECT g.id AS groupid
-            				  FROM {user} u, {groups} g, {groups_members} m
-                             WHERE g.courseid = ?
-                               AND g.id = m.groupid
-                               AND u.id = m.userid
-                          ORDER BY groupid ASC) s
-			      GROUP BY s.groupid) m";
 
-	$max_group_size = $DB->get_records_sql ( $sql, array (
-			$course->id
-	) );
+        $sql = "SELECT MAX(t.memberscount) AS max
+            FROM (
+                SELECT g.id, COUNT(m.userid) AS memberscount
+                FROM {groups} g
+                $groupingsql
+                JOIN {groups_members} m on m.groupid = g.id
+                WHERE g.courseid = :courseid
+                GROUP BY g.id
+            ) t
+        ";
+
+	$max_group_size = $DB->get_records_sql ( $sql, $params );
 	$max_group_size = array_pop($max_group_size)->max;
 
 	 foreach ($students as $student) {
@@ -429,7 +430,9 @@ if ($export and $canexport) {
 
 	// File info
 	$separator = '_';
-	$filename = get_string ( 'modulename', 'mod_groupselect' ) . $separator . $course->shortname . $separator . date ( 'Y-m-d' ) . '.csv';
+	$filename = get_string ( 'modulename', 'mod_groupselect' ) . $separator .
+            clean_param(format_string($course->shortname), PARAM_FILE) . $separator .
+                date ( 'Y-m-d' ) . '.csv';
 	$filename = str_replace ( ' ', '', $filename );
 	$fs = get_file_storage ();
 	$fileinfo = array (
