@@ -31,8 +31,12 @@ class restore_groupselect_activity_structure_step extends restore_activity_struc
     protected function define_structure() {
 
         $paths = array();
+        $userinfo = $this->get_setting_value('userinfo');
+
         $paths[] = new restore_path_element('groupselect', '/activity/groupselect');
-        $paths[] = new restore_path_element('groupselect_groups_teachers', '/activity/groupselect/groupteachers/groupteacher');
+        if ($userinfo) {
+            $paths[] = new restore_path_element('groupselect_groups_teachers', '/activity/groupselect/groupteachers/groupteacher');
+        }
         $paths[] = new restore_path_element('groupselect_passwords', '/activity/groupselect/passwords/password');
 
         // Return the paths wrapped into standard activity structure
@@ -46,7 +50,7 @@ class restore_groupselect_activity_structure_step extends restore_activity_struc
         $oldid = $data->id;
         $data->course = $this->get_courseid();
 
-        $data->timeavailable = $this->apply_date_offset($data->timemodified);
+        $data->timeavailable = $this->apply_date_offset($data->timeavailable);
         $data->timedue = $this->apply_date_offset($data->timedue);
         $data->timecreated = $this->apply_date_offset($data->timecreated);
         $data->timemodified = $this->apply_date_offset($data->timemodified);
@@ -75,10 +79,10 @@ class restore_groupselect_activity_structure_step extends restore_activity_struc
     	$data->groupid = $this->get_mappingid('group', $data->groupid);
 
     	// insert the groupselect record
-    	$newitemid = $DB->insert_record('groupselect_groups_teachers', $data);
-
-    	$this->set_mapping('groupselect_groups_teacher', $oldid, $newitemid, true);
-
+        if ($data->groupid && $data->teacherid) {
+            $newitemid = $DB->insert_record('groupselect_groups_teachers', $data);
+            $this->set_mapping('groupselect_groups_teacher', $oldid, $newitemid, true);
+        }
     }
 
     protected function process_groupselect_passwords($data) {
@@ -91,15 +95,15 @@ class restore_groupselect_activity_structure_step extends restore_activity_struc
     	$data->groupid = $this->get_mappingid('group', $data->groupid);
 
     	// insert the groupselect record
-    	$newitemid = $DB->insert_record('groupselect_passwords', $data);
-
-    	$this->set_mapping('groupselect_password', $oldid, $newitemid, true);
+        if ($data->groupid) {
+            $newitemid = $DB->insert_record('groupselect_passwords', $data);
+            $this->set_mapping('groupselect_password', $oldid, $newitemid, true);
+        }
 
     }
 
     protected function after_execute() {
         // Add groupselect related files, no need to match by itemname (just internally handled context)
         $this->add_related_files('mod_groupselect', 'intro', null);
-        $this->add_related_files('mod_groupselect', 'content', null);
     }
 }
