@@ -29,7 +29,8 @@ contributors, on whose earlier work this plugin is based on.
 
 Project page:
 
-* https://github.com/BLC-HTWChur/moodle-mod_groupselect (current fork) by HTWChur
+* https://github.com/marinaglancy/moodle-mod_groupselect (current fork) by Marina Glancy
+* https://github.com/BLC-HTWChur/moodle-mod_groupselect (fork) by HTWChur
 * https://github.com/birrel/moodle-mod_groupselect (fork) by Pirkka Pyykkönen
 * https://github.com/skodak/moodle-mod_groupselect (original <= 2.1 versions) by Petr Skoda
 
