@@ -44,7 +44,7 @@ class moodle1_mod_groupselect_handler extends moodle1_mod_handler {
      * defined. The method process_xxx() is not executed if the associated path element is
      * empty (i.e. it contains none elements or sub-paths only).
      *
-     * Note that the path /MOODLE_BACKUP/COURSE/MODULES/MOD/GROUPSELECT does not
+     * Note that the path /MOODLE_BACKUP/COURSE/MODULES/MOD/groupselect does not
      * actually exist in the file. The last element with the module name was
      * appended by the moodle1_converter class.
      *
@@ -63,7 +63,7 @@ class moodle1_mod_groupselect_handler extends moodle1_mod_handler {
     }
 
     /**
-     * This is executed every time we have one /MOODLE_BACKUP/COURSE/MODULES/MOD/GROUPSELECT
+     * This is executed every time we have one /MOODLE_BACKUP/COURSE/MODULES/MOD/groupselect
      * data available
      * @param array $data
      */

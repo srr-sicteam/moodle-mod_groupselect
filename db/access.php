@@ -8,48 +8,75 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * Page module capability definition
  *
- * @package    mod
+ * @package mod
  * @subpackage groupselect
- * @copyright  2011 Petr Skoda (http://skodak.org)
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright 2011 Petr Skoda (http://skodak.org)
+ * @copyright 2014 Tampere University of Technology, P. Pyykkönen (pirkka.pyykkonen ÄT tut.fi)
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-defined('MOODLE_INTERNAL') || die;
+defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
-    'mod/groupselect:addinstance' => array(
-        'riskbitmask' => RISK_XSS,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
-            'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
+        'mod/groupselect:addinstance' => array(
+                'riskbitmask' => RISK_XSS,
+                'captype' => 'write',
+                'contextlevel' => CONTEXT_COURSE,
+                'archetypes' => array(
+                        'editingteacher' => CAP_ALLOW,
+                        'manager' => CAP_ALLOW
+                ),
+                'clonepermissionsfrom' => 'moodle/course:manageactivities'
         ),
-        'clonepermissionsfrom' => 'moodle/course:manageactivities'
-    ),
 
-    'mod/groupselect:select' => array(
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_MODULE,
-        'archetypes' => array(
-            'student' => CAP_ALLOW,
-        )
-    ),
+        'mod/groupselect:create' => array(
+                'riskbitmask' => RISK_XSS,
+                'captype' => 'write',
+                'contextlevel' => CONTEXT_MODULE,
+                'archetypes' => array(
+                        'student' => CAP_ALLOW
+                )
+        ),
 
-    /* allow student if necessary via override */
-    'mod/groupselect:unselect' => array(
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_MODULE,
-        'archetypes' => array(
-        )
-    ),
+        'mod/groupselect:select' => array(
+                'captype' => 'write',
+                'contextlevel' => CONTEXT_MODULE,
+                'archetypes' => array(
+                        'student' => CAP_ALLOW
+                )
+        ),
+
+        'mod/groupselect:unselect' => array(
+                'captype' => 'write',
+                'contextlevel' => CONTEXT_MODULE,
+                'archetypes' => array(
+                        'student' => CAP_ALLOW
+                )
+        ),
+
+        'mod/groupselect:export' => array(
+                'riskbitmask' => RISK_PERSONAL,
+                    'captype' => 'read',
+                'contextlevel' => CONTEXT_MODULE,
+                'archetypes' => array(
+                		'manager' => CAP_ALLOW,
+                        'editingteacher' => CAP_ALLOW
+                )
+        ),
+        'mod/groupselect:assign' => array(
+        		'captype' => 'write',
+        		'contextlevel' => CONTEXT_MODULE,
+        		'archetypes' => array(
+        				'manager' => CAP_ALLOW,
+        				'editingteacher' => CAP_ALLOW
+        		)
+        ),
 );

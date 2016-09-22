@@ -20,6 +20,7 @@
  * @package    mod
  * @subpackage groupselect
  * @copyright  2008-2011 Petr Skoda (http://skodak.org)
+ * @copyright  2014 Tampere University of Technology, P. Pyykkönen (pirkka.pyykkonen ÄT tut.fi)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -41,6 +42,7 @@ function groupselect_supports($feature) {
         case FEATURE_GRADE_HAS_GRADE:         return false;
         case FEATURE_GRADE_OUTCOMES:          return false;
         case FEATURE_BACKUP_MOODLE2:          return true;
+        case FEATURE_SHOW_DESCRIPTION:        return true;
 
         default: return null;
     }
@@ -62,30 +64,14 @@ function groupselect_get_extra_capabilities() {
  * $return int The id of the newly created instance
  */
 function groupselect_add_instance($groupselect) {
-    global $DB, $CFG;
-
-    require_once($CFG->dirroot.'/calendar/lib.php');
+    global $DB;
 
     $groupselect->timecreated = time();
     $groupselect->timemodified = time();
 
     $groupselect->id = $DB->insert_record('groupselect', $groupselect);
 
-    if ($groupselect->timedue) {
-        $event = new stdClass();
-        $event->name         = $groupselect->name;
-        $event->description  = format_module_intro('groupselect', $groupselect, $groupselect->coursemodule); // TODO: this is weird
-        $event->courseid     = $groupselect->course;
-        $event->groupid      = 0;
-        $event->userid       = 0;
-        $event->modulename   = 'groupselect';
-        $event->instance     = $groupselect->id;
-        $event->eventtype    = 'due';
-        $event->timestart    = $groupselect->timedue;
-        $event->timeduration = 0;
-
-        calendar_event::create($event);
-    }
+    groupselect_set_events($groupselect);
 
     return $groupselect->id;
 }
@@ -98,43 +84,14 @@ function groupselect_add_instance($groupselect) {
  * @return bool
  */
 function groupselect_update_instance($groupselect) {
-    global $DB, $CFG;
-
-    require_once($CFG->dirroot.'/calendar/lib.php');
+    global $DB;
 
     $groupselect->timemodified = time();
     $groupselect->id = $groupselect->instance;
 
     $DB->update_record('groupselect', $groupselect);
 
-    if ($groupselect->timedue) {
-        if ($event->id = $DB->get_field('event', 'id', array('modulename'=>'groupselect', 'instance'=>$groupselect->id))) {
-            $event->name         = $groupselect->name;
-            $event->description  = format_module_intro('groupselect', $groupselect, $groupselect->coursemodule);
-            $event->timestart    = $groupselect->timedue;
-
-            $calendarevent = calendar_event::load($event->id);
-            $calendarevent->update($event);
-
-        } else {
-            $event = new stdClass();
-            $event->name         = $groupselect->name;
-            $event->description  = format_module_intro('groupselect', $groupselect, $groupselect->coursemodule);// TODO: this is weird
-            $event->courseid     = $groupselect->course;
-            $event->groupid      = 0;
-            $event->userid       = 0;
-            $event->modulename   = 'groupselect';
-            $event->instance     = $groupselect->id;
-            $event->eventtype    = 'due';
-            $event->timestart    = $groupselect->timedue;
-            $event->timeduration = 0;
-
-            calendar_event::create($event);
-        }
-
-    } else {
-        $DB->delete_records('event', array('modulename'=>'groupselect', 'instance'=>$groupselect->id));
-    }
+    groupselect_set_events($groupselect);
 
     return true;
 }
@@ -148,10 +105,93 @@ function groupselect_update_instance($groupselect) {
  */
 function groupselect_delete_instance($id) {
     global $DB;
+    // delete group password rows related to this instance (but not the groups)
+    $DB->delete_records('groupselect_passwords', array('instance_id'=>$id));
+
+    $DB->delete_records('groupselect_groups_teachers', array('instance_id'=>$id));
 
     $DB->delete_records('groupselect', array('id'=>$id));
 
     return true;
+}
+
+/**
+ * This standard function will check all instances of this module
+ * and make sure there are up-to-date events created for each of them.
+ * If courseid = 0, then every chat event in the site is checked, else
+ * only chat events belonging to the course specified are checked.
+ * This function is used, in its new format, by restore_refresh_events()
+ *
+ * @param int $courseid
+ * @return bool
+ */
+function groupselect_refresh_events($courseid = 0) {
+    global $DB;
+
+    $params = $courseid ? ['course' => $courseid] : [];
+    $modules = $DB->get_records('groupselect', $params);
+
+    foreach ($modules as $module) {
+        groupselect_set_events($module);
+    }
+    return true;
+}
+
+/**
+ * This creates new events given as timeopen and closeopen by $feedback.
+ *
+ * @param stdClass $groupselect
+ * @return void
+ */
+function groupselect_set_events($groupselect) {
+    global $DB, $CFG;
+
+    // Include calendar/lib.php.
+    require_once($CFG->dirroot.'/calendar/lib.php');
+
+    // Get CMID if not sent as part of $groupselect.
+    if (!isset($groupselect->coursemodule)) {
+        $cm = get_coursemodule_from_instance('groupselect',
+                $groupselect->id, $groupselect->course);
+        $groupselect->coursemodule = $cm->id;
+    }
+
+    // Find existing calendar event.
+    $event = $DB->get_record('event',
+            array('modulename' => 'groupselect',
+                'instance' => $groupselect->id, 'eventtype' => 'due'));
+
+    if ($event) {
+        $calendarevent = calendar_event::load($event);
+
+        if ($groupselect->timedue) {
+            // Update calendar event.
+            $data = fullclone($event);
+            $data->name = $groupselect->name;
+            $data->description = format_module_intro('groupselect', $groupselect, $groupselect->coursemodule);
+            $data->timestart = $groupselect->timedue;
+            $calendarevent->update($data);
+        } else {
+            // Delete calendar event.
+            $calendarevent->delete();
+        }
+
+    } else if ($groupselect->timedue) {
+
+        // Create calendar event.
+        $event->name = $groupselect->name;
+        $event->description = format_module_intro('groupselect', $groupselect, $groupselect->coursemodule); // TODO: this is weird
+        $event->courseid = $groupselect->course;
+        $event->groupid = 0;
+        $event->userid = 0;
+        $event->modulename = 'groupselect';
+        $event->instance = $groupselect->id;
+        $event->eventtype = 'due';
+        $event->timestart = $groupselect->timedue;
+        $event->timeduration = 0;
+
+        calendar_event::create($event);
+    }
 }
 
 
@@ -175,7 +215,7 @@ function groupselect_get_participants($groupselectid) {
  * @return array
  */
 function groupselect_get_view_actions() {
-    return array('view');
+    return array('view', 'export');
 }
 
 
@@ -185,7 +225,7 @@ function groupselect_get_view_actions() {
  * @return array
  */
 function groupselect_get_post_actions() {
-    return array('select', 'unselect');
+    return array('select', 'unselect', 'create', 'assign');
 }
 
 
@@ -198,4 +238,55 @@ function groupselect_get_post_actions() {
 function groupselect_reset_userdata($data) {
     // no resetting here - all data is stored in the group tables
     return array();
+}
+
+/**
+ * Used to create exportable csv-file in view.php
+ *
+ * @param $data the data submitted from the reset course.
+ * @return array status array
+ */
+function groupselect_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
+    // Check the contextlevel is as expected - if your plugin is a block, this becomes CONTEXT_BLOCK, etc.
+    if ($context->contextlevel != CONTEXT_MODULE) {
+        return false;
+    }
+
+    // Make sure the filearea is one of those used by the plugin.
+    if ($filearea !== 'export') { //&& $filearea !== 'anotherexpectedfilearea') {
+        return false;
+    }
+
+    // Make sure the user is logged in and has access to the module (plugins that are not course modules should leave out the 'cm' part).
+    require_login($course, true, $cm);
+
+    // Check the relevant capabilities - these may vary depending on the filearea being accessed.
+    if (!has_capability('mod/groupselect:export', $context)) {
+        return false;
+    }
+
+    // Leave this line out if you set the itemid to null in make_pluginfile_url (set $itemid to 0 instead).
+    $itemid = array_shift($args); // The first item in the $args array.
+
+    // Use the itemid to retrieve any relevant data records and perform any security checks to see if the
+    // user really does have access to the file in question.
+
+    // Extract the filename / filepath from the $args array.
+    $filename = array_pop($args); // The last item in the $args array.
+    if (!$args) {
+        $filepath = '/'; // $args is empty => the path is '/'
+    } else {
+        $filepath = '/'.implode('/', $args).'/'; // $args contains elements of the filepath
+    }
+
+    // Retrieve the file from the Files API.
+    $fs = get_file_storage();
+    $file = $fs->get_file($context->id, 'mod_groupselect', $filearea, $itemid, $filepath, $filename);
+    if (!$file) {
+        return false; // The file does not exist.
+    }
+
+    // We can now send the file back to the browser - in this case with a cache lifetime of 1 day and no filtering.
+    // From Moodle 2.3, use send_stored_file instead.
+    send_stored_file($file, 86400, 0, 'true', $options);
 }

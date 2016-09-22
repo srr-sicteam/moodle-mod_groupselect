@@ -20,14 +20,15 @@
  * @package    mod
  * @subpackage groupselect
  * @copyright  2008-2011 Petr Skoda (http://skodak.org)
+ * @copyright  2014 Tampere University of Technology, P. Pyykkönen (pirkka.pyykkonen ÄT tut.fi)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
 
 require_once("$CFG->dirroot/group/lib.php");
+//require_once("$CFG->dirroot/group/externallib.php");
 require_once("$CFG->dirroot/mod/groupselect/lib.php");
-
 
 function groupselect_get_group_info($group) {
     $group = clone($group);
@@ -39,13 +40,13 @@ function groupselect_get_group_info($group) {
     }
     $options = new stdClass;
     $options->overflowdiv = true;
-    return format_text($group->description, $group->descriptionformat, array('overflowdiv'=>true, 'context'=>$context));
+    return format_text($group->description, $group->descriptionformat, array('filter'=>false, 'overflowdiv'=>true, 'context'=>$context));
 }
 
 /**
  * Is the given group selection open for students to select their group at the moment?
  *
- * @param object $groupselect Groupselect record
+ * @param object $groupselect groupselect record
  * @return bool True if the group selection is open right now, false otherwise
  */
 function groupselect_is_open($groupselect) {
@@ -87,4 +88,38 @@ function groupselect_group_member_counts($cm, $targetgrouping=0) {
     }
 
     return $DB->get_records_sql($sql, $params);
+}
+
+/**
+ * Get password protected groups
+ *
+ * @return array of group ids
+ */
+function groupselect_get_password_protected_groups($groupselect) {
+    global $DB;
+    $sql = "SELECT  groupid
+            FROM    {groupselect_passwords} gp
+            WHERE   gp.instance_id = ?";
+
+    $result = $DB->get_records_sql($sql, array($groupselect->id));
+    $ids = array();
+    foreach ($result as $r) {
+        array_push($ids, $r->groupid);
+    }
+    return $ids;
+}
+
+/**
+ * Get users with given role in given context
+ *
+ * @return array of user ids
+ */
+function groupselect_get_context_members_by_role($context, $roleid) {
+	global $DB;
+	$sql = "SELECT r.userid
+                  FROM   {role_assignments} r
+                 WHERE  r.contextid = ?
+              	   AND    r.roleid = ?";
+
+	return $DB->get_records_sql($sql, array($context, $roleid));
 }
