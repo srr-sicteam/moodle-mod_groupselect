@@ -514,7 +514,6 @@ if ($assign and $canassign) {
 		}
     $teacher_count --;
 	}
-
 }
 
 // *** PAGE OUTPUT ***
@@ -618,7 +617,7 @@ if (empty ( $groups )) {
 
 	// Group list
 	foreach ( $groups as $group ) {
-
+		if ($group->locked_uctimetable) continue;	
 		$ismember = isset ( $mygroups [$group->id] );
 		$usercount = isset ( $counts [$group->id] ) ? $counts [$group->id]->usercount : 0;
 		$grpname = format_string ( $group->name, true, array (
