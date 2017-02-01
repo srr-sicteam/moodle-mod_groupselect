@@ -29,19 +29,19 @@ contributors, on whose earlier work this plugin is based on.
 
 Project page:
 
-* https://github.com/marinaglancy/moodle-mod_groupselect (fork) by Marina Glancy
-* https://github.com/BLC-HTWChur/moodle-mod_groupselect (our fork) by HTWChur
-* https://github.com/birrel/moodle-mod_groupselect (fork) by Pirkka Pyykkönen
+* https://github.com/marinaglancy/moodle-mod_groupselect (moodle) by Marina Glancy
+* https://github.com/BLC-HTWChur/moodle-mod_groupselect (version >=3.06)by HTWChur
+* https://github.com/birrel/moodle-mod_groupselect (version <= 3.05 beta) by Pirkka Pyykkönen
 * https://github.com/skodak/moodle-mod_groupselect (original <= 2.1 versions) by Petr Skoda
 
 NOTABLE UPDATES:
-* 2016.09.07: Export only current grouping if specified
-* 2016.08.26: enabled show description feature and tableview improvements for longer groupnames
-* 2016.06.11: new option to disable notifications if the open until date is reached
-* 2016.06.06: new option for students to define the group name, new option to avoid that students can define passwords,
-fixed validation messages for creating groups, fixed install.xml
-* 2016.06.02: fixed wrong instance_id in table groupselect_groups_teachers, backup and restore works now,
-added new logging events for adding non-editign teachers and creating a downloadlink, some small fixes
+* 2016.09.07: Export only current grouping, if specified
+* 2016.08.26: Enabled show description feature and tableview improvements for longer groupnames
+* 2016.06.11: New option to disable notifications if the open until date is reached
+* 2016.06.06: New option for students to define the group name; New option to avoid that students can define passwords;
+Fixed validation messages for creating groups, fixed install.xml
+* 2016.06.02: Fixed wrong instance_id in table groupselect_groups_teachers; Backup and restore works now;
+Added new logging events for adding non-editign teachers and creating a downloadlink; Some small fixes.
 * 2016.05.09: Removed general setting 'requiremodintro', not supported anymore
 * 2015.03.25: Fixed: password was asked when joining group without
 password (if upgraded from older versions), sql queries should now work
