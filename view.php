@@ -777,6 +777,9 @@ if (empty ( $groups )) {
 			$strmembers,
 			''
 	);
+	if ($actionpresent) {
+		array_push($table->head,$straction);
+	}
 
 	$table->data = $data;
 	echo html_writer::table ( $table );
