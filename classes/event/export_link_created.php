@@ -44,7 +44,7 @@ class export_link_created extends \core\event\base {
 
     public function get_description() {
         return "The user with id '$this->userid' created a download link " .
-        		"for the groupselect with the course module id '$this->contextinstanceid'";
+                "for the groupselect with the course module id '$this->contextinstanceid'";
     }
 
     public function get_url() {

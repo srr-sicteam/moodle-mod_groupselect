@@ -69,16 +69,16 @@ class restore_groupselect_activity_structure_step extends restore_activity_struc
     }
 
     protected function process_groupselect_groups_teachers($data) {
-    	global $DB;
+        global $DB;
 
-    	$data = (object)$data;
-    	$oldid = $data->id;
-    	$data->instance_id = $this->get_new_parentid('groupselect');
+        $data = (object)$data;
+        $oldid = $data->id;
+        $data->instance_id = $this->get_new_parentid('groupselect');
 
-    	$data->teacherid = $this->get_mappingid('user', $data->teacherid);
-    	$data->groupid = $this->get_mappingid('group', $data->groupid);
+        $data->teacherid = $this->get_mappingid('user', $data->teacherid);
+        $data->groupid = $this->get_mappingid('group', $data->groupid);
 
-    	// insert the groupselect record
+        // insert the groupselect record
         if ($data->groupid && $data->teacherid) {
             $newitemid = $DB->insert_record('groupselect_groups_teachers', $data);
             $this->set_mapping('groupselect_groups_teacher', $oldid, $newitemid, true);
@@ -86,15 +86,15 @@ class restore_groupselect_activity_structure_step extends restore_activity_struc
     }
 
     protected function process_groupselect_passwords($data) {
-    	global $DB;
+        global $DB;
 
-    	$data = (object)$data;
-    	$oldid = $data->id;
-    	$data->instance_id = $this->get_new_parentid('groupselect');
+        $data = (object)$data;
+        $oldid = $data->id;
+        $data->instance_id = $this->get_new_parentid('groupselect');
 
-    	$data->groupid = $this->get_mappingid('group', $data->groupid);
+        $data->groupid = $this->get_mappingid('group', $data->groupid);
 
-    	// insert the groupselect record
+        // insert the groupselect record
         if ($data->groupid) {
             $newitemid = $DB->insert_record('groupselect_passwords', $data);
             $this->set_mapping('groupselect_password', $oldid, $newitemid, true);

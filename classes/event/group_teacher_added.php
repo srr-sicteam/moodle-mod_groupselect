@@ -50,7 +50,7 @@ class group_teacher_added extends \core\event\base {
 
     public function get_description() {
         return "The user with id '$this->userid' added the non editing teacher user with id '$this->relateduserid' " .
-        		"to the groupselect with the course module id '$this->contextinstanceid' and group id '{$this->objectid}'";
+                "to the groupselect with the course module id '$this->contextinstanceid' and group id '{$this->objectid}'";
     }
 
     public function get_url() {
@@ -58,14 +58,14 @@ class group_teacher_added extends \core\event\base {
     }
 
 
-	public static function get_objectid_mapping() {
-		return array('db' => 'groupselect_groups_teachers', 'restore' => 'groupselect_groups_teacher');
-	}
+    public static function get_objectid_mapping() {
+        return array('db' => 'groupselect_groups_teachers', 'restore' => 'groupselect_groups_teacher');
+    }
 
-	public static function get_other_mapping() {
+    public static function get_other_mapping() {
         $othermapped = array();
         $othermapped['groupid'] = array('db' => 'group', 'restore' => 'group');
 
         return $othermapped;
-	}
+    }
 }
