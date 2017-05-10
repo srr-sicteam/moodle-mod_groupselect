@@ -26,7 +26,6 @@
 defined ( 'MOODLE_INTERNAL' ) || die ();
 
 require_once ($CFG->dirroot . '/lib/formslib.php');
-require_once ($CFG->dirroot . '/lib/password_compat/lib/password.php');
 class select_form extends moodleform {
     private $groupselect;
 

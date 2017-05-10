@@ -24,7 +24,6 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require ('../../config.php');
-require_once ($CFG->dirroot . '/lib/password_compat/lib/password.php');
 require_once ('locallib.php');
 require_once ('select_form.php');
 require_once ('create_form.php');
