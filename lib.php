@@ -33,18 +33,29 @@ defined('MOODLE_INTERNAL') || die;
  */
 function groupselect_supports($feature) {
     switch($feature) {
-        case FEATURE_MOD_ARCHETYPE:           return MOD_ARCHETYPE_OTHER;
-        case FEATURE_GROUPS:                  return true;  // only separate mode makes sense - you hide members of other groups here
-        case FEATURE_GROUPINGS:               return false;
-        case FEATURE_GROUPMEMBERSONLY:        return false;  // this could be very confusing
-        case FEATURE_MOD_INTRO:               return true;
-        case FEATURE_COMPLETION_TRACKS_VIEWS: return false;
-        case FEATURE_GRADE_HAS_GRADE:         return false;
-        case FEATURE_GRADE_OUTCOMES:          return false;
-        case FEATURE_BACKUP_MOODLE2:          return true;
-        case FEATURE_SHOW_DESCRIPTION:        return true;
+        case FEATURE_MOD_ARCHETYPE:
+            return MOD_ARCHETYPE_OTHER;
+        case FEATURE_GROUPS:
+            return true;  // only separate mode makes sense - you hide members of other groups here
+        case FEATURE_GROUPINGS:
+            return false;
+        case FEATURE_GROUPMEMBERSONLY:
+            return false;  // this could be very confusing
+        case FEATURE_MOD_INTRO:
+            return true;
+        case FEATURE_COMPLETION_TRACKS_VIEWS:
+            return false;
+        case FEATURE_GRADE_HAS_GRADE:
+            return false;
+        case FEATURE_GRADE_OUTCOMES:
+            return false;
+        case FEATURE_BACKUP_MOODLE2:
+            return true;
+        case FEATURE_SHOW_DESCRIPTION:
+            return true;
 
-        default: return null;
+        default:
+            return null;
     }
 }
 
@@ -106,11 +117,11 @@ function groupselect_update_instance($groupselect) {
 function groupselect_delete_instance($id) {
     global $DB;
     // delete group password rows related to this instance (but not the groups)
-    $DB->delete_records('groupselect_passwords', array('instance_id'=>$id));
+    $DB->delete_records('groupselect_passwords', array('instance_id' => $id));
 
-    $DB->delete_records('groupselect_groups_teachers', array('instance_id'=>$id));
+    $DB->delete_records('groupselect_groups_teachers', array('instance_id' => $id));
 
-    $DB->delete_records('groupselect', array('id'=>$id));
+    $DB->delete_records('groupselect', array('id' => $id));
 
     return true;
 }
@@ -253,7 +264,7 @@ function groupselect_pluginfile($course, $cm, $context, $filearea, $args, $force
     }
 
     // Make sure the filearea is one of those used by the plugin.
-    if ($filearea !== 'export') { //&& $filearea !== 'anotherexpectedfilearea') {
+    if ($filearea !== 'export') { // && $filearea !== 'anotherexpectedfilearea') {
         return false;
     }
 

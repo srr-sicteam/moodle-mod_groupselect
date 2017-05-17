@@ -47,12 +47,12 @@ class backup_groupselect_activity_structure_step extends backup_activity_structu
         $passwords = new backup_nested_element('passwords');
 
         $password = new backup_nested_element('password', array('id'), array(
-                'groupid','password'));
+                'groupid', 'password'));
 
         $groupteachers = new backup_nested_element('groupteachers');
 
         $groupteacher = new backup_nested_element('groupteacher', array('id'), array(
-                'groupid','teacherid'));
+                'groupid', 'teacherid'));
 
         // Build the tree
         $groupselect->add_child($passwords);
@@ -62,16 +62,16 @@ class backup_groupselect_activity_structure_step extends backup_activity_structu
 
         // Define sources
         $groupselect->set_source_table('groupselect', array('id' => backup::VAR_ACTIVITYID));
-        $password->set_source_table('groupselect_passwords',array('instance_id' => backup::VAR_ACTIVITYID));
+        $password->set_source_table('groupselect_passwords', array('instance_id' => backup::VAR_ACTIVITYID));
         if ($userinfo) {
-            $groupteacher->set_source_table('groupselect_groups_teachers',array('instance_id' => backup::VAR_ACTIVITYID));
+            $groupteacher->set_source_table('groupselect_groups_teachers', array('instance_id' => backup::VAR_ACTIVITYID));
         }
 
         // Define id annotations
-        $groupselect->annotate_ids('grouping','targetgrouping');
-        $password->annotate_ids('group','groupid');
-        $groupteacher->annotate_ids('group','groupid');
-        $groupteacher->annotate_ids('user','teacherid');
+        $groupselect->annotate_ids('grouping', 'targetgrouping');
+        $password->annotate_ids('group', 'groupid');
+        $groupteacher->annotate_ids('group', 'groupid');
+        $groupteacher->annotate_ids('user', 'teacherid');
 
         // Define file annotations
         $groupselect->annotate_files('mod_groupselect', 'intro', null); // This file areas haven't itemid

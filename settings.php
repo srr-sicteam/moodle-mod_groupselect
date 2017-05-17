@@ -26,15 +26,17 @@
 defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
-    //--- modedit defaults -----------------------------------------------------------------------------------
-    $settings->add(new admin_setting_heading('groupselectmodeditdefaults', get_string('modeditdefaults', 'admin'), get_string('condifmodeditdefaults', 'admin')));
+    // --- modedit defaults -----------------------------------------------------------------------------------
+    $settings->add(new admin_setting_heading('groupselectmodeditdefaults',
+        get_string('modeditdefaults', 'admin'),
+        get_string('condifmodeditdefaults', 'admin')));
 
     $settings->add(new admin_setting_configtext('groupselect/minmembers',
-        get_string('minmembers', 'mod_groupselect'), 
+        get_string('minmembers', 'mod_groupselect'),
         get_string('minmembers_help', 'mod_groupselect'), 0, PARAM_INT));
 
     $settings->add(new admin_setting_configtext('groupselect/maxmembers',
-        get_string('maxmembers', 'mod_groupselect'), 
+        get_string('maxmembers', 'mod_groupselect'),
         get_string('maxmembers_help', 'mod_groupselect'), 0, PARAM_INT));
 
     $settings->add(new admin_setting_configcheckbox('groupselect/studentcancreate',

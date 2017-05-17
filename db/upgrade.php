@@ -35,11 +35,11 @@ function xmldb_groupselect_upgrade($oldversion) {
         $table = new xmldb_table('groupselect');
 
         // Define field timecreated to be added to groupselect
-        $field_timecreated_new = new xmldb_field('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'timedue');
+        $fieldtimecreatednew = new xmldb_field('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'timedue');
 
         // Conditionally launch add temporary fields
-        if (!$dbman->field_exists($table, $field_timecreated_new)) {
-            $dbman->add_field($table, $field_timecreated_new);
+        if (!$dbman->field_exists($table, $fieldtimecreatednew)) {
+            $dbman->add_field($table, $fieldtimecreatednew);
         }
 
         // search savepoint reached
@@ -51,10 +51,10 @@ function xmldb_groupselect_upgrade($oldversion) {
 
         // Define field targetgrouping to be added to groupselect
         $table = new xmldb_table('groupselect');
-        $field_targetgrouping_new = new xmldb_field('targetgrouping', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'intro');
+        $fieldtargetgroupingnew = new xmldb_field('targetgrouping', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'intro');
         // Conditionally launch adding fields
-        if (!$dbman->field_exists($table, $field_targetgrouping_new)) {
-            $dbman->add_field($table, $field_targetgrouping_new);
+        if (!$dbman->field_exists($table, $fieldtargetgroupingnew)) {
+            $dbman->add_field($table, $fieldtargetgroupingnew);
         }
 
         // search savepoint reached
@@ -84,11 +84,11 @@ function xmldb_groupselect_upgrade($oldversion) {
         $table = new xmldb_table('groupselect');
 
         // Define field signuptype to be added to groupselect
-        $field_signuptype = new xmldb_field('signuptype', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, '0', 'targetgrouping');
+        $fieldsignuptype = new xmldb_field('signuptype', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, '0', 'targetgrouping');
 
         // Conditionally launch removing fields
-        if ($dbman->field_exists($table, $field_signuptype)) {
-            $dbman->drop_field($table, $field_signuptype);
+        if ($dbman->field_exists($table, $fieldsignuptype)) {
+            $dbman->drop_field($table, $fieldsignuptype);
         }
 
         // search savepoint reached
@@ -119,7 +119,7 @@ function xmldb_groupselect_upgrade($oldversion) {
         $fields[] = new xmldb_field('studentcansetdesc', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '1', 'assignteachers');
         $fields[] = new xmldb_field('showassignedteacher', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'studentcansetdesc');
 
-        foreach($fields as $field) {
+        foreach ($fields as $field) {
             if (!$dbman->field_exists($table, $field)) {
                 $dbman->add_field($table, $field);
             }
@@ -133,7 +133,7 @@ function xmldb_groupselect_upgrade($oldversion) {
         $table->add_field('instance_id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, 'password');
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
 
-        if(!$dbman->table_exists($table)) {
+        if (!$dbman->table_exists($table)) {
             $dbman->create_table($table);
         }
 
@@ -145,7 +145,7 @@ function xmldb_groupselect_upgrade($oldversion) {
         $table->add_field('instance_id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, 'teacherid');
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
 
-        if(!$dbman->table_exists($table)) {
+        if (!$dbman->table_exists($table)) {
             $dbman->create_table($table);
         }
 
@@ -156,28 +156,27 @@ function xmldb_groupselect_upgrade($oldversion) {
     if ($oldversion < 2015032500) {
         $table = new xmldb_table('groupselect');
         $field = new xmldb_field('password', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, 'maxmembers');
-        if($dbman->table_exists( $table ) and $dbman->field_exists($table, $field))
-        {
+        if ($dbman->table_exists( $table ) and $dbman->field_exists($table, $field)) {
              $dbman->drop_field($table, $field);
         }
 
         upgrade_mod_savepoint(true, 2015032500, 'groupselect');
     }
 
-    if ($oldversion < 2016060200){
+    if ($oldversion < 2016060200) {
 
         // update wrong instace_ids
         $table = new xmldb_table('groupselect_groups_teachers');
-        if($dbman->table_exists( $table )){
-            $gs_teachers = $DB->get_records('groupselect_groups_teachers');
+        if ($dbman->table_exists( $table )) {
+            $gsteachers = $DB->get_records('groupselect_groups_teachers');
 
-            foreach ($gs_teachers as $gs_teacher){
-                $course_module = $DB->get_record('course_modules', array('id'=>$gs_teacher->instance_id));
-                IF (isset($course_module->instance)){
-                    $gs_teacher->instance_id = $course_module->instance;
-                    $DB->update_record('groupselect_groups_teachers', $gs_teacher, $bulk=false);
-                }else{
-                    $DB->delete_records('groupselect_groups_teachers',array('id'=>$gs_teacher->id));
+            foreach ($gsteachers as $gsteacher) {
+                $coursemodule = $DB->get_record('course_modules', array('id' => $gsteacher->instance_id));
+                if (isset($coursemodule->instance)) {
+                    $gsteacher->instance_id = $coursemodule->instance;
+                    $DB->update_record('groupselect_groups_teachers', $gsteacher, $bulk = false);
+                } else {
+                    $DB->delete_records('groupselect_groups_teachers', array('id' => $gsteacher->id));
                 }
             }
         }
@@ -185,7 +184,7 @@ function xmldb_groupselect_upgrade($oldversion) {
         // search savepoint reached
         upgrade_mod_savepoint(true, 2016060200, 'groupselect');
     }
-    if ($oldversion < 2016060603){
+    if ($oldversion < 2016060603) {
 
         // Update module settings table
         $fields = array();
@@ -193,7 +192,7 @@ function xmldb_groupselect_upgrade($oldversion) {
         $fields[] = new xmldb_field('studentcansetenrolmentkey', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'showassignedteacher');
         $fields[] = new xmldb_field('studentcansetgroupname', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '1', 'studentcansetenrolmentkey');
 
-        foreach($fields as $field) {
+        foreach ($fields as $field) {
             if (!$dbman->field_exists($table, $field)) {
                 $dbman->add_field($table, $field);
             }
@@ -202,14 +201,14 @@ function xmldb_groupselect_upgrade($oldversion) {
         // search savepoint reached
         upgrade_mod_savepoint(true, 2016060603, 'groupselect');
     }
-    if ($oldversion < 2016061100){
+    if ($oldversion < 2016061100) {
 
         // Update module settings table
         $fields = array();
         $table = new xmldb_table('groupselect');
         $fields[] = new xmldb_field('notifyexpiredselection', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '1', 'studentcansetgroupname');
 
-        foreach($fields as $field) {
+        foreach ($fields as $field) {
             if (!$dbman->field_exists($table, $field)) {
                 $dbman->add_field($table, $field);
             }

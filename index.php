@@ -27,12 +27,12 @@ require('../../config.php');
 
 $id = required_param('id', PARAM_INT); // course id
 
-$course = $DB->get_record('course', array('id'=>$id), '*', MUST_EXIST);
+$course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
 
 require_course_login($course, true);
 $PAGE->set_pagelayout('incourse');
 
-//add_to_log($course->id, 'groupselect', 'view all', "index.php?id=$course->id", '');
+// add_to_log($course->id, 'groupselect', 'view all', "index.php?id=$course->id", '');
 \mod_groupselect\event\course_module_instance_list_viewed::create(array('context' => context_course::instance($course->id)))->trigger();
 
 $strgroupselect  = get_string('modulename', 'mod_groupselect');

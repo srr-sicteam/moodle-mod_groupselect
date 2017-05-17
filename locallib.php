@@ -27,7 +27,7 @@
 defined('MOODLE_INTERNAL') || die;
 
 require_once("$CFG->dirroot/group/lib.php");
-//require_once("$CFG->dirroot/group/externallib.php");
+// require_once("$CFG->dirroot/group/externallib.php");
 require_once("$CFG->dirroot/mod/groupselect/lib.php");
 
 function groupselect_get_group_info($group) {
@@ -40,7 +40,7 @@ function groupselect_get_group_info($group) {
     }
     $options = new stdClass;
     $options->overflowdiv = true;
-    return format_text($group->description, $group->descriptionformat, array('filter'=>false, 'overflowdiv'=>true, 'context'=>$context));
+    return format_text($group->description, $group->descriptionformat, array('filter' => false, 'overflowdiv' => true, 'context' => $context));
 }
 
 /**
@@ -65,16 +65,16 @@ function groupselect_is_open($groupselect) {
 function groupselect_group_member_counts($cm, $targetgrouping=0) {
     global $DB;
 
-    //TODO: join into enrolment table
+    // TODO: join into enrolment table
 
     if (empty($targetgrouping)) {
-        //all groups
+        // all groups
         $sql = "SELECT g.id, COUNT(gm.userid) AS usercount
                   FROM {groups_members} gm
                        JOIN {groups} g ON g.id = gm.groupid
                  WHERE g.courseid = :course
               GROUP BY g.id";
-        $params = array('course'=>$cm->course);
+        $params = array('course' => $cm->course);
 
     } else {
         $sql = "SELECT g.id, COUNT(gm.userid) AS usercount
@@ -84,7 +84,7 @@ function groupselect_group_member_counts($cm, $targetgrouping=0) {
                  WHERE g.courseid = :course
                        AND gg.groupingid = :grouping
               GROUP BY g.id";
-        $params = array('course'=>$cm->course, 'grouping'=>$targetgrouping);
+        $params = array('course' => $cm->course, 'grouping' => $targetgrouping);
     }
 
     return $DB->get_records_sql($sql, $params);

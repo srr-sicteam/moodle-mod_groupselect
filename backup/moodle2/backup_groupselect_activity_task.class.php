@@ -53,15 +53,15 @@ class backup_groupselect_activity_task extends backup_activity_task {
     static public function encode_content_links($content) {
         global $CFG;
 
-        $base = preg_quote($CFG->wwwroot,"/");
+        $base = preg_quote($CFG->wwwroot, "/");
 
         // Link to the list of groupselects
-        $search="/(".$base."\/mod\/groupselect\/index.php\?id\=)([0-9]+)/";
-        $content= preg_replace($search, '$@GROUPSELECTINDEX*$2@$', $content);
+        $search = "/(".$base."\/mod\/groupselect\/index.php\?id\=)([0-9]+)/";
+        $content = preg_replace($search, '$@GROUPSELECTINDEX*$2@$', $content);
 
         // Link to groupselect view by moduleid
-        $search="/(".$base."\/mod\/groupselect\/view.php\?id\=)([0-9]+)/";
-        $content= preg_replace($search, '$@GROUPSELECTVIEWBYID*$2@$', $content);
+        $search = "/(".$base."\/mod\/groupselect\/view.php\?id\=)([0-9]+)/";
+        $content = preg_replace($search, '$@GROUPSELECTVIEWBYID*$2@$', $content);
 
         return $content;
     }
