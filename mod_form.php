@@ -58,12 +58,12 @@ class mod_groupselect_mod_form extends moodleform_mod {
             }
         }
 
-        $roles = $DB->get_records("role");
-        $supervisionRoles = [];
-
-        foreach ($roles as $role) {
-            $supervisionRoles[$role->id] = $role->name;
-        }
+        // $roles = $DB->get_records("role");
+        // $supervisionRoles = [];
+        //
+        // foreach ($roles as $role) {
+        //     $supervisionRoles[$role->id] = $role->name;
+        // }
 
         $mform->addElement('select', 'targetgrouping', get_string('targetgrouping', 'mod_groupselect'), $options);
 
