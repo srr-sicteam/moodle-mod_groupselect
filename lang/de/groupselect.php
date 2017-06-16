@@ -9,3 +9,5 @@ $string['studentcansetenrolmentkey'] = 'Teilnehmende können Passwörter setzen 
 $string['studentcansetenrolmentkey_help'] = 'Wenn gesetzt, kann ein/e Teilnehmer/in ein Gruppenpasswort setzen';
 $string['studentcansetgroupname'] = 'Teilnehmende dürfen Gruppennamen selbst bestimmen.';
 $string['studentcansetgroupname_help'] = 'Wenn gesetzt, kann ein/e Teilnehmer/in einen Gruppennamen setzen';
+$string['supervisionrole'] = 'Supervisoren role';
+$string['supervisionrole_help'] = 'Supervisorenrolle festlegen für die Betreuung der Gruppen festlegen (Standard: Lehrer ohne Bearbeitungsrecht)';

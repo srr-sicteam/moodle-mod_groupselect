@@ -58,6 +58,14 @@ class mod_groupselect_mod_form extends moodleform_mod {
                 $options[$grouping->id] = format_string($grouping->name);
             }
         }
+
+        $roles = $DB->get_records("role");
+        $supervisionRoles = [];
+
+        foreach ($roles as $role) {
+            $supervisionRoles[$role->id] = $role->name;
+        }
+
         $mform->addElement('select', 'targetgrouping', get_string('targetgrouping', 'mod_groupselect'), $options);
 
         // Legacy master-password functionality.
@@ -102,6 +110,12 @@ class mod_groupselect_mod_form extends moodleform_mod {
         $mform->addHelpButton('studentcansetenrolmentkey', 'studentcansetenrolmentkey', 'mod_groupselect');
         $mform->setDefault('studentcansetenrolmentkey', $config->studentcansetenrolmentkey);
         $mform->disabledIf('studentcansetenrolmentkey', 'studentcancreate', 'notchecked');
+
+        // part of fixing #14
+        $mform->addElement('select', 'supervisionrole', get_string('supervisionrole', 'mod_groupselect'), $supervisionRoles);
+        // $mform->setType('supervisionrole', PARAM_INT);
+        $mform->setDefault('supervisionrole', $config->supervisionrole);
+        // $mform->addHelpButton('supervisionrole', 'mod_groupselect');
 
         $mform->addElement('advcheckbox', 'assignteachers', get_string('assigngroup', 'mod_groupselect'), '',
                 array('optional' => true, 'group' => null), array(0, 1));

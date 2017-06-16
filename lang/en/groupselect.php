@@ -41,6 +41,8 @@ $string['member'] = 'Member';
 $string['membercount'] = 'Count';
 $string['membershidden'] = 'Member list not available';
 $string['memberslist'] = 'Members';
+$string['supervisionrole'] = 'Supervisor role';
+$string['supervisionrole_help'] = 'Define the role for supervisors (formally non-editing teachers)';
 $string['minmembers'] = 'Min members per group';
 $string['minmembers_help'] = 'Minimum number of members per group. Adds notifications for members of groups which are under this limit. Default is 0 (disabled).';
 $string['minmembers_icon'] = 'Group has less members than required';
@@ -75,4 +77,3 @@ $string['select'] = 'Become member of {$a}';
 $string['targetgrouping'] = 'Select groups from grouping';
 $string['timeavailable'] = 'Open from';
 $string['timedue'] = 'Open until';
-

@@ -38,7 +38,7 @@ function groupselect_supports($feature) {
         case FEATURE_GROUPS:
             return true;  // only separate mode makes sense - you hide members of other groups here
         case FEATURE_GROUPINGS:
-            return false;
+            return false; // should be true
         case FEATURE_GROUPMEMBERSONLY:
             return false;  // this could be very confusing
         case FEATURE_MOD_INTRO:

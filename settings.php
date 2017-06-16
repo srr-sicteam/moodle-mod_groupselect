@@ -26,10 +26,22 @@
 defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
+    // get all course roles
+    $roles = $DB->get_records("role");
+    $configRoles = [];
+
+    foreach ($roles as $role) {
+        $configRoles[$role->id] = $role->name;
+    }
+
     // --- modedit defaults -----------------------------------------------------------------------------------
     $settings->add(new admin_setting_heading('groupselectmodeditdefaults',
         get_string('modeditdefaults', 'admin'),
         get_string('condifmodeditdefaults', 'admin')));
+
+    $settings->add(new admin_setting_configselect('groupselect/supervisionrole',
+        get_string('supervisionrole', 'mod_groupselect'),
+        get_string('supervisionrole_help', 'mod_groupselect'), 4, $configRoles));
 
     $settings->add(new admin_setting_configtext('groupselect/minmembers',
         get_string('minmembers', 'mod_groupselect'),
