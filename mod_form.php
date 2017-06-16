@@ -31,7 +31,7 @@ require_once($CFG->dirroot.'/course/moodleform_mod.php');
 class mod_groupselect_mod_form extends moodleform_mod {
 
     public function definition() {
-        global $CFG, $COURSE; // TODO: get rid of the sloppy $COURSE
+        global $CFG, $COURSE, $DB; // TODO: get rid of the sloppy $COURSE
 
         $mform = $this->_form;
 
@@ -58,12 +58,12 @@ class mod_groupselect_mod_form extends moodleform_mod {
             }
         }
 
-        // $roles = $DB->get_records("role");
-        // $supervisionRoles = [];
-        //
-        // foreach ($roles as $role) {
-        //     $supervisionRoles[$role->id] = $role->name;
-        // }
+        $roles = $DB->get_records("role");
+        $supervisionRoles = [];
+
+        foreach ($roles as $role) {
+            $supervisionRoles[$role->id] = $role->name;
+        }
 
         $mform->addElement('select', 'targetgrouping', get_string('targetgrouping', 'mod_groupselect'), $options);
 
@@ -111,9 +111,9 @@ class mod_groupselect_mod_form extends moodleform_mod {
         $mform->disabledIf('studentcansetenrolmentkey', 'studentcancreate', 'notchecked');
 
         // part of fixing #14
-        // $mform->addElement('select', 'supervisionrole', get_string('supervisionrole', 'mod_groupselect'), $supervisionRoles);
-        // // $mform->setType('supervisionrole', PARAM_INT);
-        // $mform->setDefault('supervisionrole', $config->supervisionrole);
+        $mform->addElement('select', 'supervisionrole', get_string('supervisionrole', 'mod_groupselect'), $supervisionRoles);
+        // $mform->setType('supervisionrole', PARAM_INT);
+        $mform->setDefault('supervisionrole', $config->supervisionrole);
         // $mform->addHelpButton('supervisionrole', 'mod_groupselect');
 
         $mform->addElement('advcheckbox', 'assignteachers', get_string('assigngroup', 'mod_groupselect'), '',

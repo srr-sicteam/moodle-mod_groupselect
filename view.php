@@ -96,7 +96,7 @@ $teacherRole = $DB->get_record( 'role', array (
     'shortname' => "teacher"
 ), '*', MUST_EXIST );
 
-$assingrole = $teacherRole->id; // Assign non-editing teachers.
+$assignrole = $teacherRole->id; // Assign non-editing teachers.
 
 // variant 2 for system wide supervision roles
 $gs_config = get_config("groupselect");
@@ -117,7 +117,7 @@ $canunselect = (has_capability( 'mod/groupselect:unselect', $context ) and is_en
 $cancreate = ($groupselect->studentcancreate and has_capability( 'mod/groupselect:create', $context ) and is_enrolled( $context ) and empty( $mygroups ));
 $canexport = (has_capability( 'mod/groupselect:export', $context ) and count( $groups ) > 0);
 $canassign = (has_capability( 'mod/groupselect:assign', $context ) and $groupselect->assignteachers
-            and (count(groupselect_get_context_members_by_role( context_course::instance( $course->id )->id, $assingrole )) > 0));
+            and (count(groupselect_get_context_members_by_role( context_course::instance( $course->id )->id, $assignrole )) > 0));
 $canedit = ($groupselect->studentcansetdesc and $isopen);
 $cansetgroupname = ($groupselect->studentcansetgroupname);
 
@@ -497,7 +497,7 @@ if ($assign and $canassign) {
     }
 
     $coursecontext = context_course::instance( $course->id )->id;
-    $teachers = groupselect_get_context_members_by_role( $coursecontext, $assingrole );
+    $teachers = groupselect_get_context_members_by_role( $coursecontext, $assignrole );
     shuffle( $teachers );
 
     $agroups = $groups;
@@ -705,7 +705,7 @@ if (empty ( $groups )) {
                     }
                 }
                 // Show assigned teacher, if exists, when enabled or when user is non-assigned teacher
-                if ($groupselect->showassignedteacher or user_has_role_assignment($USER->id, $assingrole, context_course::instance( $course->id )->id)) {
+                if ($groupselect->showassignedteacher or user_has_role_assignment($USER->id, $assignrole, context_course::instance( $course->id )->id)) {
                     $teacherid = null;
                     foreach ($assignedrelation as $r) {
                         if ($r->groupid === $group->id) {

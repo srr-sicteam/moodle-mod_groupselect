@@ -217,5 +217,25 @@ function xmldb_groupselect_upgrade($oldversion) {
         // search savepoint reached
         upgrade_mod_savepoint(true, 2016061100, 'groupselect');
     }
+    if ($oldversion < 2017061205) {
+
+        // get default teacher role
+        $teacherRole = $DB->get_record( 'role', array (
+            'shortname' => "teacher"
+        ), '*', MUST_EXIST );
+
+        // Update module settings table
+        $fields = array();
+        $table = new xmldb_table('groupselect');
+        $fields[] = new xmldb_field('supervisionrole', XMLDB_TYPE_INTEGER, $teacherRole->id, null, XMLDB_NOTNULL, null, '1', 'notifyexpiredselection');
+
+        foreach ($fields as $field) {
+            if (!$dbman->field_exists($table, $field)) {
+                $dbman->add_field($table, $field);
+            }
+        }
+        // search savepoint reached
+        upgrade_mod_savepoint(true, 2017061205, 'groupselect');
+    }
     return true;
 }
