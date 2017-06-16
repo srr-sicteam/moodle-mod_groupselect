@@ -28,7 +28,6 @@ defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->dirroot.'/course/moodleform_mod.php');
 
-
 class mod_groupselect_mod_form extends moodleform_mod {
 
     public function definition() {
@@ -112,9 +111,9 @@ class mod_groupselect_mod_form extends moodleform_mod {
         $mform->disabledIf('studentcansetenrolmentkey', 'studentcancreate', 'notchecked');
 
         // part of fixing #14
-        $mform->addElement('select', 'supervisionrole', get_string('supervisionrole', 'mod_groupselect'), $supervisionRoles);
-        // $mform->setType('supervisionrole', PARAM_INT);
-        $mform->setDefault('supervisionrole', $config->supervisionrole);
+        // $mform->addElement('select', 'supervisionrole', get_string('supervisionrole', 'mod_groupselect'), $supervisionRoles);
+        // // $mform->setType('supervisionrole', PARAM_INT);
+        // $mform->setDefault('supervisionrole', $config->supervisionrole);
         // $mform->addHelpButton('supervisionrole', 'mod_groupselect');
 
         $mform->addElement('advcheckbox', 'assignteachers', get_string('assigngroup', 'mod_groupselect'), '',
