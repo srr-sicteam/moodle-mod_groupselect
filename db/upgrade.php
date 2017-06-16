@@ -217,6 +217,7 @@ function xmldb_groupselect_upgrade($oldversion) {
         // search savepoint reached
         upgrade_mod_savepoint(true, 2016061100, 'groupselect');
     }
+
     if ($oldversion < 2017061205) {
 
         // get default teacher role
@@ -227,7 +228,7 @@ function xmldb_groupselect_upgrade($oldversion) {
         // Update module settings table
         $fields = array();
         $table = new xmldb_table('groupselect');
-        $fields[] = new xmldb_field('supervisionrole', XMLDB_TYPE_INTEGER, $teacherRole->id, null, XMLDB_NOTNULL, null, '1', 'notifyexpiredselection');
+        $fields[] = new xmldb_field('supervisionrole', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, $teacherRole->id, 'notifyexpiredselection');
 
         foreach ($fields as $field) {
             if (!$dbman->field_exists($table, $field)) {
@@ -236,6 +237,24 @@ function xmldb_groupselect_upgrade($oldversion) {
         }
         // search savepoint reached
         upgrade_mod_savepoint(true, 2017061205, 'groupselect');
+    }
+
+    if ($oldversion < 2017061207) {
+
+        // Update module settings table
+        $fields = array();
+        $table = new xmldb_table('groupselect');
+        $fields[] = new xmldb_field('maxgroupmembership', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, '1', 'supervisionrole');
+        // $fields[] = new xmldb_field('mingroupmembership', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, '0', 'supervisionrole');
+
+        foreach ($fields as $field) {
+            if (!$dbman->field_exists($table, $field)) {
+                $dbman->add_field($table, $field);
+            }
+        }
+
+        // search savepoint reached
+        upgrade_mod_savepoint(true, 2017061207, 'groupselect');
     }
     return true;
 }
