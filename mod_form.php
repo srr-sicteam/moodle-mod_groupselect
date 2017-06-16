@@ -82,6 +82,12 @@ class mod_groupselect_mod_form extends moodleform_mod {
         $mform->setDefault('maxmembers', $config->maxmembers);
         $mform->addHelpButton('maxmembers', 'maxmembers', 'mod_groupselect');
 
+        // Multi group selection
+        $mform->addElement('text', 'maxgroupmembership', get_string('maxgroupmembership', 'mod_groupselect'), array('size' => '4'));
+        $mform->setType('maxgroupmembership', PARAM_INT);
+        $mform->setDefault('maxgroupmembership', $config->maxgroupmembership);
+        // $mform->addHelpButton('maxgroupmembership', 'maxgroupmembership', 'mod_groupselect');
+
         $mform->addElement('date_time_selector', 'timeavailable', get_string('timeavailable', 'mod_groupselect'), array('optional' => true));
         $mform->setDefault('timeavailable', 0);
         $mform->addElement('date_time_selector', 'timedue', get_string('timedue', 'mod_groupselect'), array('optional' => true));

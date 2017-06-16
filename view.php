@@ -112,7 +112,10 @@ if (property_exists($groupselect, "supervisionrole") && $groupselect->supervisio
 // Permissions.
 $accessall = has_capability( 'moodle/site:accessallgroups', $context );
 $viewfullnames = has_capability( 'moodle/site:viewfullnames', $context );
-$canselect = (has_capability( 'mod/groupselect:select', $context ) and is_enrolled( $context ) and empty( $mygroups ));
+
+// multi group selection prerequisite
+$canselect = (has_capability( 'mod/groupselect:select', $context ) and is_enrolled( $context ) and (empty( $mygroups ) or count( $mygroups ) < $groupselect->maxgroupmembership));
+
 $canunselect = (has_capability( 'mod/groupselect:unselect', $context ) and is_enrolled( $context ) and ! empty( $mygroups ));
 $cancreate = ($groupselect->studentcancreate and has_capability( 'mod/groupselect:create', $context ) and is_enrolled( $context ) and empty( $mygroups ));
 $canexport = (has_capability( 'mod/groupselect:export', $context ) and count( $groups ) > 0);
@@ -484,7 +487,7 @@ if ($export and $canexport) {
     $event->trigger();
 }
 
-// User wants to assign (non-editing) teachers
+// User wants to assign supervisors via supervisionrole
 if ($assign and $canassign) {
 
     $alreadyassigned = count ( $DB->get_records( 'groupselect_groups_teachers', array (

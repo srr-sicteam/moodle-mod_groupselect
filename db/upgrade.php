@@ -245,7 +245,7 @@ function xmldb_groupselect_upgrade($oldversion) {
         $fields = array();
         $table = new xmldb_table('groupselect');
         $fields[] = new xmldb_field('maxgroupmembership', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, '1', 'supervisionrole');
-        // $fields[] = new xmldb_field('mingroupmembership', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, '0', 'supervisionrole');
+    
 
         foreach ($fields as $field) {
             if (!$dbman->field_exists($table, $field)) {

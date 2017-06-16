@@ -34,6 +34,7 @@ $string['hidefullgroups_help'] = 'If set, hides all groups, which have reached m
 $string['incorrectpassword'] = 'Incorrect password';
 $string['managegroups'] = 'Manage groups';
 $string['maxcharlenreached'] = 'Maximum character number reached';
+$string['maxgroupmembership'] = 'Maximum number of groups to participate in';
 $string['maxlimitreached'] = 'Maximum number reached';
 $string['maxmembers'] = 'Max members per group';
 $string['maxmembers_help'] = 'Maximum number of members per group, 0 for unlimited.';
