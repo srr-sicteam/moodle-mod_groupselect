@@ -166,24 +166,24 @@ class mod_groupselect_mod_form extends moodleform_mod {
         $timeavailable = $data['timeavailable'];
         $timedue = $data['timedue'];
 
-        if ($maxmembers < 0) {
-            $errors['maxmembers'] = get_string('error');
+        if ($maxmembers < 1) {
+            $errors['maxmembers'] = get_string('maxmembers_error_low');
         }
         if ($minmembers < 0) {
-            $errors['minmembers'] = get_string('error');
+            $errors['minmembers'] = get_string('minmembers_error_low');
         }
         if ($minmembers > $maxmembers) {
-            $errors['minmembers'] = get_string('error');
-            $errors['maxmembers'] = get_string('error');
+            $errors['minmembers'] = get_string('minmembers_error_bigger_maxmembers');
+            $errors['maxmembers'] = get_string('maxmembers_error_smaller_minmembers');
         }
         if ($timeavailable >= $timedue and $timeavailable > 0) {
-                $errors['timeavailable'] = get_string('error');
-            $errors['timedue'] = get_string('error');
+            $errors['timeavailable'] = get_string('timeavailable_error_past_timedue');
+            $errors['timedue'] = get_string('timedue_error_pre_timeavailable');
         }
         if ($maxgroupmembership < 1) {
-            $errors['maxgroupmembership'] = get_string('error');
+            $errors['maxgroupmembership'] = get_string('maxgroupmembership_error_low');
         }
-        
+
         return $errors;
     }
 }
