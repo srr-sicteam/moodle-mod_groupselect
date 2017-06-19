@@ -166,7 +166,7 @@ class mod_groupselect_mod_form extends moodleform_mod {
         $timeavailable = $data['timeavailable'];
         $timedue = $data['timedue'];
 
-        if ($maxmembers < 1) {
+        if ($maxmembers < 0) {
             $errors['maxmembers'] = get_string('maxmembers_error_low');
         }
         if ($minmembers < 0) {
