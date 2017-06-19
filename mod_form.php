@@ -160,6 +160,7 @@ class mod_groupselect_mod_form extends moodleform_mod {
     public function validation($data, $files) {
         $errors = parent::validation($data, $files);
 
+        $maxgroupmembership = $data['maxgroupmembership'];
         $maxmembers = $data['maxmembers'];
         $minmembers = $data['minmembers'];
         $timeavailable = $data['timeavailable'];
@@ -179,7 +180,10 @@ class mod_groupselect_mod_form extends moodleform_mod {
                 $errors['timeavailable'] = get_string('error');
             $errors['timedue'] = get_string('error');
         }
-
+        if ($maxgroupmembership < 1) {
+            $errors['maxgroupmembership'] = get_string('error');
+        }
+        
         return $errors;
     }
 }
