@@ -2,9 +2,11 @@
 
 ## Version 3.13 (2017061206)
 
-* Allow administrators and teachers to set supervision roles (fixes bug #14, via @phish108)
-* Omit including unnecessary libraries (fixes bug #10, via @lucaboesch)
-* Better conformity with Moodle Coding and Packaging Standards
+*   Better error messages for the module administration (via @phish108)
+*   Allow to configure participation in multiple groups (fixes issue #8, via @phish108)
+*   Allow administrators and teachers to set supervision roles (fixes bug #14, via @phish108)
+*   Omit including unnecessary libraries (fixes bug #10, via @lucaboesch)
+*   Better conformity with Moodle Coding and Packaging Standards
 
 ## Older Versions
 
