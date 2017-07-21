@@ -59,10 +59,10 @@ class mod_groupselect_mod_form extends moodleform_mod {
         }
 
         $roles = $DB->get_records("role");
-        $supervisionRoles = [];
+        $supervisionroles = [];
 
         foreach ($roles as $role) {
-            $supervisionRoles[$role->id] = $role->name;
+            $supervisionroles[$role->id] = $role->name;
         }
 
         $mform->addElement('select', 'targetgrouping', get_string('targetgrouping', 'mod_groupselect'), $options);
@@ -117,8 +117,7 @@ class mod_groupselect_mod_form extends moodleform_mod {
         $mform->disabledIf('studentcansetenrolmentkey', 'studentcancreate', 'notchecked');
 
         // part of fixing #14
-        $mform->addElement('select', 'supervisionrole', get_string('supervisionrole', 'mod_groupselect'), $supervisionRoles);
-        // $mform->setType('supervisionrole', PARAM_INT);
+        $mform->addElement('select', 'supervisionrole', get_string('supervisionrole', 'mod_groupselect'), $supervisionroles);
         $mform->setDefault('supervisionrole', $config->supervisionrole);
         // $mform->addHelpButton('supervisionrole', 'mod_groupselect');
 

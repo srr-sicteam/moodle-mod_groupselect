@@ -92,16 +92,16 @@ $exporturl = '';
 // administrators and lecturers to configure the roles to their needs
 
 // fallback variant 1 with hard coded role short name
-$teacherRole = $DB->get_record( 'role', array (
+$teacherrole = $DB->get_record( 'role', array (
     'shortname' => "teacher"
 ), '*', MUST_EXIST );
 
-$assignrole = $teacherRole->id; // Assign non-editing teachers.
+$assignrole = $teacherrole->id; // Assign non-editing teachers.
 
 // variant 2 for system wide supervision roles
-$gs_config = get_config("groupselect");
-if (property_exists($gs_config, "supervisionrole") && $gs_config->supervisionrole > 0) {
-    $assignrole = $gs_config->supervisionrole;
+$gsconfig = get_config("groupselect");
+if (property_exists($gsconfig, "supervisionrole") && $gsconfig->supervisionrole > 0) {
+    $assignrole = $gsconfig->supervisionrole;
 }
 
 // variant 3 for course specific supervision roles.
