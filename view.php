@@ -555,10 +555,24 @@ if (trim( strip_tags( $groupselect->intro ) )) {
 // Too few members in my group-notification.
 if ($groupselect->minmembers > 0 and ! empty( $mygroups )) {
     $mygroup = array_keys( $mygroups );
-    $mygroup = $mygroup [0];
-    $usercount = isset( $counts [$mygroup] ) ? $counts [$mygroup]->usercount : 0;
-    if ($groupselect->minmembers > $usercount) {
-        echo $OUTPUT->notification( get_string( 'minmembers_notification', 'mod_groupselect', $groupselect->minmembers ) );
+    foreach ($mygroup as $group) {
+        $usercount = isset( $counts [$group] ) ? $counts [$group]->usercount : 0;
+        if ($groupselect->minmembers > $usercount) {
+            echo $OUTPUT->notification( get_string( 'minmembers_notification', 'mod_groupselect', $groupselect->minmembers ) );
+            break;
+        }
+    }
+}
+
+// Too many members in my group-notification.
+if ($groupselect->maxmembers > 0 and ! empty( $mygroups )) {
+    $mygroup = array_keys( $mygroups );
+    foreach ($mygroup as $group) {
+        $usercount = isset( $counts [$group] ) ? $counts [$group]->usercount : 0;
+        if ($groupselect->maxmembers < $usercount) {
+            echo $OUTPUT->notification( get_string( 'maxmembers_notification', 'mod_groupselect', $groupselect->maxmembers ) );
+            break;
+        }
     }
 }
 
@@ -749,6 +763,13 @@ if (empty ( $groups )) {
         $line [4] = '<div class="icons">';
         if ($groupselect->minmembers > $usercount) {
             $line [4] = $line [4] . $OUTPUT->pix_icon( 'i/risk_xss', get_string( 'minmembers_icon', 'mod_groupselect' ), null,
+                array (
+                    'align' => 'left'
+                )
+            );
+        }
+        if ($groupselect->maxmembers > 0 && $groupselect->maxmembers < $usercount ) {
+            $line [4] = $line [4] . $OUTPUT->pix_icon( 'i/risk_xss', get_string( 'maxmembers_icon', 'mod_groupselect' ), null,
                 array (
                     'align' => 'left'
                 )

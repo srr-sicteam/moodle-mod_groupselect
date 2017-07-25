@@ -59,11 +59,7 @@ class mod_groupselect_mod_form extends moodleform_mod {
         }
 
         $roles = $DB->get_records("role");
-        $supervisionroles = [];
-
-        foreach ($roles as $role) {
-            $supervisionroles[$role->id] = $role->name;
-        }
+        $supervisionroles = role_get_names(context_system::instance(), ROLENAME_ALIAS, true);
 
         $mform->addElement('select', 'targetgrouping', get_string('targetgrouping', 'mod_groupselect'), $options);
 
@@ -119,7 +115,7 @@ class mod_groupselect_mod_form extends moodleform_mod {
         // part of fixing #14
         $mform->addElement('select', 'supervisionrole', get_string('supervisionrole', 'mod_groupselect'), $supervisionroles);
         $mform->setDefault('supervisionrole', $config->supervisionrole);
-        // $mform->addHelpButton('supervisionrole', 'mod_groupselect');
+        $mform->addHelpButton('supervisionrole', 'supervisionrole', 'mod_groupselect');
 
         $mform->addElement('advcheckbox', 'assignteachers', get_string('assigngroup', 'mod_groupselect'), '',
                 array('optional' => true, 'group' => null), array(0, 1));
@@ -166,21 +162,21 @@ class mod_groupselect_mod_form extends moodleform_mod {
         $timedue = $data['timedue'];
 
         if ($maxmembers < 0) {
-            $errors['maxmembers'] = get_string('maxmembers_error_low');
+            $errors['maxmembers'] = get_string('maxmembers_error_low', 'mod_groupselect');
         }
         if ($minmembers < 0) {
-            $errors['minmembers'] = get_string('minmembers_error_low');
+            $errors['minmembers'] = get_string('minmembers_error_low', 'mod_groupselect');
         }
-        if ($minmembers > $maxmembers) {
-            $errors['minmembers'] = get_string('minmembers_error_bigger_maxmembers');
-            $errors['maxmembers'] = get_string('maxmembers_error_smaller_minmembers');
+        if ($minmembers > $maxmembers && $maxmembers != 0) {
+            $errors['minmembers'] = get_string('minmembers_error_bigger_maxmembers', 'mod_groupselect');
+            $errors['maxmembers'] = get_string('maxmembers_error_smaller_minmembers', 'mod_groupselect');
         }
         if ($timeavailable >= $timedue and $timeavailable > 0) {
-            $errors['timeavailable'] = get_string('timeavailable_error_past_timedue');
+            $errors['timeavailable'] = get_string('timeavailable_error_past_timedue', 'mod_groupselect');
             $errors['timedue'] = get_string('timedue_error_pre_timeavailable');
         }
         if ($maxgroupmembership < 1) {
-            $errors['maxgroupmembership'] = get_string('maxgroupmembership_error_low');
+            $errors['maxgroupmembership'] = get_string('maxgroupmembership_error_low', 'mod_groupselect');
         }
 
         return $errors;

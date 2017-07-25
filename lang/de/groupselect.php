@@ -24,15 +24,26 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['assignedteacher'] = 'Betreuung';
-$string['eventgroupteacheradded'] = 'Betreuung zugeordnet';
+$string['assignedteacher'] = 'Zugeordnete(r) Betreuer/in';
+$string['assigngroup'] = ' Betreuer/innen zu Gruppen zuordnen';
+$string['assigngroup_confirm'] = 'Diese Aktion ordnet Betreuer/innen Gruppen zu. Vorherige Zuordnungen werden überschrieben und können nicht wieder hergestellt werden. Sind Sie sicher?';
+$string['assigngroup_help'] = 'Wenn gesetzt, erscheint ein Button um Betreuer/innen, sofern in diesem Kurs welche existieren, Gruppen zuzuordnen. Zugeordnete Betreuer/innen sind keine Gruppenmitglieder, erscheinen aber in exportierten Dateien und in der Hauptansicht (sofern ausgewählt). Nützlich, wenn der Kurs Assistenten benutzt, um Gruppen zu betreuen.';
+$string['eventgroupteacheradded'] = 'Betreuer/innen zugeordnet';
 $string['eventexportlinkcreated'] = 'Exportlink erstellt';
-$string['maxgroupmembership'] = 'Maximale Anzahl der Gruppenteilnahme pro Teilnehmenden ';
+$string['groupselect:assign'] = 'Das Hinzufügen eingeschriebener Betreuer/innen zu Gruppen erlauben';
+$string['maxgroupmembership'] = 'Maximale Anzahl der Gruppenteilnahme pro Teilnehmenden';
 $string['maxgroupmembership_error_low'] = 'Fehler: Es muss mindestens eine (1) Gruppe wählbar sein!';
-$string['modulename_help'] = '<p>Teilnehmer/innen können Gruppen erstellen und wählen: </p><ul><li>Teilnehmer/innen können Gruppen erstellen, diesen eine Beschreibung geben und, falls gewünscht, mit einem Passwort schützen</li><li>Teilnehmer/innen können Gruppen auswählen und betreten</li><li>Trainer/innen ohne Bearbeitungsrechte können Gruppen hinzugefügt werden</li><li>Trainer/in kann die Gruppenliste des Kurses als CSV-Datei exportieren</li><li>Volle Kompatibilität zu Basis Moodle-Gruppen: Gruppen können auch durch andere Plugins erzeugt werden.</li></ul>';
+$string['maxmembers_error_low'] = "Fehler: Benutze eine 0 um eine unlimietierte Gruppengrösse zu definieren!";
+$string['maxmembers_error_smaller_minmembers'] = "Fehler: Die Maximalanzahl der Teilnehmer muss grösser sein als die Mindesanzahl!";
+$string['maxmembers_icon'] = 'Die Gruppe hat zu viele Mitglieder';
+$string['modulename_help'] = '<p>Teilnehmer/innen können Gruppen erstellen und wählen: </p><ul><li>Teilnehmer/innen können Gruppen erstellen, diesen eine Beschreibung geben und, falls gewünscht, mit einem Passwort schützen</li><li>Teilnehmer/innen können Gruppen auswählen und betreten</li><li>Betreuer/innen können Gruppen hinzugefügt werden</li><li>Trainer/in kann die Gruppenliste des Kurses als CSV-Datei exportieren</li><li>Volle Kompatibilität zu Basis Moodle-Gruppen: Gruppen können auch durch andere Plugins erzeugt werden.</li></ul>';
+$string['minmembers_error_low'] = "Fehler: Negative Anzahl an Gruppenmitgliedern ist nicht erlaubt!";
+$string['minmembers_error_bigger_maxmembers'] = "Fehler: Die Mindestgruppengrösse muss kleiner sein als die maximale Anzahl an Teilnehmern!";
 $string['notifyexpiredselection'] = 'Zeige Meldung, wenn das Einschreibeende vorüber ist';
-$string['notifyexpiredselection_help'] = 'Wenn gesetzt, wird eine Meldung angezeigt falls das Einschreibeende vorüber ist';
-$string['studentcansetenrolmentkey'] = 'Teilnehmende können Passwörter setzen um Gruppen beizutreten';
+$string['notifyexpiredselection_help'] = 'Wenn gesetzt, wird eine Meldung angezeigt, falls das Einschreibeende vorüber ist';
+$string['showassignedteacher'] = 'Zugeteilte Betreuer/innen anzeigen';
+$string['showassignedteacher_help'] = 'Wenn gesetzt, werden zugeteilte Betreuer/innen in Gruppenmitglieder angezeigt. Dies könnte nützlich sein, wenn Teilnehmer/innen ihre zugeteilten Betreuer/innen wissen müssen.';
+$string['studentcansetenrolmentkey'] = 'Teilnehmende können Passwörter setzen, um Gruppen beizutreten';
 $string['studentcansetenrolmentkey_help'] = 'Wenn gesetzt, kann ein/e Teilnehmer/in ein Gruppenpasswort setzen';
 $string['studentcansetgroupname'] = 'Teilnehmende dürfen Gruppennamen selbst bestimmen.';
 $string['studentcansetgroupname_help'] = 'Wenn gesetzt, kann ein/e Teilnehmer/in einen Gruppennamen setzen';

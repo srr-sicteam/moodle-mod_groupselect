@@ -26,22 +26,18 @@
 defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
-    // get all course roles
-    $roles = $DB->get_records("role");
-    $configroles = [];
-
-    foreach ($roles as $role) {
-        $configroles[$role->id] = $role->name;
-    }
 
     // --- modedit defaults -----------------------------------------------------------------------------------
     $settings->add(new admin_setting_heading('groupselectmodeditdefaults',
         get_string('modeditdefaults', 'admin'),
         get_string('condifmodeditdefaults', 'admin')));
 
+    $configroles = role_get_names(context_system::instance(), ROLENAME_ALIAS, true);
+    $neteacher = $DB->get_record( 'role', array('shortname' => "teacher"), '*');
+    $setid = ($neteacher) ? $neteacher->id : 4;
     $settings->add(new admin_setting_configselect('groupselect/supervisionrole',
         get_string('supervisionrole', 'mod_groupselect'),
-        get_string('supervisionrole_help', 'mod_groupselect'), 4, $configroles));
+        get_string('supervisionrole_help', 'mod_groupselect'), $setid, $configroles));
 
     $settings->add(new admin_setting_configtext('groupselect/minmembers',
         get_string('minmembers', 'mod_groupselect'),
@@ -50,6 +46,9 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configtext('groupselect/maxmembers',
         get_string('maxmembers', 'mod_groupselect'),
         get_string('maxmembers_help', 'mod_groupselect'), 0, PARAM_INT));
+
+     $settings->add(new admin_setting_configtext('groupselect/maxgroupmembership',
+        get_string('maxgroupmembership', 'mod_groupselect'), null, 1, PARAM_INT));
 
     $settings->add(new admin_setting_configcheckbox('groupselect/studentcancreate',
         get_string('studentcancreate', 'mod_groupselect'),
