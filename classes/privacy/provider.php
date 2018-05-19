@@ -15,13 +15,32 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Group self selection
+ * The export_link_created event.
  *
- * @package   mod_groupselect
- * @copyright 2018 HTW Chur Roger Barras
+ * @package    mod_groupselect
+ * @copyright  2018 HTW Chur Roger Barras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
+namespace mod_groupselect\privacy;
 
-$string['privacy:metadata'] = 'Das Plugin Freie Gruppeneinteilung speichert keine persönlichen Daten.';
+defined('MOODLE_INTERNAL') || die();
+
+/**
+ * The mod_groupselect module does not store any data.
+ *
+ * @copyright  2018 HTW Chur Roger Barras
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class provider implements \core_privacy\local\metadata\null_provider {
+
+    /**
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return  string
+     */
+    public static function get_reason() : string {
+        return 'privacy:metadata';
+    }
+}
