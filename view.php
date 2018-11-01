@@ -677,12 +677,13 @@ if (empty ( $groups )) {
             $group->password = false;
         }
 
-        // Groupname.
         $line = array ();
+
+        // Groupname.
         if ($ismember) {
-            $line[0] = '<div class="mygroup">' . $grpname . '</div>';
+            $line[0] = '<div id="grouppicture" class="mygroup">' . print_group_picture($group, $course->id, false, true, true) . "  " . $grpname . '</div>';
         } else {
-            $line[0] = $grpname;
+            $line[0] = '<div id="grouppicture">' . print_group_picture($group, $course->id, false, true, $canseemembers) . "  " . $grpname . '</div>';
         }
 
         // Group description.
