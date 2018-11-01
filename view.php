@@ -70,14 +70,6 @@ $PAGE->set_title( $course->shortname . ': ' . $groupselect->name );
 $PAGE->set_heading( $course->fullname );
 $PAGE->set_activity_record( $groupselect );
 
-$event = \mod_groupselect\event\course_module_viewed::create(array(
-    'objectid' => $groupselect->id,
-    'context' => $context,
-));
-$event->add_record_snapshot('course', $course);
-$event->add_record_snapshot('groupselect', $groupselect);
-$event->trigger();
-
 $mygroups = groups_get_all_groups( $course->id, $USER->id, $groupselect->targetgrouping, 'g.*' );
 $isopen = groupselect_is_open( $groupselect );
 $groupmode = groups_get_activity_groupmode( $cm, $course );
@@ -87,6 +79,7 @@ $passwordgroups = groupselect_get_password_protected_groups( $groupselect );
 $hidefullgroups = $groupselect->hidefullgroups;
 $exporturl = '';
 
+groupselect_view($groupselect, $course, $cm, $context);
 
 // Course specific supervision roles.
 if (property_exists($groupselect, "supervisionrole") && $groupselect->supervisionrole > 0) {
