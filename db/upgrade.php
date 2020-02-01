@@ -337,6 +337,17 @@ function xmldb_groupselect_upgrade($oldversion) {
         // Groupselect savepoint reached.
         upgrade_mod_savepoint(true, 2018051901, 'groupselect');
     }
+    if ($oldversion < 2020020200) {
 
+        // Change the length of minmembers from 1 to 10
+        $table = new xmldb_table('groupselect');
+        $field = new xmldb_field('minmembers', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'studentcancreate');
+
+        // Launch change of nullability for field intro.
+        $dbman->change change_field_precision($table, $field);
+
+        // Groupselect savepoint reached.
+        upgrade_mod_savepoint(true, 2020020200, 'groupselect');
+    }
     return true;
 }
