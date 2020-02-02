@@ -316,10 +316,27 @@ function groupselect_core_calendar_event_action_shows_item_count(calendar_event 
     return $itemcount > 1;
 }
 
+/**
+ * This function receives a calendar event and returns the action associated with it, or null if there is none.
+ *
+ * This is used by block_myoverview in order to display the event appropriately. If null is returned then the event
+ * is not displayed on the block.
+ *
+ * @param calendar_event $event
+ * @param \core_calendar\action_factory $factory
+ * @param int $userid User id to use for all capability checks, etc. Set to 0 for current user (default).
+ * @return \core_calendar\local\event\entities\action_interface|null
+ */
 function mod_groupselect_core_calendar_provide_event_action(calendar_event $event,
                                                             \core_calendar\action_factory $factory,
                                                             $userid = 0) {
-    $cm = get_fast_modinfo($event->courseid)->instances['groupselect'][$event->instance];
+    global $USER;
+
+    if (empty($userid)) {
+        $userid = $USER->id;
+    }
+
+    $cm = get_fast_modinfo($event->courseid, $userid)->instances['groupselect'][$event->instance];
     $context = context_module::instance($cm->id);
     $itmecount = 1;
     $actionable = true;
@@ -331,7 +348,7 @@ function mod_groupselect_core_calendar_provide_event_action(calendar_event $even
         return null;
     }
 
-    if (!has_capability('mod/groupselect:select', $context)) {
+    if (!has_capability('mod/groupselect:select', $context, $userid)) {
         $actionable = false;
     }
 
