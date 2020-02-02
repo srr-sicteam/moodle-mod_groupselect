@@ -344,7 +344,7 @@ function xmldb_groupselect_upgrade($oldversion) {
         $field = new xmldb_field('minmembers', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'studentcancreate');
 
         // Launch change of nullability for field intro.
-        $dbman->change change_field_precision($table, $field);
+        $dbman->change_field_precision($table, $field);
 
         // Groupselect savepoint reached.
         upgrade_mod_savepoint(true, 2020020200, 'groupselect');
