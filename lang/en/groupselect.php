@@ -58,6 +58,8 @@ $string['groupselect:select'] = 'Allow becoming of group member';
 $string['groupselect:unselect'] = 'Allow leaving of group';
 $string['hidefullgroups'] = 'Hide full groups from the main view';
 $string['hidefullgroups_help'] = 'If set, hides all groups, which have reached max member count, from the main list view (excluding user\'s own group). May be useful if the activity has lots of groups.';
+$string['hidesuspendedstudents'] = 'Hide suspended students';
+$string['hidesuspendedstudents_help'] = 'If checked, suspended students will be removed from user count and group lists.';
 $string['incorrectpassword'] = 'Incorrect password';
 $string['managegroups'] = 'Manage groups';
 $string['maxcharlenreached'] = 'Maximum character number reached';
@@ -126,7 +128,3 @@ $string['unassigngroup'] = 'Unassign supervisors from groups';
 $string['unassigngroup_confirm'] = 'This will unassign supervisors from groups. Are you sure?';
 $string['unselect'] = 'Leave group {$a}';
 $string['unselectconfirm'] = 'Do you really want to leave the group <em>{$a}</em>?';
-
-// Optionally hide suspended students.
-$string['hidesuspendedstudents'] = 'Hide suspended students';
-$string['hidesuspendedstudents_help'] = 'If checked, suspended students will be removed from user count and group lists';

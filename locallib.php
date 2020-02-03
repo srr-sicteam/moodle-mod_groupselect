@@ -74,14 +74,19 @@ function groupselect_is_open($groupselect) {
 function groupselect_group_member_counts($cm, $targetgrouping=0, $hidesuspended = false) {
     global $DB;
 
-    // Join to the enrolment table to hide suspended students.
-    $enrolsql = "AND gm.userid in (
-                    SELECT userid
+    // Join to the enrolment and user table to hide suspended students.
+    $andnotsuspended = '';
+    $enrolsql = " AND gm.userid in (
+                    SELECT ue.userid
                       FROM {user_enrolments} ue
                       JOIN {enrol} e ON ue.enrolid = e.id
                      WHERE e.courseid = g.courseid";
     if ($hidesuspended) {
         $enrolsql .= " AND ue.status = " . ENROL_USER_ACTIVE;
+        $andnotsuspended = " AND gm.userid in (
+            SELECT u.id
+              FROM {user} u
+             WHERE u.suspended = 0) ";
     }
     $enrolsql .= ")";
 
@@ -92,6 +97,7 @@ function groupselect_group_member_counts($cm, $targetgrouping=0, $hidesuspended 
                        JOIN {groups} g ON g.id = gm.groupid
                  WHERE g.courseid = :course
                        $enrolsql
+                       $andnotsuspended
               GROUP BY g.id";
         $params = array('course' => $cm->course);
 
@@ -103,6 +109,7 @@ function groupselect_group_member_counts($cm, $targetgrouping=0, $hidesuspended 
                  WHERE g.courseid = :course
                        AND gg.groupingid = :grouping
                        $enrolsql
+                       $andnotsuspended
               GROUP BY g.id";
         $params = array('course' => $cm->course, 'grouping' => $targetgrouping);
     }

@@ -25,3 +25,5 @@
 defined('MOODLE_INTERNAL') || die;
 
 $string['privacy:metadata'] = 'Das Plugin Freie Gruppeneinteilung speichert keine persönlichen Daten.';
+$string['hidesuspendedstudents'] = 'Verberge inaktive Teilnehmende';
+$string['hidesuspendedstudents_help'] = 'Wenn gesetzt, werden inaktive Teilnehmende aus der Ansicht verborgen und bei der Anzahl Gruppenteilnehmer nicht berücksichtig.';

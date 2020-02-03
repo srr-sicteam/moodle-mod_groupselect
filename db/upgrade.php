@@ -349,5 +349,20 @@ function xmldb_groupselect_upgrade($oldversion) {
         // Groupselect savepoint reached.
         upgrade_mod_savepoint(true, 2020020200, 'groupselect');
     }
+    if ($oldversion < 2020020300) {
+
+        // Update module settings table.
+        $table = new xmldb_table('groupselect');
+        $fields[] = new xmldb_field('hidesuspendedstudents', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'hidefullgroups');
+
+        foreach ($fields as $field) {
+            if (!$dbman->field_exists($table, $field)) {
+                $dbman->add_field($table, $field);
+            }
+        }
+
+        // Groupselect savepoint reached.
+        upgrade_mod_savepoint(true, 2020020300, 'groupselect');
+    }
     return true;
 }

@@ -73,18 +73,20 @@ $PAGE->set_activity_record( $groupselect );
 $mygroups = groups_get_all_groups( $course->id, $USER->id, $groupselect->targetgrouping, 'g.*' );
 $isopen = groupselect_is_open( $groupselect );
 $groupmode = groups_get_activity_groupmode( $cm, $course );
-$config = get_config('groupselect');
+
 // Request group member counts without suspended students if enabled.
-$counts = groupselect_group_member_counts( $cm, $groupselect->targetgrouping, $config->hidesuspendedstudents);
+$hidesuspendedstudents = $groupselect->hidesuspendedstudents;
+$counts = groupselect_group_member_counts($cm, $groupselect->targetgrouping, $hidesuspendedstudents);
 $susers = get_suspended_userids($context, true);
-$groups = groups_get_all_groups( $course->id, 0, $groupselect->targetgrouping );
-$passwordgroups = groupselect_get_password_protected_groups( $groupselect );
+$groups = groups_get_all_groups($course->id, 0, $groupselect->targetgrouping);
+$passwordgroups = groupselect_get_password_protected_groups($groupselect);
 $hidefullgroups = $groupselect->hidefullgroups;
 $exporturl = '';
 
 groupselect_view($groupselect, $course, $cm, $context);
 
 // Course specific supervision roles.
+$assignrole = 4;
 if (property_exists($groupselect, "supervisionrole") && $groupselect->supervisionrole > 0) {
     $assignrole = $groupselect->supervisionrole;
 } else {
@@ -93,7 +95,8 @@ if (property_exists($groupselect, "supervisionrole") && $groupselect->supervisio
     ), '*', IGNORE_MISSING);
     // Assign non-editing teachers.
     if (empty($teacherrole)) {
-        $assignrole = 4; // 4 is the moodle default value for the non-editing teachers.
+        // 4 is the moodle default value for the non-editing teachers.
+        $assignrole = 4;
     } else {
         $assignrole = $teacherrole->id;
     }
@@ -123,6 +126,7 @@ $canedit = ($groupselect->studentcansetdesc and $isopen);
 $canmanagegroups = has_capability('moodle/course:managegroups', $context);
 $cansetgroupname = ($groupselect->studentcansetgroupname);
 
+$viewothers = null;
 if ($course->id == SITEID) {
     $viewothers = has_capability( 'moodle/site:viewparticipants', $context );
 } else {
@@ -656,6 +660,7 @@ if (empty ( $groups )) {
 
     // Group list.
     foreach ($groups as $group) {
+        $canseemembers = $viewothers;
         $ismember = isset( $mygroups[$group->id] );
         $usercount = isset( $counts[$group->id] ) ? $counts[$group->id]->usercount : 0;
         $grpname = format_string( $group->name, true, array (
@@ -714,7 +719,7 @@ if (empty ( $groups )) {
                 $membernames = array ();
                 foreach ($members as $member) {
                     // Hide suspended students from the member list if enabled.
-                    if (!empty($config->hidesuspendedstudents) && isset($susers[$member->id])) {
+                    if ($hidesuspendedstudents and (isset($susers[$member->id]) or !empty($member->suspended)) ) {
                         continue;
                     }
                     $pic = $OUTPUT->user_picture( $member, array (
