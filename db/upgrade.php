@@ -337,7 +337,7 @@ function xmldb_groupselect_upgrade($oldversion) {
         // Groupselect savepoint reached.
         upgrade_mod_savepoint(true, 2018051901, 'groupselect');
     }
-    if ($oldversion < 2020020200) {
+    if ($oldversion < 2020020500) {
 
         // Change the length of minmembers from 1 to 10
         $table = new xmldb_table('groupselect');
@@ -346,14 +346,10 @@ function xmldb_groupselect_upgrade($oldversion) {
         // Launch change of nullability for field intro.
         $dbman->change_field_precision($table, $field);
 
-        // Groupselect savepoint reached.
-        upgrade_mod_savepoint(true, 2020020200, 'groupselect');
-    }
-    if ($oldversion < 2020020300) {
-
         // Update module settings table.
-        $table = new xmldb_table('groupselect');
+        $fields = array();
         $fields[] = new xmldb_field('hidesuspendedstudents', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'hidefullgroups');
+        $fields[] = new xmldb_field('hidegroupmembers', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'hidesuspendedstudents');
 
         foreach ($fields as $field) {
             if (!$dbman->field_exists($table, $field)) {
@@ -362,7 +358,7 @@ function xmldb_groupselect_upgrade($oldversion) {
         }
 
         // Groupselect savepoint reached.
-        upgrade_mod_savepoint(true, 2020020300, 'groupselect');
+        upgrade_mod_savepoint(true, 2020020500, 'groupselect');
     }
     return true;
 }

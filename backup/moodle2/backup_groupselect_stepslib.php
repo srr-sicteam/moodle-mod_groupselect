@@ -42,8 +42,8 @@ class backup_groupselect_activity_structure_step extends backup_activity_structu
         // Define each element separated.
         $groupselect = new backup_nested_element('groupselect', array('id'), array(
             'name', 'intro', 'introformat', 'targetgrouping', 'maxmembers', 'timeavailable', 'timedue',
-            'timecreated', 'timemodified', 'hidefullgroups', 'hidesuspendedstudents', 'deleteemptygroups',
-            'studentcancreate', 'minmembers', 'assignteachers', 'studentcansetdesc',
+            'timecreated', 'timemodified', 'hidefullgroups', 'hidesuspendedstudents', 'hidegroupmembers',
+            'deleteemptygroups', 'studentcancreate', 'minmembers', 'assignteachers', 'studentcansetdesc',
             'showassignedteacher', 'studentcansetenrolmentkey', 'studentcansetgroupname',
             'notifyexpiredselection', 'supervisionrole', 'maxgroupmembership', 'studentcanjoin', 'studentcanleave'
         ));

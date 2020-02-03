@@ -158,6 +158,11 @@ class mod_groupselect_mod_form extends moodleform_mod {
                 array('optional' => true, 'group' => null), array(0, 1));
         $mform->addHelpButton('hidesuspendedstudents', 'hidesuspendedstudents', 'mod_groupselect');
         $mform->setDefault('hidesuspendedstudents', $config->hidesuspendedstudents);
+        // Hide group members.
+        $mform->addElement('advcheckbox', 'hidegroupmembers', get_string('hidegroupmembers', 'mod_groupselect'), '',
+                array('optional' => true, 'group' => null), array(0, 1));
+        $mform->addHelpButton('hidegroupmembers', 'hidegroupmembers', 'mod_groupselect');
+        $mform->setDefault('hidegroupmembers', $config->hidegroupmembers);
         // Notify expired group selection.
         $mform->addElement('advcheckbox', 'notifyexpiredselection', get_string('notifyexpiredselection', 'mod_groupselect'), '',
                 array('optional' => true, 'group' => null), array(0, 1));
