@@ -9,6 +9,7 @@
 *   Option to hide suspended students
 *   Option to hide group members
 *   Fix in calender for MDL-58768
+*   Fix for minimum members can now be higher than 9
 
 ## Version 3.15 (2018051900)
 *   Implemented interface of the privacy api for GDPR (moodle 3.5)
