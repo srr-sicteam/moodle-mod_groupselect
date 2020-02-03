@@ -1,5 +1,15 @@
 # Changes for mod_groupselect
 
+## Version 3.16 (2020020500)
+*   Enable completion rule viewed
+*   Remove deprecated text
+*   Add the group picture in the main list
+*   Provide a 'more help' link to Moodle docs in activity chooser
+*   Fixed upgrade.php to match install.xml
+*   Option to hide suspended students
+*   Option to hide group members
+*   Fix in calender for MDL-58768
+
 ## Version 3.15 (2018051900)
 *   Implemented interface of the privacy api for GDPR (moodle 3.5)
 

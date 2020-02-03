@@ -17,8 +17,8 @@
 /**
  * Library of functions and constants of Group selection module
  *
- * @package   mod_groupselect
- * @copyright 2018 HTW Chur Roger Barras
+ * @package    mod_groupselect
+ * @copyright  2018 HTW Chur Roger Barras
  * @copyright  2008-2011 Petr Skoda (http://skodak.org)
  * @copyright  2014 Tampere University of Technology, P. Pyykkönen (pirkka.pyykkonen ÄT tut.fi)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -91,7 +91,7 @@ function groupselect_group_member_counts($cm, $targetgrouping=0, $hidesuspended 
     $enrolsql .= ")";
 
     if (empty($targetgrouping)) {
-        // all groups
+        // All groups.
         $sql = "SELECT g.id, COUNT(gm.userid) AS usercount
                   FROM {groups_members} gm
                        JOIN {groups} g ON g.id = gm.groupid
