@@ -11,7 +11,8 @@ php:
  - 7.2
 
 services:
-  mysql
+  - mysql
+  - postgresql
 
 env:
  global:
