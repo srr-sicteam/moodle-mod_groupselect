@@ -244,7 +244,7 @@ function groupselect_get_view_actions() {
 
 
 /**
- * groupselect_get_post_actions
+ * Serves intro attachment files.
  *
  * @return array
  */
@@ -252,12 +252,16 @@ function groupselect_get_post_actions() {
     return array('select', 'unselect', 'create', 'assign');
 }
 
-
 /**
  * Used to create exportable csv-file in view.php
  *
- * @param $data the data submitted from the reset course.
- * @return array status array
+ * @param mixed $course course or id of the course
+ * @param mixed $cm course module or id of the course module
+ * @param context $context context object
+ * @param string $filearea the name of the file area.
+ * @param array $args the remaining bits of the file path.
+ * @param bool $forcedownload whether the user must be forced to download the file.
+ * @param array $options additional options affecting the file serving
  */
 function groupselect_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
     // Check the contextlevel is as expected - if your plugin is a block, this becomes CONTEXT_BLOCK, etc.

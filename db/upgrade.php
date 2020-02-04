@@ -26,6 +26,9 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+/**
+ * Upgrade function
+ */
 function xmldb_groupselect_upgrade($oldversion) {
     global $DB;
 

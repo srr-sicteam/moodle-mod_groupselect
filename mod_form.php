@@ -38,6 +38,9 @@ require_once($CFG->dirroot.'/course/moodleform_mod.php');
  */
 class mod_groupselect_mod_form extends moodleform_mod {
 
+    /**
+     * Definition of the form
+     */
     public function definition() {
         global $CFG, $COURSE, $DB; // TODO: get rid of the sloppy $COURSE.
 
@@ -183,6 +186,13 @@ class mod_groupselect_mod_form extends moodleform_mod {
         $this->add_action_buttons();
     }
 
+    /**
+     * Validation of the form
+     *
+     * @param array $data
+     * @param array $files
+     * @return array
+     */
     public function validation($data, $files) {
         $errors = parent::validation($data, $files);
 

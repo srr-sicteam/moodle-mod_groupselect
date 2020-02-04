@@ -35,7 +35,7 @@ require_once("$CFG->dirroot/mod/groupselect/lib.php");
 /**
  * Get the group description as text
  *
- * @param object $group groups record
+ * @param stdClass $group groups record
  * @return string group description as plain text
  */
 function groupselect_get_group_info($group) {
@@ -54,7 +54,7 @@ function groupselect_get_group_info($group) {
 /**
  * Is the given group selection open for students to select their group at the moment?
  *
- * @param object $groupselect groupselect record
+ * @param stdClass $groupselect groupselect record
  * @return bool True if the group selection is open right now, false otherwise
  */
 function groupselect_is_open($groupselect) {
@@ -66,9 +66,9 @@ function groupselect_is_open($groupselect) {
 /**
  * Get the number of members in all groups the user can select from in this activity
  *
- * @param $cm Course module slot of the groupselect instance
- * @param $targetgrouping The id of grouping the user can select a group from
- * @param $hidesuspended Whether to exclude suspended students
+ * @param mixed $cm Course module slot of the groupselect instance
+ * @param int $targetgrouping The id of grouping the user can select a group from
+ * @param bool $hidesuspended Whether to exclude suspended students
  * @return array of objects: [id] => object(->usercount ->id) where id is group id
  */
 function groupselect_group_member_counts($cm, $targetgrouping=0, $hidesuspended = false) {
@@ -120,6 +120,7 @@ function groupselect_group_member_counts($cm, $targetgrouping=0, $hidesuspended 
 /**
  * Get password protected groups
  *
+ * @param stdClass $groupselect groupselect record
  * @return array of group ids
  */
 function groupselect_get_password_protected_groups($groupselect) {
@@ -139,6 +140,8 @@ function groupselect_get_password_protected_groups($groupselect) {
 /**
  * Get users with given role in given context
  *
+ * @param context $context context
+ * @param int $roleid role id
  * @return array of user ids
  */
 function groupselect_get_context_members_by_role($context, $roleid) {
