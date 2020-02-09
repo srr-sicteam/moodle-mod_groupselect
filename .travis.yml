@@ -8,6 +8,7 @@ cache:
 
 php:
  - 7.0
+ - 7.1
  - 7.2
  - 7.3
 
@@ -28,6 +29,7 @@ env:
   - DB=mysqli MOODLE_BRANCH=MOODLE_36_STABLE
   - DB=mysqli MOODLE_BRANCH=MOODLE_37_STABLE
   - DB=mysqli MOODLE_BRANCH=MOODLE_38_STABLE
+ matrix:
   exclude:
     - php: 7.3
       env: DB=mysqli MOODLE_BRANCH=MOODLE_35_STABLE
