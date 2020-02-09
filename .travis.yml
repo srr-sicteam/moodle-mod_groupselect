@@ -45,10 +45,18 @@ env:
       env: DB=mysqli MOODLE_BRANCH=MOODLE_38_STABLE
 
 before_install:
+# This disables XDebug which should speed up the build.
   - phpenv config-rm xdebug.ini
+# This installs NodeJS which is used by Grunt, etc.
+  - nvm install 8.9
+  - nvm use 8.9
+# Currently we are inside of the clone of your repository.  We move up two
+# directories to build the project.
   - cd ../..
   - composer selfupdate
-  - composer create-project -n --no-dev --prefer-dist moodlerooms/moodle-plugin-ci ci ^1
+# Install this project into a directory called "ci".
+  - composer create-project -n --no-dev --prefer-dist blackboard-open-source/moodle-plugin-ci ci ^2
+# Update the $PATH so scripts from this project can be called easily.
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
 
 install:
@@ -59,7 +67,10 @@ script:
   - moodle-plugin-ci phpcpd
   - moodle-plugin-ci phpmd
   - moodle-plugin-ci codechecker
-  - moodle-plugin-ci csslint
+  - moodle-plugin-ci validate
+  - moodle-plugin-ci savepoints
+#  - moodle-plugin-ci grunt
+#  - moodle-plugin-ci mustache
   - moodle-plugin-ci shifter
   - moodle-plugin-ci jshint
   - moodle-plugin-ci validate
