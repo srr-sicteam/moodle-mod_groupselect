@@ -125,6 +125,7 @@ $canassign = (has_capability( 'mod/groupselect:assign', $context ) and $groupsel
 $canunassign = (has_capability( 'mod/groupselect:assign', $context ) and $alreadyassigned);
 $canedit = ($groupselect->studentcansetdesc and $isopen);
 $canmanagegroups = has_capability('moodle/course:managegroups', $context);
+$hidegroupmembers = !($canmanagegroups or $accessall);
 $cansetgroupname = ($groupselect->studentcansetgroupname);
 
 $viewothers = null;
