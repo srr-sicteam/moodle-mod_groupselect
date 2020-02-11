@@ -20,7 +20,7 @@ env:
  global:
 # - IGNORE_PATHS=jquery/jeditable,lib/sortable
   - IGNORE_NAMES=jquery.jeditable.js,sorttable.js
- matrix:
+ jobs:
   - DB=pgsql MOODLE_BRANCH=MOODLE_35_STABLE
   - DB=pgsql MOODLE_BRANCH=MOODLE_36_STABLE
   - DB=pgsql MOODLE_BRANCH=MOODLE_37_STABLE
@@ -29,7 +29,7 @@ env:
   - DB=mysqli MOODLE_BRANCH=MOODLE_36_STABLE
   - DB=mysqli MOODLE_BRANCH=MOODLE_37_STABLE
   - DB=mysqli MOODLE_BRANCH=MOODLE_38_STABLE
- matrix:
+
   exclude:
     - php: 7.3
       env: DB=mysqli MOODLE_BRANCH=MOODLE_35_STABLE
@@ -43,6 +43,7 @@ env:
       env: DB=pgsql MOODLE_BRANCH=MOODLE_38_STABLE
     - php: 7.0
       env: DB=mysqli MOODLE_BRANCH=MOODLE_38_STABLE
+  fast_finish: true
 
 before_install:
 # This disables XDebug which should speed up the build.
