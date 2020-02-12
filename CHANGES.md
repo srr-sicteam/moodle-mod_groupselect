@@ -8,8 +8,10 @@
 *   Fixed upgrade.php to match install.xml
 *   Option to hide suspended students
 *   Option to hide group members
+*   Add button to manage groups
 *   Fix in calender for MDL-58768
 *   Fix for minimum members can now be higher than 9
+*   Fix width of group description textarea
 
 ## Version 3.15 (2018051900)
 *   Implemented interface of the privacy api for GDPR (moodle 3.5)
