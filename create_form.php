@@ -67,7 +67,7 @@ class create_form extends moodleform {
 
         if ($this->groupselect->studentcansetdesc) {
             $mform->addElement('textarea', 'description', get_string('description', 'mod_groupselect'),
-                array('wrap' => 'virtual', 'maxlength' => self::DESCRIPTION_MAXLEN - 1, 'rows' => '3', 'cols' => '25', ''));
+                array('wrap' => 'virtual', 'maxlength' => self::DESCRIPTION_MAXLEN - 1, 'rows' => '3', 'cols' => '102', ''));
         } else {
             $mform->addElement('hidden', 'description', '');
         }
