@@ -624,6 +624,13 @@ if ($canunassign) {
     echo $OUTPUT->render($button);
 }
 
+// Manage groups.
+if ($canmanagegroups) {
+    echo $OUTPUT->single_button( new moodle_url( '/group/index.php', array (
+                'id' => $course->id
+    ) ), get_string( 'managegroups', 'mod_groupselect' ) );
+}
+
 if (empty ( $groups )) {
     echo $OUTPUT->notification( get_string( 'nogroups', 'mod_groupselect' ) );
 } else {
@@ -774,6 +781,7 @@ if (empty ( $groups )) {
                         }
                     }
                 }
+
                 $line[3] = implode( ', ', $membernames );
             } else {
                 $line[3] = '';
