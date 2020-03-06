@@ -1,5 +1,8 @@
 # Changes for mod_groupselect
 
+## Version 3.17 (2020030600)
+*   Fix that members where always hidden for students
+
 ## Version 3.16 (2020020500)
 *   Enable completion rule viewed
 *   Remove deprecated text
