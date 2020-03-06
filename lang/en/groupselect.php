@@ -88,6 +88,7 @@ $string['minmembers_notification'] = 'Your group has less members than required!
 $string['miscellaneoussettings'] = 'Miscellaneous settings';
 $string['modulename'] = 'Group self-selection';
 $string['modulename_help'] = 'Lets participants create and select groups. Features:
+
 * Participant can create groups, give them a description and set them password protected, if wanted
 * Participants can select and join groups
 * Supervisors may be assigned to groups
