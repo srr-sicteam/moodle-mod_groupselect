@@ -81,7 +81,6 @@ $susers = get_suspended_userids($context, true);
 $groups = groups_get_all_groups($course->id, 0, $groupselect->targetgrouping);
 $passwordgroups = groupselect_get_password_protected_groups($groupselect);
 $hidefullgroups = $groupselect->hidefullgroups;
-$hidegroupmembers = $groupselect->hidegroupmembers;
 $exporturl = '';
 
 groupselect_view($groupselect, $course, $cm, $context);
@@ -108,7 +107,7 @@ $accessall = has_capability( 'moodle/site:accessallgroups', $context );
 $canmanagegroups = has_capability('moodle/course:managegroups', $context);
 $viewfullnames = has_capability( 'moodle/site:viewfullnames', $context );
 
-// multi group selection prerequisite.
+// Multi group selection prerequisite.
 
 $alreadyassigned = count ( $DB->get_records( 'groupselect_groups_teachers', array (
                             'instance_id' => $groupselect->id
@@ -125,10 +124,15 @@ $canassign = (has_capability( 'mod/groupselect:assign', $context ) and $groupsel
             and (count(groupselect_get_context_members_by_role( context_course::instance( $course->id )->id, $assignrole )) > 0));
 $canunassign = (has_capability( 'mod/groupselect:assign', $context ) and $alreadyassigned);
 $canedit = ($groupselect->studentcansetdesc and $isopen);
-$hidegroupmembers = $groupselect->hidegroupmembers;
+// Do not hide groups if the user can manage group or has access to all groups.
+if ($canmanagegroups or $accessall) {
+    $hidegroupmembers = false;
+} else {
+    $hidegroupmembers = $groupselect->hidegroupmembers;
+}
 $cansetgroupname = ($groupselect->studentcansetgroupname);
-
 $viewothers = null;
+
 if ($course->id == SITEID) {
     $viewothers = has_capability( 'moodle/site:viewparticipants', $context );
 } else {
