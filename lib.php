@@ -32,6 +32,13 @@
  */
 function groupselect_supports($feature) {
 
+    if (!defined('FEATURE_MOD_PURPOSE')) {
+        define('FEATURE_MOD_PURPOSE', 'mod_purpose');
+    }
+    if (!defined('MOD_PURPOSE_COLLABORATION')) {
+        define('MOD_PURPOSE_COLLABORATION', 'collaboration');
+    }
+
     switch($feature) {
         case FEATURE_MOD_ARCHETYPE:
             return MOD_ARCHETYPE_OTHER;
@@ -55,7 +62,6 @@ function groupselect_supports($feature) {
             return true;
         case FEATURE_MOD_PURPOSE:
             return MOD_PURPOSE_COLLABORATION;
-
         default:
             return null;
     }
@@ -67,6 +73,21 @@ function groupselect_supports($feature) {
  */
 function groupselect_get_extra_capabilities() {
     return array('moodle/site:accessallgroups', 'moodle/site:viewfullnames');
+}
+
+/**
+ * Gets a full groupselect record
+ *
+ * @param int $groupselectid
+ * @return object|bool The groupselect or false
+ */
+function groupselect_get_groupselect($groupselectid) {
+    global $DB;
+
+    if ($groupselect = $DB->get_record("groupselect", array("id" => $groupselectid))) {
+        return $groupselect;
+    }
+    return false;
 }
 
 /**
