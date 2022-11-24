@@ -124,7 +124,6 @@ class mod_groupselect_mod_form extends moodleform_mod {
                             array('optional' => true, 'group' => null), array(0, 1));
         $mform->addHelpButton('studentcansetdesc', 'studentcansetdesc', 'mod_groupselect');
         $mform->setDefault('studentcansetdesc', $config->studentcansetdesc);
-        $mform->disabledIf('studentcansetdesc', 'studentcancreate', 'notchecked');
         // Enroll password.
         $mform->addElement('advcheckbox', 'studentcansetenrolmentkey', get_string('studentcansetenrolmentkey', 'mod_groupselect'),
                             '', array('optional' => true, 'group' => null), array(0, 1));
