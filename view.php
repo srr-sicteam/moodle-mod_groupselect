@@ -558,7 +558,8 @@ if ($groupselect->minmembers > 0 && ! empty( $mygroups )) {
     foreach ($mygroup as $group) {
         $usercount = isset( $counts[$group] ) ? $counts[$group]->usercount : 0;
         if ($groupselect->minmembers > $usercount) {
-            echo $OUTPUT->notification( get_string( 'minmembers_notification', 'mod_groupselect', $groupselect->minmembers ) );
+            echo $OUTPUT->notification( get_string( 'minmembers_notification', 'mod_groupselect', $groupselect->minmembers ),
+                 \core\output\notification::NOTIFY_WARNING );
             break;
         }
     }
@@ -570,7 +571,8 @@ if ($groupselect->maxmembers > 0 && ! empty( $mygroups )) {
     foreach ($mygroup as $group) {
         $usercount = isset( $counts[$group] ) ? $counts[$group]->usercount : 0;
         if ($groupselect->maxmembers < $usercount) {
-            echo $OUTPUT->notification( get_string( 'maxmembers_notification', 'mod_groupselect', $groupselect->maxmembers ) );
+            echo $OUTPUT->notification( get_string( 'maxmembers_notification', 'mod_groupselect', $groupselect->maxmembers ),
+             \core\output\notification::NOTIFY_WARNING );
             break;
         }
     }
@@ -579,11 +581,11 @@ if ($groupselect->maxmembers > 0 && ! empty( $mygroups )) {
 // Activity opening/closing related notificatins.
 if ($groupselect->timeavailable !== 0 && $groupselect->timeavailable > time()) {
     echo $OUTPUT->notification( get_string( 'timeavailable', 'mod_groupselect' ) . ' ' .
-        strval( userdate( $groupselect->timeavailable ) ) );
+        strval( userdate( $groupselect->timeavailable ) ), \core\output\notification::NOTIFY_INFO );
 }
 if ($groupselect->timedue !== 0 && $groupselect->timedue > time()) {
     echo $OUTPUT->notification( get_string( 'timedue', 'mod_groupselect' ) . ' ' .
-        strval( userdate( $groupselect->timedue ) ) );
+        strval( userdate( $groupselect->timedue ) ), \core\output\notification::NOTIFY_INFO );
 }
 
 // Create group button.
@@ -633,11 +635,11 @@ if ($canmanagegroups) {
 }
 
 if (empty ( $groups )) {
-    echo $OUTPUT->notification( get_string( 'nogroups', 'mod_groupselect' ) );
+    echo $OUTPUT->notification( get_string( 'nogroups', 'mod_groupselect' ), \core\output\notification::NOTIFY_WARNING );
 } else {
     if ($problems) {
         foreach ($problems as $problem) {
-            echo $OUTPUT->notification( $problem, 'notifyproblem' );
+            echo $OUTPUT->notification( $problem, \core\output\notification::NOTIFY_ERROR );
         }
     }
 
