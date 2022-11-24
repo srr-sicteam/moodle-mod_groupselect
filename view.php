@@ -579,13 +579,16 @@ if ($groupselect->maxmembers > 0 && ! empty( $mygroups )) {
 }
 
 // Activity opening/closing related notificatins.
-if ($groupselect->timeavailable !== 0 && $groupselect->timeavailable > time()) {
-    echo $OUTPUT->notification( get_string( 'timeavailable', 'mod_groupselect' ) . ' ' .
-        strval( userdate( $groupselect->timeavailable ) ), \core\output\notification::NOTIFY_INFO );
-}
-if ($groupselect->timedue !== 0 && $groupselect->timedue > time()) {
-    echo $OUTPUT->notification( get_string( 'timedue', 'mod_groupselect' ) . ' ' .
-        strval( userdate( $groupselect->timedue ) ), \core\output\notification::NOTIFY_INFO );
+// Not needed for moodle >= 3.11 as already in activitydates.
+if ($CFG->branch < 311) {
+    if ($groupselect->timeavailable !== 0 && $groupselect->timeavailable > time()) {
+        echo $OUTPUT->notification( get_string( 'timeavailable', 'mod_groupselect' ) . ' ' .
+            strval( userdate( $groupselect->timeavailable ) ), \core\output\notification::NOTIFY_INFO );
+    }
+    if ($groupselect->timedue !== 0 && $groupselect->timedue > time()) {
+        echo $OUTPUT->notification( get_string( 'timedue', 'mod_groupselect' ) . ' ' .
+            strval( userdate( $groupselect->timedue ) ), \core\output\notification::NOTIFY_INFO );
+    }
 }
 
 // Create group button.
