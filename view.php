@@ -642,7 +642,7 @@ if (empty ( $groups )) {
 } else {
     if ($problems) {
         foreach ($problems as $problem) {
-            echo $OUTPUT->notification( $problem, \core\output\notification::NOTIFY_ERROR );
+            echo $OUTPUT->notification( $problem, \core\output\notification::NOTIFY_WARNING );
         }
     }
 
