@@ -32,7 +32,7 @@ Lets students create and select groups. Features:
 * Full compatibility with basic Moodle groups: groups may be created by other means if needed, supports group assignment submissions etc.
 
 
-Thanks to Roger Barras, Pirkka Pyykkönen, Petr Skoda, Helen Foster, Daniel Neis Araujo and other
+Thanks to Roger Barras, Pirkka Pyykkönen, Petr Skoda, Helen Foster, Daniel Neis Araujo, Luca Bösch, and other
 contributors, on whose earlier work this plugin is based on.
 
 Project page:

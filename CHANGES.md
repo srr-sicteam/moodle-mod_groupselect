@@ -1,5 +1,14 @@
 # Changes for mod_groupselect
 
+## Version 4.0 (2022112400)
+*   Enable support of activity dates of Moodle 3.11
+*   Enable support of purpose for moodle 4 UX
+*   Improve UX and some notifications are now warnings instead of errors
+*   Remove XSS risk from create group capability
+*   Setting "Participants can set and edit group description" will always be enabled
+*   Fixed some typos and cleanded up some old code
+*   Added some behat tests
+
 ## Version 3.17 (2020030600)
 *   Fix that members where always hidden for students
 
