@@ -38,7 +38,6 @@ $capabilities = array(
         ),
 
         'mod/groupselect:create' => array(
-                'riskbitmask' => RISK_XSS,
                 'captype' => 'write',
                 'contextlevel' => CONTEXT_MODULE,
                 'archetypes' => array(
