@@ -86,4 +86,13 @@ $capabilities = array(
                         'editingteacher' => CAP_ALLOW
                 )
         ),
+        'mod/groupselect:view_hidden_full_groups' => array(
+            'captype' => 'read',
+            'contextlevel' => CONTEXT_MODULE,
+            'archetypes' => array(
+                'manager' => CAP_ALLOW,
+                'editingteacher' => CAP_ALLOW
+            )
+        ),
+    //
 );

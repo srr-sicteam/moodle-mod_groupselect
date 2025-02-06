@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/groupselect/db" VERSION="2020020500" COMMENT="XMLDB file for Moodle mod/groupselect"
+<XMLDB PATH="mod/groupselect/db" VERSION="2024102100" COMMENT="XMLDB file for Moodle mod/groupselect"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -33,6 +33,9 @@
         <FIELD NAME="maxgroupmembership" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="1" SEQUENCE="false"/>
         <FIELD NAME="studentcanjoin" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="1" SEQUENCE="false"/>
         <FIELD NAME="studentcanleave" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="1" SEQUENCE="false"/>
+        <FIELD NAME="leadercanleaveonlywhenalone" SEQUENCE="false" TYPE="int" NOTNULL="true" LENGTH="1" DEFAULT="0" COMMENT="Allow leader to leave only when they are the last member"/>
+        <FIELD NAME="restrictleavewhenmodcompleted" SEQUENCE="false" TYPE="int" NOTNULL="false" LENGTH="10" COMMENT="Restrict leaving group when selected module is completed"/>
+        <FIELD NAME="showleadericon" SEQUENCE="false" TYPE="int" NOTNULL="true" DEFAULT="0" LENGTH="1"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -61,6 +64,18 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="groupselect_groups" COMMENT="Groups additional info">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="groupid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="leaderid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="modcompleted" SEQUENCE="false" TYPE="int" NOTNULL="true" LENGTH="10" DEFAULT="0"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="groupid" TYPE="foreign" FIELDS="groupid" REFTABLE="groups" REFFIELDS="groupid"/>
       </KEYS>
     </TABLE>
   </TABLES>

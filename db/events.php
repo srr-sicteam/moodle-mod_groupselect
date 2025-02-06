@@ -35,5 +35,29 @@ $observers = array(
     array(
         'eventname' => '\core\event\group_deleted',
         'callback' => '\mod_groupselect\groupselect_observer::group_deleted',
-    )
+    ),
+    array(
+        'eventname' => '\core\event\group_member_added',
+        'callback' => '\mod_groupselect\groupselect_observer::group_member_added',
+        'priority'  => 1,
+        'internal'  => true
+    ),
+    array(
+        'eventname' => '\core\event\group_member_removed',
+        'callback' => '\mod_groupselect\groupselect_observer::group_member_removed',
+        'priority'  => 1,
+        'internal'  => true
+    ),
+    array(
+        'eventname' => '\core\event\user_deleted',
+        'callback' => '\mod_groupselect\groupselect_observer::user_deleted',
+        'priority'  => 1,
+        'internal'  => true
+    ),
+    array(
+        'eventname'   => '\core\event\course_module_completion_updated',
+        'callback'    => '\mod_groupselect\groupselect_observer::course_module_completion_updated',
+        'priority'  => 1,
+        'internal'  => true
+    ),
 );

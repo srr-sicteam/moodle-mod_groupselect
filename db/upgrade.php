@@ -389,5 +389,99 @@ function xmldb_groupselect_upgrade($oldversion) {
         // Groupselect savepoint reached.
         upgrade_mod_savepoint(true, 2020020500, 'groupselect');
     }
+    $newversion = 2024102100;
+    if ($oldversion < $newversion) {
+
+        // Change the length of minmembers from 1 to 10.
+        $table = new xmldb_table('groupselect');
+
+        // Update module settings table.
+        $fields = array();
+        $fields[] = new xmldb_field('leadercanleaveonlywhenalone', XMLDB_TYPE_INTEGER, '1',
+            null, XMLDB_NOTNULL, null, '0');
+        $fields[] = new xmldb_field('restrictleavewhenmodcompleted', XMLDB_TYPE_INTEGER, '10');
+
+        foreach ($fields as $field) {
+            if (!$dbman->field_exists($table, $field)) {
+                $dbman->add_field($table, $field);
+            }
+        }
+
+        // Groupselect savepoint reached.
+        upgrade_mod_savepoint(true, $newversion, 'groupselect');
+    }
+
+    $newversion = 2024102101;
+    if ($oldversion < $newversion) {
+
+        $table = new xmldb_table('groupselect');
+        $field = new xmldb_field('leaderid', XMLDB_TYPE_INTEGER, '10');
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        $table = new xmldb_table('groupselect_groups');
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE);
+        $table->add_field('groupid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL);
+        $table->add_field('groupselectid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL);
+        $table->add_field('leaderid', XMLDB_TYPE_INTEGER, '10');
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->add_key('groupid', XMLDB_KEY_FOREIGN, array('groupid'), 'groups', ['id']);
+
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Fill in the data of new table
+        $sql = "insert into {groupselect_groups} (groupid, groupselectid, leaderid) 
+                select distinct gm.groupid,
+                       gs.id as groupselectid,
+                       first_value(gm.userid) over (partition by gm.groupid ORDER BY gm.timeadded asc) as leaderid
+                from {groupselect} gs
+                       join {groupings_groups} gg on gg.groupingid = gs.targetgrouping
+                       join {groups} g on g.id = gg.groupid
+                       join {groups_members} gm on gm.groupid = g.id
+                group by gm.groupid, gs.id, gm.userid, gm.timeadded";
+
+        $DB->execute($sql);
+
+        upgrade_mod_savepoint(true, $newversion, 'groupselect');
+    }
+
+    $newversion = 2024102102;
+    if ($oldversion < $newversion) {
+
+        $table = new xmldb_table('groupselect_groups');
+        $field = $table->add_field('groupselectid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL);
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+        upgrade_mod_savepoint(true, $newversion, 'groupselect');
+    }
+
+    $newversion = 2024102107;
+    if ($oldversion < $newversion) {
+
+        $table = new xmldb_table('groupselect_groups');
+        $field = $table->add_field('modcompleted', XMLDB_TYPE_INTEGER, '10', null,
+            XMLDB_NOTNULL, null, 0);
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        upgrade_mod_savepoint(true, $newversion, 'groupselect');
+    }
+
+    $newversion = 2024111501;
+    if ($oldversion < $newversion) {
+
+        $table = new xmldb_table('groupselect');
+        $field = $table->add_field('showleadericon', XMLDB_TYPE_INTEGER, '1', null,
+            XMLDB_NOTNULL, null, 0);
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        upgrade_mod_savepoint(true, $newversion, 'groupselect');
+    }
+
     return true;
 }

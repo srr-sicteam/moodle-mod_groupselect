@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die;
 
 // Event types.
 define('GROUPSELECT_EVENT_TYPE_DUE', 'due');
+global $CFG;
 
 require_once("$CFG->dirroot/group/lib.php");
 require_once("$CFG->dirroot/mod/groupselect/lib.php");
@@ -142,7 +143,7 @@ function groupselect_get_password_protected_groups($groupselect) {
 /**
  * Get users with given role in given context
  *
- * @param context $context context
+ * @param int $context context
  * @param int $roleid role id
  * @return array of user ids
  */

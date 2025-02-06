@@ -28,6 +28,7 @@ require_once('locallib.php');
 require_once('select_form.php');
 require_once('create_form.php');
 
+global $CFG, $PAGE, $DB, $USER, $OUTPUT;
 $PAGE->requires->jquery_plugin('groupselect-jeditable', 'mod_groupselect');
 
 $id = optional_param( 'id', 0, PARAM_INT ); // Course Module ID, or.
@@ -80,7 +81,7 @@ $counts = groupselect_group_member_counts($cm, $groupselect->targetgrouping, $hi
 $susers = get_suspended_userids($context, true);
 $groups = groups_get_all_groups($course->id, 0, $groupselect->targetgrouping);
 $passwordgroups = groupselect_get_password_protected_groups($groupselect);
-$hidefullgroups = $groupselect->hidefullgroups;
+$hidefullgroups = $groupselect->hidefullgroups && !has_capability('mod/groupselect:view_hidden_full_groups', $context);
 $exporturl = '';
 
 groupselect_view($groupselect, $course, $cm, $context);
@@ -111,12 +112,13 @@ $viewfullnames = has_capability( 'moodle/site:viewfullnames', $context );
 
 $alreadyassigned = count ( $DB->get_records( 'groupselect_groups_teachers', array (
                             'instance_id' => $groupselect->id
-                            ) ) ) > 0 ? true : false;
+                            ) ) ) > 0;
 
 $canselect = (has_capability( 'mod/groupselect:select', $context ) && is_enrolled( $context ) && (empty( $mygroups )
                 || count( $mygroups ) < $groupselect->maxgroupmembership) && $groupselect->studentcanjoin);
 $canunselect = (has_capability('mod/groupselect:unselect', $context) && is_enrolled($context) && !empty($mygroups) &&
                 $groupselect->studentcanleave);
+
 $cancreate = ($groupselect->studentcancreate && has_capability( 'mod/groupselect:create', $context ) && is_enrolled( $context )
                 && (count($mygroups) < $groupselect->maxgroupmembership));
 $canexport = (has_capability( 'mod/groupselect:export', $context ) && count( $groups ) > 0);
@@ -285,6 +287,11 @@ if ($select && $canselect && isset( $groups[$select] ) && $isopen) {
     }
 } else if ($unselect && $canunselect && isset( $mygroups[$unselect] )) {
     // User unselected group.
+
+    if (!empty($groupselect->restrictleavewhenmodcompleted) &&
+        \mod_groupselect\groupselect_groups::groupHasCompletedMod($unselect, $groupselect->restrictleavewhenmodcompleted)) {
+        redirect ( $PAGE->url );
+    }
 
     if (! $isopen) {
         $problems[] = get_string( 'cannotunselectclosed', 'mod_groupselect' );
@@ -673,6 +680,7 @@ if (empty ( $groups )) {
     }
 
     // Group list.
+    $number = 1;
     foreach ($groups as $group) {
         $canseemembers = $viewothers;
         $ismember = isset( $mygroups[$group->id] );
@@ -729,27 +737,41 @@ if (empty ( $groups )) {
             }
         }
 
+        $canseemembers = $canseemembers || groups_is_member($group->id);
+
         // Group members.
         if ($canseemembers) {
             if ($members = groups_get_members( $group->id )) {
+                $leaderid = \mod_groupselect\groupselect_groups::getGroupLeader($group->id);
+                $iamgroupmember = groups_is_member($group->id);
                 $membernames = array ();
                 foreach ($members as $member) {
                     // Hide suspended students from the member list if enabled.
                     if ($hidesuspendedstudents && (isset($susers[$member->id]) || !empty($member->suspended)) ) {
                         continue;
                     }
+                    $pic = '';
                     $pic = $OUTPUT->user_picture( $member, array (
                             'courseid' => $course->id
                     ) );
+                    $leaderspan = '';
+                    if ($groupselect->showleadericon && $leaderid == $member->id) {
+                        $leaderspan = ' ' . $OUTPUT->pix_icon(
+                            'captain',
+                            get_string('captain', 'mod_groupselect'),
+                            'mod_groupselect',
+                                ['class' => 'align-top']
+                        );
+                    }
                     if ($member->id == $USER->id) {
-                        $membernames[] = '<span class="me">' . $pic . '&nbsp;' . fullname( $member, $viewfullnames ) . '</span>';
-                        if ($hidegroupmembers) {
+                        $membernames[] = '<span class="me">' . $pic . '&nbsp;' . fullname( $member, $viewfullnames ) . $leaderspan . '</span>';
+                        if ($hidegroupmembers && !$iamgroupmember) {
                             $membernames[] = '<span class="membershidden">' . get_string( 'membershidden', 'mod_groupselect' ) .
                                 '</span>';
                             break;
                         }
                     } else {
-                        if ($hidegroupmembers) {
+                        if ($hidegroupmembers && !$iamgroupmember) {
                             if (!$ismember) {
                                 $membernames[] = '<span class="membershidden">' . get_string( 'membershidden', 'mod_groupselect' ) .
                                     '</span>';
@@ -757,7 +779,7 @@ if (empty ( $groups )) {
                             }
                         } else {
                             $membernames[] = $pic . '&nbsp;<a href="' . $CFG->wwwroot . '/user/view.php?id=' . $member->id .
-                                             '&amp;course=' . $course->id . '">' . fullname( $member, $viewfullnames ) . '</a>';
+                                             '&amp;course=' . $course->id . '">' . fullname( $member, $viewfullnames ) . $leaderspan . '</a>';
                         }
                     }
                 }
@@ -776,7 +798,7 @@ if (empty ( $groups )) {
                         foreach ($assignedteachers as $a) {
                             if ($a->id === $teacherid) {
                                 $teacher = $a;
-                                $break;
+                                break;
                             }
                         }
                         $pic = $OUTPUT->user_picture( $teacher, array (
@@ -793,7 +815,7 @@ if (empty ( $groups )) {
                     }
                 }
 
-                $line[3] = implode( ', ', $membernames );
+                $line[3] = \html_writer::alist($membernames, ['class' => 'd-flex flex-column list-unstyled']  );
             } else {
                 $line[3] = '';
             }
@@ -824,32 +846,53 @@ if (empty ( $groups )) {
         }
         $line[4] = $line[4] . '</div>';
 
+        $line[5] = '';
+        $actionpresent = true;
+
+        if ($groupselect->maxmembers &&  $usercount >= $groupselect->maxmembers) {
+            $line[5] .= $OUTPUT->pix_icon(
+                'fullteam',
+                get_string( 'maxlimitreached', 'mod_groupselect' ),
+                'mod_groupselect',
+                ['align' => 'left', 'class' => 'activityicon']
+            );
+        }
+
         // Action buttons.
-        if ($isopen) {
+        $modrestrict = $groupselect->restrictleavewhenmodcompleted &&
+            \mod_groupselect\groupselect_groups::groupHasCompletedMod($group->id, $groupselect->restrictleavewhenmodcompleted);
+        if ($modrestrict) {
+            if ($ismember) {
+                $cm = cm_info::create((object)['id' => $groupselect->restrictleavewhenmodcompleted, 'course' => $course->id]);
+                $line[5] .= get_string('groupcompletedmod', 'mod_groupselect',
+                html_writer::link($cm->get_url(), $cm->get_formatted_name()));
+            }
+        } else if ($isopen) {
             if (! $ismember && $canselect && $groupselect->maxmembers && $groupselect->maxmembers <= $usercount) {
                 // Full - no more members.
-                $line[5] = '<div class="maxlimitreached">' . get_string( 'maxlimitreached', 'mod_groupselect' ) . '</div>';
-                $actionpresent = true;
+//                $line[5] = '<div class="maxlimitreached">' . get_string( 'maxlimitreached', 'mod_groupselect' ) . '</div>';
+//                $actionpresent = true;
             } else if ($ismember && $canunselect) {
-                $line[5] = $OUTPUT->single_button( new moodle_url( '/mod/groupselect/view.php', array (
+                $line[5] .= $OUTPUT->single_button( new moodle_url( '/mod/groupselect/view.php', array (
                         'id' => $cm->id,
                         'unselect' => $group->id
                 ) ), get_string( 'unselect', 'mod_groupselect', "") );
-                $actionpresent = true;
+//                $actionpresent = true;
             } else if (! $ismember && $canselect) {
-                $line[5] = $OUTPUT->single_button( new moodle_url( '/mod/groupselect/view.php', array (
+                $line[5] .= $OUTPUT->single_button( new moodle_url( '/mod/groupselect/view.php', array (
                         'id' => $cm->id,
                         'select' => $group->id,
                         'group_password' => $group->password
                 ) ), get_string ( 'select', 'mod_groupselect', "") );
-                $actionpresent = true;
-            } else {
-                $line[5] = '';
+//                $actionpresent = true;
             }
         }
+
         if (!$ismember) {
+            array_unshift($line, $number++);
             $data[] = $line;
         } else {
+            array_unshift($line, '');
             array_unshift($data, $line);
         }
     }
@@ -861,6 +904,7 @@ if (empty ( $groups )) {
             'class' => 'generaltable sortable groupselect-table m-t-1',
     );
     $table->head = array (
+            '',
             $strgroup,
             $strgroupdesc,
             $strcount,

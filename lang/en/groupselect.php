@@ -56,6 +56,7 @@ $string['groupselect:create'] = 'Allow creating of group';
 $string['groupselect:export'] = 'Allow export of group members';
 $string['groupselect:select'] = 'Allow becoming of group member';
 $string['groupselect:unselect'] = 'Allow leaving of group';
+$string['groupselect:view_hidden_full_groups'] = 'View all groups even when the full ones are hidden';
 $string['hidefullgroups'] = 'Hide full groups from the main view';
 $string['hidefullgroups_help'] = 'If set, hides all groups, which have reached max member count, from the main list view (excluding user\'s own group). May be useful if the activity has lots of groups.';
 $string['hidegroupmembers'] = 'Hide group members for students';
@@ -136,3 +137,13 @@ $string['unassigngroup'] = 'Unassign supervisors from groups';
 $string['unassigngroup_confirm'] = 'This will unassign supervisors from groups. Are you sure?';
 $string['unselect'] = 'Leave group {$a}';
 $string['unselectconfirm'] = 'Do you really want to leave the group <em>{$a}</em>?';
+$string['captain'] = 'Captain';
+
+$string['showleadericon'] = 'Show leader icon';
+$string['leadercanleaveonlywhenalone'] = 'Allow leader to leave group only when they are its only member';
+$string['leadercanleaveonlywhenalone_help'] = 'Restrict leaving for group leader when there are any other members. Leader can leave the group only when all other member have been removed from it.';
+$string['restrictleavewhenmodcompleted'] = 'Restrict leaving then this module is completed';
+$string['restrictleavewhenmodcompleted_help'] = 'If module is selected then members of group can leave it only until this module is completed by any member of the group.<br/>
+ Only the completion of the module at the time when the user was a member of this group is taken into account.<br>
+ That is, if the user previously completed the specified module and then joined the group, the module will not be considered completed for the group.';
+$string['groupcompletedmod'] = 'Group has completed {$a}';

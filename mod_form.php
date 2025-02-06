@@ -25,6 +25,7 @@
  */
 
 defined('MOODLE_INTERNAL') || die;
+global $CFG;
 
 require_once($CFG->dirroot.'/course/moodleform_mod.php');
 
@@ -175,6 +176,38 @@ class mod_groupselect_mod_form extends moodleform_mod {
                 array('optional' => true, 'group' => null), array(0, 1));
         $mform->addHelpButton('deleteemptygroups', 'deleteemptygroups', 'mod_groupselect');
         $mform->setDefault('deleteemptygroups', $config->deleteemptygroups);
+
+        // Deny leaving for leaders
+        $mform->addElement('advcheckbox', 'leadercanleaveonlywhenalone', get_string('leadercanleaveonlywhenalone', 'mod_groupselect'), '',
+            array('optional' => true, 'group' => null), array(0, 1));
+        $mform->addHelpButton('leadercanleaveonlywhenalone', 'leadercanleaveonlywhenalone', 'mod_groupselect');
+        $mform->setDefault('leadercanleaveonlywhenalone', 0);
+
+        // Show leader icon
+        $mform->addElement('advcheckbox', 'showleadericon', get_string('showleadericon', 'mod_groupselect'), '',
+            array('optional' => true, 'group' => null), array(0, 1));
+        $mform->setDefault('showleadericon', 0);
+
+        $modinfo = get_fast_modinfo($this->get_course()->id);
+        $cms = ['' => [null => get_string('no')]];
+        $sections = [];
+        foreach ($modinfo->cms as $cm) {
+            if ($cm->completion == COMPLETION_TRACKING_NONE) {
+                continue;
+            }
+            if (empty($sections[$cm->section])) {
+                $sections[$cm->section] = format_string($cm->get_section_info()->name);
+            }
+            $sname = $sections[$cm->section];
+            if (!key_exists($sname, $cms)) {
+                $cms[$sname] = [];
+            }
+            $cms[$sname][$cm->id] = $cm->get_formatted_name();
+        }
+        $mform->addElement('selectgroups', 'restrictleavewhenmodcompleted',
+            get_string('restrictleavewhenmodcompleted', 'mod_groupselect'), $cms);
+        $mform->addHelpButton('restrictleavewhenmodcompleted', 'restrictleavewhenmodcompleted', 'mod_groupselect');
+        $mform->setDefault('restrictleavewhenmodcompleted', null);
 
         // Buttons.
 

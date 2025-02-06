@@ -25,6 +25,7 @@
 namespace mod_groupselect;
 defined('MOODLE_INTERNAL') || die();
 
+global $CFG;
 require_once($CFG->dirroot . '/mod/groupselect/locallib.php');
 
 /**
@@ -55,6 +56,7 @@ class groupselect_observer {
             $params['userid'] = $cp->userid;
 
             $DB->delete_records_select('groupselect_groups_teachers', 'teacherid = :userid AND instance_id '.$groupselect, $params);
+            groupselect_groups::autofillLeaderWhenUserDeleted($cp->userid);
         }
     }
 
@@ -64,7 +66,7 @@ class groupselect_observer {
      * @param \core\event\base $event The event.
      * @return void
      */
-    public static function group_deleted($event) {
+    public static function group_deleted(\core\event\group_deleted $event) {
         global $DB;
 
         // NOTE: this has to be as fast as possible.
@@ -73,6 +75,46 @@ class groupselect_observer {
             $params['groupid'] = $groupid;
             $DB->delete_records_select('groupselect_groups_teachers', 'groupid = :groupid', $params);
             $DB->delete_records_select('groupselect_passwords', 'groupid = :groupid', $params);
+            groupselect_groups::deleteGroupInfo($groupid);
+        }
+    }
+
+    public static function group_member_added(\core\event\group_member_added $event)
+    {
+        $groupid = $event->objectid;
+        $userid = $event->relateduserid;
+
+        if (groupselect_groups::getGroupMembersCount($groupid) === 1) {
+            groupselect_groups::setGroupLeader($groupid, $userid);
+        }
+    }
+
+    public static function group_member_removed(\core\event\group_member_removed $event)
+    {
+        $groupid = $event->objectid;
+        if (!groupselect_groups::getGroupMembersCount($groupid)) {
+            groupselect_groups::removeGroupLeader($groupid);
+        } else {
+            groupselect_groups::autofillGroupLeader($groupid);
+        }
+    }
+
+    public static function user_deleted(\core\event\user_deleted $event)
+    {
+        $userid = $event->objectid;
+        groupselect_groups::autofillLeaderWhenUserDeleted($userid);
+    }
+
+    public static function course_module_completion_updated(\core\event\course_module_completion_updated $event)
+    {
+        $eventdata = $event->get_record_snapshot('course_modules_completion', $event->objectid);
+        $userid = $event->relateduserid;
+        $cmid = $eventdata->coursemoduleid;
+
+        if ($eventdata->completionstate == COMPLETION_COMPLETE
+            || $eventdata->completionstate == COMPLETION_COMPLETE_PASS
+            || $eventdata->completionstate == COMPLETION_COMPLETE_FAIL) {
+            groupselect_groups::setGroupModCompletedByUser($userid, $cmid);
         }
     }
 }
